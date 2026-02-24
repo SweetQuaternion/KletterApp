@@ -56,3 +56,5 @@ INSERT INTO routen (wand_id, name, schwierigkeit) VALUES
 
 INSERT INTO users (name, email, passwort_hash) VALUES
 ('Mona', 'mona-philine.komp@dachpc.com', 'hash1')
+
+
