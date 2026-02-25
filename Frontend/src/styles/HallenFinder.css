@@ -1,0 +1,38 @@
+.hallen-suchmaske {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: 2em;
+  background-color: white;
+  border-radius: 15px;
+  color: var(--espresso);
+  box-shadow: 0px 0px 20px -5px var(--mokka);
+}
+
+form {
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+input {
+  background-color: white;
+  color: var(--espresso);
+  padding: 0.5em;
+  border: 1px solid var(--mokka);
+  border-radius: 5px;
+  min-width: 25em;
+}
+
+input:focus {
+  outline: none;
+}
+
+input:hover {
+  background-color: #f1f1f1;
+}

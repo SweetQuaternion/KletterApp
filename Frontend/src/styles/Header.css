@@ -1,0 +1,32 @@
+@import "../styles/ColorScheme.css";
+
+header {
+  display: flex;
+  justify-content: space-between; /* Wir wollen Platz zwischen heading und button */
+  gap: 1em;
+  padding: 0.6em;
+  background-color: var(--buttergelb);
+  color: var(--terrakotta);
+  width: 100%;
+  position: absolute;
+  top: 0;
+  box-shadow: 0px 0px 20px -5px var(--mokka);
+}
+
+header h1 {
+  font-size: 2em;
+  font-weight: bold;
+  /* margin-left: 0.5em; */
+}
+
+.left-part {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.right-part {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}

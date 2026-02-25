@@ -1,0 +1,44 @@
+@import "../styles/ColorScheme.css";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  background-color: var(--abendsonne);
+
+  font-family:
+    playfair display,
+    serif;
+}
+
+button {
+  background-color: var(--terrakotta);
+  color: var(--abendsonne);
+  border: none;
+  margin: 0;
+  padding: 0.4em 1em;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 999px;
+  font-size: small;
+}
+
+button:hover {
+  background-color: var(--kaminrot);
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}

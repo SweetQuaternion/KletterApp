@@ -28,7 +28,7 @@ public class JSONController {
     
     @GetMapping("/halle")
     public List<Halle> halle(@RequestParam String name) {
-        return hallenRepository.findByName(name);
+        return hallenRepository.fuzzySearch(name);
     }
     
 }

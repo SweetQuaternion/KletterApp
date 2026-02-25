@@ -2,4 +2,4 @@
 .directory
 .vscode
 planung.txt
-start.sh
+backend/kletterapp/start.sh
