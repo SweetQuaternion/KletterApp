@@ -2,6 +2,10 @@ INSERT INTO hallen (name, adresse) VALUES
 ('DAV Kletterzentrum Darmstadt', 'Lichtwiesenweg 15, 64287 Darmstadt'),
 ('DAV Sandsteinbruch Heubach', 'Wilhelm-Leuschner-Straße 250, 64823 Groß-Umstadt')
 
+INSERT INTO hallen (name, adresse) VALUES
+('DAV Kletterzentrum Frankfurt / Main', 'Homburger Landstraße 283, 60433 Frankfurt am Main'),
+('DAV Kletterzentrum Mannheim', 'Abraham-Lincoln-Allee 7, 68309 Mannheim')
+
 
 INSERT INTO wände (hallen_id, wand_nr, sektor) VALUES
 (2, 1, 'Bahnhof Heubach'),
@@ -57,4 +61,7 @@ INSERT INTO routen (wand_id, name, schwierigkeit) VALUES
 INSERT INTO users (name, email, passwort_hash) VALUES
 ('Mona', 'mona-philine.komp@dachpc.com', 'hash1')
 
-
+update hallen set betreiber = 'DAV Sektion Darmstadt-Starkenburg' where id = 1;
+update hallen set betreiber = 'DAV Sektion Darmstadt-Starkenburg' where id = 2;
+update hallen set betreiber = 'DAV Sektion Frankfurt/Main' where id = 3;
+update hallen set betreiber = 'DAV Sektion Mannheim' where id = 4;

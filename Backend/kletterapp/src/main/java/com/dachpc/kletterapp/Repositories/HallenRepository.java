@@ -15,8 +15,9 @@ public interface HallenRepository extends JpaRepository<Halle, Integer> {
             WHERE similarity(name || ' ' || adresse, ?1) > 0.2
             OR similarity (name, ?1) > 0.2
             OR similarity (adresse, ?1) > 0.2
-            ORDER BY GREATEST(similarity(name || ' ' || adresse, ?1), similarity(name, ?1), similarity(adresse, ?1)) DESC
-            LIMIT 5
+            OR similarity (betreiber, ?1) > 0.2
+            ORDER BY GREATEST(similarity(name || ' ' || adresse, ?1), similarity(name, ?1), similarity(adresse, ?1), similarity(betreiber, ?1)) DESC
+            LIMIT 3
         """,
         nativeQuery = true
     )

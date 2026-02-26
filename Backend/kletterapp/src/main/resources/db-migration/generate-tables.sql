@@ -1,7 +1,8 @@
 CREATE TABLE hallen(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name text NOT NULL,
-    adresse text NOT NULL
+    adresse text NOT NULL,
+    betreiber text
 );
 
 
@@ -71,3 +72,6 @@ CREATE TABLE kommentare(
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (route_id) REFERENCES routen(id)
 );
+
+
+ALTER TABLE hallen ADD COLUMN IF NOT EXISTS betreiber text NOT NULL DEFAULT 'Unbekannt';
