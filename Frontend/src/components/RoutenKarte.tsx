@@ -11,8 +11,8 @@ interface Props {
 const RoutenKarte = ({ selectedHalle }: Props) => {
   return (
     <>
-      <Header />
-      <HallenInfoBox selectedHalle={selectedHalle} />
+      {/* <Header /> */}
+      {/* <HallenInfoBox selectedHalle={selectedHalle} /> */}
       <TestMap />
     </>
   );

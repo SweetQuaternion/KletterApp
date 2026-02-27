@@ -5,36 +5,34 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dachpc.kletterapp.Entities.Halle;
 import com.dachpc.kletterapp.Entities.Route;
-import com.dachpc.kletterapp.Repositories.HallenRepository;
 import com.dachpc.kletterapp.Repositories.RoutenRepository;
+
 
 @CrossOrigin(origins = "http://localhost:5173") 
 @RestController
-public class JSONController {
+@RequestMapping("/routen")
+public class RoutenController {
 
     @Autowired
     private RoutenRepository routenRepository;
 
-    @GetMapping("/route")
-    public List<Route> route(@RequestParam String grade) {
+    @GetMapping("/grade/{grade}")
+    public List<Route> filterBySchwierigkeit(@RequestParam String grade) {
         return routenRepository.findBySchwierigkeit(grade);
     }
-
-    @Autowired
-    private HallenRepository hallenRepository;
     
-    @GetMapping("/halle")
-    public List<Halle> halle(@RequestParam String name) {
-        return hallenRepository.fuzzySearch(name);
+    @GetMapping("/halle/{halle}")
+    public List<Route> filterByHalle(@RequestParam String halle) {
+        return routenRepository.findByHalle(halle);
     }
-    
-}
 
-// @RestController
-// Das hier gibt JSON zurück
-// bzw einfach blank Text (aber kein HTML oder so, sondern nur den Text, den wir zurückgeben wollen)
+    @GetMapping("/sicherungsart/{sicherungsart}")
+    public List<Route> filterBySicherungsart(@RequestParam String sicherungsart) {
+        return routenRepository.findBySicherungsart(sicherungsart);
+    }
+}

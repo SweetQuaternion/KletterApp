@@ -21,5 +21,7 @@ public interface HallenRepository extends JpaRepository<Halle, Integer> {
         """,
         nativeQuery = true
     )
-    List<Halle> fuzzySearch(String search);
+    List<Halle> search(String search);
+
+    void deleteById(int id);
 }

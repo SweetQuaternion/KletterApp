@@ -11,7 +11,7 @@ function HallenSuchmaske({ setSelectedHalle }: Props) {
   const [ergebnisse, setErgebnisse] = useState<Halle[]>([]);
 
   const searchHallen = async (name: string) => {
-    const response = await fetch(`http://localhost:8080/halle?name=${name}`);
+    const response = await fetch(`http://localhost:8080/hallen?name=${name}`);
     if (!response.ok) {
       throw new Error("Suche fehlgeschlagen");
     }
