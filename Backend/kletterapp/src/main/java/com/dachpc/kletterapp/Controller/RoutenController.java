@@ -21,18 +21,24 @@ public class RoutenController {
     @Autowired
     private RoutenRepository routenRepository;
 
-    @GetMapping("/grade/{grade}")
-    public List<Route> filterBySchwierigkeit(@RequestParam String grade) {
-        return routenRepository.findBySchwierigkeit(grade);
+    @GetMapping("/filter")
+    public List<Route> filter(@RequestParam int hallenID, @RequestParam(required = false) String minGrade, @RequestParam(required = false) String maxGrade, @RequestParam(required = false) Boolean isToprope, @RequestParam(required = false) Boolean isVorstieg, @RequestParam(required = false) Boolean isActive) {
+        return routenRepository.filter(hallenID, minGrade, maxGrade, isToprope, isVorstieg, isActive);
     }
     
-    @GetMapping("/halle/{halle}")
-    public List<Route> filterByHalle(@RequestParam String halle) {
-        return routenRepository.findByHalle(halle);
-    }
 
-    @GetMapping("/sicherungsart/{sicherungsart}")
-    public List<Route> filterBySicherungsart(@RequestParam String sicherungsart) {
-        return routenRepository.findBySicherungsart(sicherungsart);
-    }
+    // @GetMapping("/grade/{grade}")
+    // public List<Route> filterBySchwierigkeit(@RequestParam String grade) {
+    //     return routenRepository.findBySchwierigkeit(grade);
+    // }
+    
+    // @GetMapping("/halle/{halle}")
+    // public List<Route> filterByHalle(@RequestParam String halle) {
+    //     return routenRepository.findByHalle(halle);
+    // }
+
+    // @GetMapping("/sicherungsart/{sicherungsart}")
+    // public List<Route> filterBySicherungsart(@RequestParam String sicherungsart) {
+    //     return routenRepository.findBySicherungsart(sicherungsart);
+    // }
 }
