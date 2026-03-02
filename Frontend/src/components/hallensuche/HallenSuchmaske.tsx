@@ -1,7 +1,9 @@
 import { useState } from "react";
-import "../styles/HallenFinder.css";
+import "../../styles/HallenFinder.css";
+import "../../styles/Form.css";
+import "../../styles/App.css";
 import HallenErgebnisFeld from "./HallenErgebnisFeld";
-import { type Halle } from "../constants/APIResponseTypes";
+import { type Halle } from "../../constants/APIResponseTypes";
 
 interface Props {
   setSelectedHalle: (id: Halle) => void;
@@ -20,7 +22,7 @@ function HallenSuchmaske({ setSelectedHalle }: Props) {
   };
 
   return (
-    <div className="hallen-suchmaske">
+    <div className="white-box">
       <h2>Wähle deine Halle aus</h2>
       <form
         className="flex-row"

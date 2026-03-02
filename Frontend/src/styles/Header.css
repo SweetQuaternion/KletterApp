@@ -8,6 +8,7 @@ header {
   background-color: var(--buttergelb);
   color: var(--terrakotta);
   width: 100%;
+  height: 3.5em;
   position: absolute;
   top: 0;
   box-shadow: 0px 0px 20px -5px var(--mokka);
@@ -26,7 +27,27 @@ header h1 {
 }
 
 .right-part {
+  font-family:
+    DM Sans,
+    sans-serif;
   display: flex;
   align-items: center;
   gap: 0.5em;
+}
+
+.profile-button {
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+.right-part img {
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+  display: block;
 }

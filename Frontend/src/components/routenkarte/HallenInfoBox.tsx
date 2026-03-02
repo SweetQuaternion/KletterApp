@@ -1,4 +1,4 @@
-import type { Halle } from "../constants/APIResponseTypes";
+import type { Halle } from "../../constants/APIResponseTypes";
 
 interface Props {
   selectedHalle: Halle;
