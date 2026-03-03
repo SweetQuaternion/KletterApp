@@ -75,3 +75,5 @@ CREATE TABLE kommentare(
 
 
 ALTER TABLE hallen ADD COLUMN IF NOT EXISTS betreiber text NOT NULL DEFAULT 'Unbekannt';
+
+ALTER TABLE users ADD COLUMN IF NOT EXISTS role text NOT NULL DEFAULT 'user';

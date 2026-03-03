@@ -67,6 +67,8 @@ public class UserController {
         if (updatedUser.getName() != null) prevUser.setName(updatedUser.getName());
         if (updatedUser.getEmail() != null) prevUser.setEmail(updatedUser.getEmail());
         if (updatedUser.getPassword() != null) prevUser.setPassword(updatedUser.getPassword());
+        if (updatedUser.getBildUrl() != null) prevUser.setBildUrl(updatedUser.getBildUrl());
+        if (updatedUser.getRole() != null) prevUser.setRole(updatedUser.getRole());
         userRepository.save(prevUser);
         return ResponseEntity.status(HttpStatus.OK).body("User updated successfully.");
     }
