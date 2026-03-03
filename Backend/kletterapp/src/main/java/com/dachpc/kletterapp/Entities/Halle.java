@@ -22,6 +22,15 @@ public class Halle {
     @Column(name = "betreiber")
     private String betreiber;
 
+    protected Halle() {
+    }
+    
+    public Halle(String name, String adresse, String betreiber) {
+        this.name = name;
+        this.adresse = adresse;
+        this.betreiber = betreiber;
+    }
+
     // Getters and setters
     public int getId() { return id; }
     public String getName() { return name; }
