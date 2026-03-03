@@ -15,7 +15,7 @@ public class User {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "passwort_hash")
@@ -26,6 +26,17 @@ public class User {
 
     @Column(name = "role")
     private String role;
+
+    protected User() {
+        // JPA benötigt einen No-Args-Konstruktor
+    }
+
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = "user";
+    }
 
     // Getters and setters
     public int getId() { return id; }

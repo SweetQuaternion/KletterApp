@@ -1,16 +1,11 @@
 package com.dachpc.kletterapp;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,24 +13,12 @@ import com.dachpc.kletterapp.Entities.Halle;
 import com.dachpc.kletterapp.Repositories.HallenRepository;
 
 
-@SpringBootTest(properties = {"spring.jpa.hibernate.ddl-auto=create-drop"})
-@Testcontainers
-public class HallenRepositoryTest {
-
-
-    @Container
-    @ServiceConnection
-    static PostgreSQLContainer postgresqlContainer = new PostgreSQLContainer("postgres:18.2")
-        .withDatabaseName("test-db")
-        .withUsername("testuser")
-        .withPassword("testpasswort")
-        .withInitScript("init.sql");
+public class HallenRepositoryTest extends AbstractIntegrationTest {
 
     @Test
     void testContainer() {
         assertThat(postgresqlContainer.isRunning()).isTrue();
     }
-
 
     @Autowired
     private HallenRepository hallenRepository;
@@ -55,9 +38,33 @@ public class HallenRepositoryTest {
         List<Halle> result1 = hallenRepository.search("Darmstadt");
         assertThat(result1).hasSize(2);
         assertThat(result1.get(0).getName()).isEqualTo("DAV Kletterzentrum Darmstadt");
-        assertThat(result1.get(1).getName()).isEqualTo("DAV Sandsteinbruch Heubach");
+        assertThat(result1.get(1).getName()).isEqualTo("DAV Sandsteinbruch Heubach");        
+    }
 
+    @Test
+    void testSearchNoResults() {
         List<Halle> result2 = hallenRepository.search("Hamburg");
         assertThat(result2).isEmpty();
+        List<Halle> result = hallenRepository.search("NonExistentHall");
+        assertThat(result).isEmpty();
     }
+
+    @Test
+    void testFindById() {
+        Halle saved = hallenRepository.save(new Halle("DAV Kletterzentrum Darmstadt", "Lichtwiesenweg 15, 64287 Darmstadt", "DAV Sektion Darmstadt Starkenburg"));
+        Optional<Halle> result = hallenRepository.findById(saved.getId());
+        assertThat(result).isPresent();
+        assertThat(result.get().getName()).isEqualTo("DAV Kletterzentrum Darmstadt");
+    }
+
+    @Test
+    void deleteById() {
+        Halle saved = hallenRepository.save(new Halle("DAV Kletterzentrum Darmstadt", "Lichtwiesenweg 15, 64287 Darmstadt", "DAV Sektion Darmstadt Starkenburg"));
+        assertThat(hallenRepository.findById(saved.getId())).isPresent();
+        hallenRepository.deleteById(saved.getId());
+        Optional<Halle> result = hallenRepository.findById(saved.getId());
+        assertThat(result).isEmpty();
+    }
+
+    
 }

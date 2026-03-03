@@ -1,0 +1,53 @@
+package com.dachpc.kletterapp.Entities;
+
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "user_routen_status", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "routen_id"}))
+@JsonPropertyOrder({"userId", "routenId", "isFavorite", "isProjekt", "geschSchwierigkeit", "notiz"})
+public class UserRoutenStatus {
+
+    @EmbeddedId
+    private UserRoutenStatusId id;
+
+    @Column(name = "isfavorit")
+    private boolean isFavorit;
+
+    @Column(name = "isprojekt")
+    private boolean isProjekt;
+
+    @Column(name = "gesch_schwierigkeit")
+    private String geschSchwierigkeit;
+
+    @Column(name = "notiz")
+    private String notiz;
+
+    protected UserRoutenStatus() {
+        // JPA benötigt einen No-Args-Konstruktor
+    }
+
+    public UserRoutenStatus(int userId, int routenId, boolean isFavorit, boolean isProjekt, String geschSchwierigkeit, String notiz) {
+        this.id = new UserRoutenStatusId(userId, routenId);
+        this.isFavorit = isFavorit;
+        this.isProjekt = isProjekt;
+        this.geschSchwierigkeit = geschSchwierigkeit;
+        this.notiz = notiz;
+    }
+
+    // Getters and setters
+    public int getUserId() { return id.getUserId(); }
+    public int getRoutenId() { return id.getRouteId(); }
+    public boolean isFavorit() { return isFavorit; }
+    public boolean isProjekt() { return isProjekt; }
+    public String getGeschSchwierigkeit() { return geschSchwierigkeit; }
+    public String getNotiz() { return notiz; }
+
+    public void setUserId(int userId) { this.id.setUserId(userId); }
+    public void setRoutenId(int routenId) { this.id.setRouteId(routenId); }
+    public void setFavorit(boolean favorit) { isFavorit = favorit; }
+    public void setProjekt(boolean projekt) { isProjekt = projekt; }
+    public void setGeschSchwierigkeit(String geschSchwierigkeit) { this.geschSchwierigkeit = geschSchwierigkeit; }
+    public void setNotiz(String notiz) { this.notiz = notiz; }
+}
