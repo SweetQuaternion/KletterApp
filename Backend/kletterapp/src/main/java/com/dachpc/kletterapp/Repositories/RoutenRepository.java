@@ -11,20 +11,10 @@ public interface RoutenRepository extends JpaRepository<Route, Integer> {
     List<Route> findByName(String name);
     List<Route> findBySchwierigkeit(String schwierigkeit);
 
-    // @Query(
-    //     value = """
-    //             SELECT routen.id, wand_id, name , farbe, schwierigkeit , is_toprope, is_vorstieg, schrauber, schraubdatum, is_active 
-    //             FROM routen JOIN wände on routen.wand_id = wände.id
-    //             WHERE wände.hallen_id = ?1
-    //     """,
-    //     nativeQuery = true
-    // )
-    // List<Route> findByHalle(int id);
-
     @Query(
         value = """
             SELECT * FROM 
-                (SELECT routen.id, wand_id, name , farbe, schwierigkeit , is_toprope, is_vorstieg, schrauber, schraubdatum, is_active 
+                (SELECT routen.id, wand_id, name , farbe, schwierigkeit , is_toprope, is_vorstieg, schrauber, schraubdatum, is_active, beschreibung 
                 FROM routen JOIN wände on routen.wand_id = wände.id
                 WHERE wände.hallen_id = ?1
             )
@@ -36,5 +26,5 @@ public interface RoutenRepository extends JpaRepository<Route, Integer> {
         """,
         nativeQuery = true
     )
-    List<Route> filter(int hallenID, String minGrade, String maxGrade, Boolean isToprope, Boolean isVorstieg, Boolean isActive);
+    List<Route> filter(int hallenID, float minGrade, float maxGrade, Boolean isToprope, Boolean isVorstieg, Boolean isActive);
 }

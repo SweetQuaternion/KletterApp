@@ -22,9 +22,7 @@ public class Wand {
     @Column(name = "sektor")
     private String sektor;
 
-    protected Wand() {
-        // JPA benötigt einen No-Args-Konstruktor
-    }
+    protected Wand() {}
 
     public Wand(int hallenId, int wandNr, String sektor) {
         this.hallenId = hallenId;

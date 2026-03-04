@@ -8,7 +8,8 @@ import com.dachpc.kletterapp.Entities.Wand;
 
 public interface WandRepository extends JpaRepository<Wand, Integer> {
     List<Wand> findByHallenId(int hallenId);
-    List<Wand> findByHallenIdAndWandNr(int hallenId, int wandNr);
-    List<Wand> findBySektor(String sektor);
+
+    // List<Wand> findByHallenIdAndWandNr(int hallenId, int wandNr);
+    // List<Wand> findBySektor(String sektor);
     void deleteById(int id);
 }

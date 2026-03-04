@@ -50,7 +50,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<String> add(@RequestBody User user) {try {
+    public ResponseEntity<String> add(@RequestBody User user) {
+        try {
             userRepository.save(user);
             return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully.");
         } catch (DataIntegrityViolationException e) {

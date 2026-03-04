@@ -19,16 +19,14 @@ public class UserRoutenStatus {
     private boolean isProjekt;
 
     @Column(name = "gesch_schwierigkeit")
-    private String geschSchwierigkeit;
+    private float geschSchwierigkeit;
 
     @Column(name = "notiz")
     private String notiz;
 
-    protected UserRoutenStatus() {
-        // JPA benötigt einen No-Args-Konstruktor
-    }
+    protected UserRoutenStatus() {}
 
-    public UserRoutenStatus(int userId, int routenId, boolean isFavorit, boolean isProjekt, String geschSchwierigkeit, String notiz) {
+    public UserRoutenStatus(int userId, int routenId, boolean isFavorit, boolean isProjekt, float geschSchwierigkeit, String notiz) {
         this.id = new UserRoutenStatusId(userId, routenId);
         this.isFavorit = isFavorit;
         this.isProjekt = isProjekt;
@@ -41,13 +39,13 @@ public class UserRoutenStatus {
     public int getRoutenId() { return id.getRouteId(); }
     public boolean isFavorit() { return isFavorit; }
     public boolean isProjekt() { return isProjekt; }
-    public String getGeschSchwierigkeit() { return geschSchwierigkeit; }
+    public float getGeschSchwierigkeit() { return geschSchwierigkeit; }
     public String getNotiz() { return notiz; }
 
     public void setUserId(int userId) { this.id.setUserId(userId); }
     public void setRoutenId(int routenId) { this.id.setRouteId(routenId); }
     public void setFavorit(boolean favorit) { isFavorit = favorit; }
     public void setProjekt(boolean projekt) { isProjekt = projekt; }
-    public void setGeschSchwierigkeit(String geschSchwierigkeit) { this.geschSchwierigkeit = geschSchwierigkeit; }
+    public void setGeschSchwierigkeit(float geschSchwierigkeit) { this.geschSchwierigkeit = geschSchwierigkeit; }
     public void setNotiz(String notiz) { this.notiz = notiz; }
 }

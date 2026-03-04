@@ -28,7 +28,6 @@ public class User {
     private String role;
 
     protected User() {
-        // JPA benötigt einen No-Args-Konstruktor
     }
 
     public User(String name, String email, String password) {

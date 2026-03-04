@@ -20,7 +20,7 @@ CREATE TABLE routen(
     wand_id INT NOT NULL,
     name text,
     farbe text NOT NULL,
-    schwierigkeit text,
+    schwierigkeit float,
     is_toprope boolean DEFAULT false,
     is_vorstieg boolean DEFAULT false,
     schrauber text,
@@ -79,3 +79,6 @@ ALTER TABLE hallen ADD COLUMN IF NOT EXISTS betreiber text NOT NULL DEFAULT 'Unb
 ALTER TABLE users ADD COLUMN IF NOT EXISTS role text NOT NULL DEFAULT 'user';
 
 ALTER TABLE user_routen_status ADD COLUMN IF NOT EXISTS notiz text;
+UPDATE routen SET schwierigkeit = NULL WHERE schwierigkeit = '';
+ALTER TABLE routen ALTER COLUMN schwierigkeit TYPE FLOAT USING schwierigkeit::FLOAT;
+ALTER TABLE user_routen_status ALTER COLUMN gesch_schwierigkeit TYPE FLOAT USING gesch_schwierigkeit::FLOAT;
