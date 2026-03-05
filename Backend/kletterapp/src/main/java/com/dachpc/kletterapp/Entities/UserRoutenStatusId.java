@@ -3,12 +3,17 @@ package com.dachpc.kletterapp.Entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 // können wir in andere Klassen einbetten oder so
 @Embeddable
 public class UserRoutenStatusId implements Serializable{
+
+    @Column(name = "user_id")
     private int userId;
+    
+    @Column(name = "route_id")
     private int routeId;
 
     public UserRoutenStatusId() {

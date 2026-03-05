@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "user_routen_status", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "routen_id"}))
+@Table(name = "user_routen_status", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "route_id"}))
 @JsonPropertyOrder({"userId", "routenId", "isFavorite", "isProjekt", "geschSchwierigkeit", "notiz"})
 public class UserRoutenStatus {
 

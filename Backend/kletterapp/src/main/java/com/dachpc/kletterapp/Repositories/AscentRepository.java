@@ -12,10 +12,10 @@ public interface AscentRepository extends JpaRepository<Ascent, Integer> {
         value = """
             SELECT * FROM ascents
             WHERE (:userId IS NULL OR user_id = :userId)
-            AND (:routenId IS NULL OR routen_id = :routenId)
+            AND (:routenId IS NULL OR route_id = :routenId)
         """,
         nativeQuery = true
     )
-    List<Ascent> search(int userId, int routenId);
+    List<Ascent> search(Integer userId, Integer routenId);
     void deleteById(int id);
 }

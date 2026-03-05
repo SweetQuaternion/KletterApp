@@ -29,17 +29,17 @@ public class UserRoutenStatusController {
 
     @GetMapping
     public UserRoutenStatus getUserRoutenStatus(@RequestParam int userId, @RequestParam int routenId) {
-        return userRoutenStatusRepository.findByUserIdAndRoutenId(userId, routenId);
+        return userRoutenStatusRepository.findByIdUserIdAndIdRouteId(userId, routenId);
     }
 
     @GetMapping("/user/{userId}")
     public List<UserRoutenStatus> getUserRoutenStatusByUserId(@PathVariable int userId) {
-        return userRoutenStatusRepository.findByUserId(userId);
+        return userRoutenStatusRepository.findByIdUserId(userId);
     }
 
     @GetMapping("/routen/{routenId}")
     public List<UserRoutenStatus> getUserRoutenStatusByRoutenId(@PathVariable int routenId) {
-        return userRoutenStatusRepository.findByRoutenId(routenId);
+        return userRoutenStatusRepository.findByIdRouteId(routenId);
     }
 
     @PutMapping

@@ -9,8 +9,8 @@ import com.dachpc.kletterapp.Entities.UserRoutenStatusId;
 
 public interface UserRoutenStatusRepository extends JpaRepository<UserRoutenStatus, UserRoutenStatusId> {
     
-    UserRoutenStatus findByUserIdAndRoutenId(int userId, int routenId);
-    List<UserRoutenStatus> findByUserId(int userId);
-    List<UserRoutenStatus> findByRoutenId(int routenId);
+    UserRoutenStatus findByIdUserIdAndIdRouteId(int userId, int routeId);
+    List<UserRoutenStatus> findByIdUserId(int userId);
+    List<UserRoutenStatus> findByIdRouteId(int routeId);
     void deleteById(UserRoutenStatusId id);
 }
