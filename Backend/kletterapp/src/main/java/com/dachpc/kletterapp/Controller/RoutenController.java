@@ -21,7 +21,7 @@ public class RoutenController {
     @Autowired
     private RoutenRepository routenRepository;
 
-    @GetMapping("/filter")
+    @GetMapping
     public List<Route> filter(@RequestParam int hallenID, @RequestParam(required = false) float minGrade, @RequestParam(required = false) float maxGrade, @RequestParam(required = false) Boolean isToprope, @RequestParam(required = false) Boolean isVorstieg, @RequestParam(required = false) Boolean isActive) {
         return routenRepository.filter(hallenID, minGrade, maxGrade, isToprope, isVorstieg, isActive);
     }

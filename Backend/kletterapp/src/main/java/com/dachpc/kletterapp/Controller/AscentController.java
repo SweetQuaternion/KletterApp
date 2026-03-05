@@ -26,8 +26,8 @@ public class AscentController {
     @Autowired
     private AscentRepository ascentRepository;
 
-    @GetMapping("filter/{userId}")
-    public List<Ascent> findByUserId(@RequestParam(required = false) int userId, @RequestParam(required = false) int routenId) {
+    @GetMapping
+    public List<Ascent> findByUserId(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer routenId) {
         return ascentRepository.search(userId, routenId);
     }
 

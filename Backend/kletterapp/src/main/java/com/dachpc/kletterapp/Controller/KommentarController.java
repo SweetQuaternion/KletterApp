@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dachpc.kletterapp.Entities.Kommentar;
@@ -27,14 +28,18 @@ public class KommentarController {
     @Autowired
     private KommentarRepository kommentarRepository;
 
-    @GetMapping("/route/{routeId}")
-    public List<Kommentar> filter(@PathVariable int routeId) {
-        return kommentarRepository.findByRoutenId(routeId);
-    }
-
-    @GetMapping("/user/{userId}")
-    public List<Kommentar> getKommentareByUserId(@PathVariable int userId) {
-        return kommentarRepository.findByUserId(userId);
+    
+    // per Konvention hier eher requestparams nutzen, statt eine Baumstruktur
+    // beide GetMappings müssen daher in eine Methode, nicht in zwei
+    @GetMapping
+    public List<Kommentar> getByRouteID(@RequestParam(required = false) Integer routeId, @RequestParam(required = false) Integer userId) {
+        if (routeId != null) {
+            return kommentarRepository.findByRoutenId(routeId);
+        } else if (userId != null) {
+            return kommentarRepository.findByUserId(userId);
+        } else {
+            return kommentarRepository.findAll();
+        }
     }
 
     @PostMapping
@@ -47,7 +52,7 @@ public class KommentarController {
         }
     }
 
-    @PutMapping("/id/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> changeText(@PathVariable int id, @RequestBody String newText) {
         Kommentar prevKommentar = kommentarRepository.findById(id).orElse(null);
         if (prevKommentar == null) {
