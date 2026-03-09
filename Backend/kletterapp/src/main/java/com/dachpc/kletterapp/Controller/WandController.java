@@ -16,7 +16,7 @@ import com.dachpc.kletterapp.Repositories.WandRepository;
 
 @CrossOrigin(origins = "http://localhost:5173") 
 @RestController
-@RequestMapping("/waende")
+@RequestMapping("/api/waende")
 public class WandController {
 
     @Autowired

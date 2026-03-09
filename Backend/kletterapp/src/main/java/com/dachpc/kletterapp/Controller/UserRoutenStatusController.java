@@ -21,7 +21,7 @@ import com.dachpc.kletterapp.Repositories.UserRoutenStatusRepository;
 
 @CrossOrigin(origins = "http://localhost:5173") 
 @RestController
-@RequestMapping("/userroutenstatus")
+@RequestMapping("/api/userroutenstatus")
 public class UserRoutenStatusController {
 
     @Autowired

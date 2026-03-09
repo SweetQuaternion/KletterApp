@@ -20,7 +20,7 @@ import com.dachpc.kletterapp.Repositories.AscentRepository;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping("/ascents")
+@RequestMapping("/api/ascents")
 public class AscentController {
     
     @Autowired

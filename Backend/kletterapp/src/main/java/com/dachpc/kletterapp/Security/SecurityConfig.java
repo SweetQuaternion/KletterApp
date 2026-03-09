@@ -1,0 +1,71 @@
+package com.dachpc.kletterapp.Security;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    // private final UserDetailsService userDetailsService;
+
+    public SecurityConfig(UserDetailsService userDetailsService) {
+        // this.userDetailsService = userDetailsService;
+    }
+    
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
+        return http
+            .csrf(customizer -> customizer.disable())
+            .authorizeHttpRequests(request -> request
+                .requestMatchers("/api/users/login", "/api/users/register").permitAll()
+                .anyRequest().authenticated()
+            )
+            .build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) {
+        return config.getAuthenticationManager();
+    }
+    
+}
+
+
+
+// Http Basic gibt uns ein Popup-Login
+// Login form gibt uns eine Default-Login-Seite
+// http.sessionManagement kann bestimmen, ob stateless (immer neue Session ID) oder was anderes
+
+// Customizer<CsrfConfigurer<HttpSecurity>> custCstf = new Customizer<CsrfConfigurer<HttpSecurity>> {
+//     @Override
+//     public void customize(CsrfConfigurer<HttpSecurity> customizer) {
+//         customizer.disable();
+//     }
+// };
+// ist ein functional interface, also kann man einfach lambdas benutzen:
+// http.csrf(customizer -> customizer.disable());
+
+// @Bean // wir wollen uns selbst um UserDetailsService kümmern, damit wir unsere User aus der DB holen können
+// public UserDetailsService userDetailsService() { // is an interface damn
+//     UserDetails userDetails = User
+//         .withUsername("test")
+//         .password(passwordEncoder().encode("test"))
+//         .roles("USER")
+//         .build();
+//     return new InMemoryUserDetailsManager(userDetails);
+// }
