@@ -17,20 +17,20 @@ public class Route {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int wand_id;
+    private Integer wand_id;
     private String name;
     private String farbe;
-    private float schwierigkeit;
-    private boolean is_toprope;
-    private boolean is_vorstieg;
+    private Float schwierigkeit;
+    private Boolean is_toprope;
+    private Boolean is_vorstieg;
     private String schrauber;
     private LocalDateTime schraubdatum;
-    private boolean is_active;
+    private Boolean is_active;
     private String beschreibung;
 
     protected Route() {}
 
-    public Route(int wand_id, String name, String farbe, float schwierigkeit, boolean is_toprope, boolean is_vorstieg, String schrauber, LocalDateTime schraubdatum, boolean is_active, String beschreibung) {
+    public Route(int wand_id, String name, String farbe, Float schwierigkeit, Boolean is_toprope, Boolean is_vorstieg, String schrauber, LocalDateTime schraubdatum, Boolean is_active, String beschreibung) {
         this.wand_id = wand_id;
         this.name = name;
         this.farbe = farbe;
@@ -43,7 +43,7 @@ public class Route {
         this.beschreibung = beschreibung;
     }
 
-    public Route(int wand_id, String name, String farbe, float schwierigkeit) {
+    public Route(Integer wand_id, String name, String farbe, Float schwierigkeit) {
         this.wand_id = wand_id;
         this.name = name;
         this.farbe = farbe;
@@ -59,27 +59,27 @@ public class Route {
 
     // Getters and setters
 
-    public int getId() { return id; }
-    public int getWand_id() { return wand_id; }
+    public Integer getId() { return id; }
+    public Integer getWand_id() { return wand_id; }
     public String getName() { return name; }
     public String getFarbe() { return farbe; }
-    public float getSchwierigkeit() { return schwierigkeit; }
-    public boolean getIs_toprope() { return is_toprope; }
-    public boolean getIs_vorstieg() { return is_vorstieg; }
+    public Float getSchwierigkeit() { return schwierigkeit; }
+    public Boolean getIs_toprope() { return is_toprope; }
+    public Boolean getIs_vorstieg() { return is_vorstieg; }
     public String getSchrauber() { return schrauber; }
     public LocalDateTime getSchraubdatum() { return schraubdatum; }
-    public boolean isIs_active() { return is_active; }
+    public Boolean isIs_active() { return is_active; }
     public String getBeschreibung() { return beschreibung; }
 
-    public void setId(int id) { this.id = id; }
-    public void setWand_id(int wand_id) { this.wand_id = wand_id; }
+    public void setId(Integer id) { this.id = id; }
+    public void setWand_id(Integer wand_id) { this.wand_id = wand_id; }
     public void setName(String name) { this.name = name; }
     public void setFarbe(String farbe) { this.farbe = farbe; }
-    public void setSchwierigkeit(float schwierigkeit) { this.schwierigkeit = schwierigkeit; }
-    public void setIs_toprope(boolean is_toprope) { this.is_toprope = is_toprope; }
-    public void setIs_vorstieg(boolean is_vorstieg) { this.is_vorstieg = is_vorstieg; }
+    public void setSchwierigkeit(Float schwierigkeit) { this.schwierigkeit = schwierigkeit; }
+    public void setIs_toprope(Boolean is_toprope) { this.is_toprope = is_toprope; }
+    public void setIs_vorstieg(Boolean is_vorstieg) { this.is_vorstieg = is_vorstieg; }
     public void setSchrauber(String schrauber) { this.schrauber = schrauber; }
     public void setSchraubdatum(LocalDateTime schraubdatum) { this.schraubdatum = schraubdatum; }
-    public void setIsActive(boolean isActive) { this.is_active = isActive; }
+    public void setIsActive(Boolean isActive) { this.is_active = isActive; }
     public void setBeschreibung(String beschreibung) { this.beschreibung = beschreibung; }
 }

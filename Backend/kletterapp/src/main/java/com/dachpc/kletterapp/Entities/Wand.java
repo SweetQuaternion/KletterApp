@@ -14,17 +14,17 @@ public class Wand {
     private int id;
 
     @Column(name = "hallen_id")
-    private int hallenId;
+    private Integer hallenId;
 
     @Column(name = "wand_nr")
-    private int wandNr;
+    private Integer wandNr;
 
     @Column(name = "sektor")
     private String sektor;
 
     protected Wand() {}
 
-    public Wand(int hallenId, int wandNr, String sektor) {
+    public Wand(Integer hallenId, Integer wandNr, String sektor) {
         this.hallenId = hallenId;
         this.wandNr = wandNr;
         this.sektor = sektor;
@@ -32,12 +32,12 @@ public class Wand {
 
     // Getters and setters
     public int getId() { return id; }
-    public int getHallenId() { return hallenId; }
-    public int getWandNr() { return wandNr; }
+    public Integer getHallenId() { return hallenId; }
+    public Integer getWandNr() { return wandNr; }
     public String getSektor() { return sektor; }
 
     public void setId(int id) { this.id = id; }
-    public void setHallenId(int hallenId) { this.hallenId = hallenId; }
-    public void setWandNr(int wandNr) { this.wandNr = wandNr; }
+    public void setHallenId(Integer hallenId) { this.hallenId = hallenId; }
+    public void setWandNr(Integer wandNr) { this.wandNr = wandNr; }
     public void setSektor(String sektor) { this.sektor = sektor; }
 }

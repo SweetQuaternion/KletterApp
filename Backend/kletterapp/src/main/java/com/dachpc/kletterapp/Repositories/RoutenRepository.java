@@ -26,5 +26,5 @@ public interface RoutenRepository extends JpaRepository<Route, Integer> {
         """,
         nativeQuery = true
     )
-    List<Route> filter(int hallenID, float minGrade, float maxGrade, Boolean isToprope, Boolean isVorstieg, Boolean isActive);
+    List<Route> filter(int hallenID, Float minGrade, Float maxGrade, Boolean isToprope, Boolean isVorstieg, Boolean isActive);
 }

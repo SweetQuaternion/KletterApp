@@ -13,13 +13,13 @@ public class UserRoutenStatus {
     private UserRoutenStatusId id;
 
     @Column(name = "isfavorit")
-    private boolean isFavorit;
+    private Boolean isFavorit;
 
     @Column(name = "isprojekt")
-    private boolean isProjekt;
+    private Boolean isProjekt;
 
     @Column(name = "gesch_schwierigkeit")
-    private float geschSchwierigkeit;
+    private Float geschSchwierigkeit;
 
     @Column(name = "notiz")
     private String notiz;
