@@ -1,5 +1,5 @@
 import { type Halle } from "../../constants/APIResponseTypes";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { Link } from "react-router";
 import "../../styles/HallenFinder.css";
 
 interface Props {

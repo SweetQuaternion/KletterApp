@@ -13,16 +13,19 @@ public interface HallenRepository extends JpaRepository<Halle, Integer> {
         value = """
             SELECT *
             FROM hallen
-            WHERE similarity(name || ' ' || adresse, ?1) > 0.2
-            OR similarity (name, ?1) > 0.2
+            WHERE similarity (name, ?1) > 0.2
             OR similarity (adresse, ?1) > 0.2
             OR similarity (betreiber, ?1) > 0.2
+            OR name ILIKE CONCAT('%', ?1, '%')
+            OR adresse ILIKE CONCAT('%', ?1, '%')
+            OR betreiber ILIKE CONCAT('%', ?1, '%')
             ORDER BY GREATEST(similarity(name || ' ' || adresse, ?1), similarity(name, ?1), similarity(adresse, ?1), similarity(betreiber, ?1)) DESC
             LIMIT 3
         """,
         nativeQuery = true
     )
     List<Halle> search(String search);
+    List<Halle> findAll();
 
     Optional<Halle> findById(int id);
 

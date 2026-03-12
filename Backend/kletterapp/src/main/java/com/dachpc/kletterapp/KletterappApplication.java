@@ -13,7 +13,7 @@ public class KletterappApplication {
 		SpringApplication.run(KletterappApplication.class, args);
 	}
 
-	@GetMapping("/")
+	@GetMapping("/home")
     public String index() {
         return "index.html";
     }

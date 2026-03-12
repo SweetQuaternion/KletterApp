@@ -1,7 +1,12 @@
 import { useState } from "react";
 import "../../styles/App.css";
 import Header from "../Header";
-import type { User } from "../../constants/APIResponseTypes";
+import type {
+  User,
+  RegisterRequest,
+  AuthResponse,
+} from "../../constants/APIResponseTypes";
+import { useNavigate } from "react-router";
 
 interface Props {
   user: User | null;
@@ -9,10 +14,11 @@ interface Props {
 }
 
 function Signup({ user, setUser }: Props) {
+  const Navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(true);
 
-  async function newUser(event: React.FormEvent<HTMLFormElement>) {
+  async function newUser(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const form = event.currentTarget;
@@ -26,23 +32,25 @@ function Signup({ user, setUser }: Props) {
       return;
     }
 
-    const user = {
+    const request: RegisterRequest = {
       name: formData.get("username") as string,
       email: formData.get("email") as string,
       password: formData.get("password") as string,
     };
 
-    const response = await fetch("http://localhost:8080/users", {
+    const response = await fetch("http://localhost:8080/api/users/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(user),
+      body: JSON.stringify(request),
     });
 
     if (response.ok) {
-      alert("Registrierung erfolgreich!");
-      setUser(user);
+      const authResponse = (await response.json()) as AuthResponse;
+      // alert("Registrierung erfolgreich!");
+      setUser(authResponse.user);
+      Navigate("/hallenfinder");
     } else if (response.status === 409) {
       alert("Diese E-Mail-Adresse ist bereits registriert.");
     } else {

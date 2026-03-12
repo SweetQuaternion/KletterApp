@@ -18,7 +18,7 @@ public class Kommentar {
     private int routenId;
 
     @Column(name = "user_id")
-    private int userId;
+    private String userId;
 
     @Column(name = "datum")
     private LocalDateTime datum;
@@ -29,7 +29,7 @@ public class Kommentar {
     protected Kommentar() {
     }
 
-    public Kommentar(int routenId, int userId, LocalDateTime datum, String text) {
+    public Kommentar(int routenId, String userId, LocalDateTime datum, String text) {
         this.routenId = routenId;
         this.userId = userId;
         this.datum = datum;
@@ -39,13 +39,13 @@ public class Kommentar {
     // Getters and setters
     public int getId() { return id; }
     public int getRoutenId() { return routenId; }
-    public int getUserId() { return userId; }
+    public String getUserId() { return userId; }
     public LocalDateTime getDatum() { return datum; }
     public String getText() { return text; }
 
     public void setId(int id) { this.id = id; }
     public void setRoutenId(int routenId) { this.routenId = routenId; }
-    public void setUserId(int userId) { this.userId = userId; }
+    public void setUserId(String userId) { this.userId = userId; }
     public void setDatum(LocalDateTime datum) { this.datum = datum; }
     public void setText(String text) { this.text = text; }
 }

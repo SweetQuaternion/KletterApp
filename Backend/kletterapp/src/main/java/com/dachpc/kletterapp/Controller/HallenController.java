@@ -27,7 +27,10 @@ public class HallenController {
     private HallenRepository hallenRepository;
     
     @GetMapping
-    public List<Halle> find(@RequestParam String name) {
+    public List<Halle> find(@RequestParam(required = false) String name) {
+        if (name == null || name.isEmpty()) {
+            return hallenRepository.findAll();
+        }
         return hallenRepository.search(name);
     }
 

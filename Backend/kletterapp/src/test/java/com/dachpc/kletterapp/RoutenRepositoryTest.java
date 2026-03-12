@@ -57,9 +57,9 @@ public class RoutenRepositoryTest extends AbstractIntegrationTest {
 
     @Test
     public void testFilterByHalle() {
-        List<Route> result1 = routenRepository.filter(1, 0, 20, null, null, null);
+        List<Route> result1 = routenRepository.filter(1, 0f, 20f, null, null, null);
         assertThat(result1).hasSize(4);
-        List<Route> result2 = routenRepository.filter(2, 0, 20, null, null, null);
+        List<Route> result2 = routenRepository.filter(2, 0f, 20f, null, null, null);
         assertThat(result2).hasSize(3);
     }
 

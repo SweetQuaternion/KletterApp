@@ -2,8 +2,14 @@ import "../styles/App.css";
 import "../styles/Header.css";
 import logo from "../assets/react.svg";
 import defaultpic from "../assets/default-pic.png";
-import { Link } from "react-router";
+// import { Link } from "react-router";
 import type { User } from "../constants/APIResponseTypes";
+import {
+  // keycloak,
+  login,
+  register,
+  logout,
+} from "../keycloak";
 
 interface Props {
   user: User | null;
@@ -18,19 +24,23 @@ function Header({ user }: Props) {
       </div>
       {!user && (
         <div className="right-part">
-          <Link to="/login">
+          <button onClick={() => login()}>Anmelden</button>
+          <button onClick={() => register()}>Registrieren</button>
+          <button onClick={() => logout()}>Abmelden</button>
+
+          {/* <Link to="/login">
             <button>Anmelden</button>
           </Link>
           <Link to="/signup">
             <button>Registrieren</button>
-          </Link>
+          </Link> */}
         </div>
       )}
       {user && (
         <div className="right-part">
-          <span>Hallo, {user.name}!</span>
-          <button className="profile-button">
-            <img src={defaultpic} alt="Profil" />
+          <span>Hallo {user.name}</span>
+          <button className="profile-button" onClick={() => logout()}>
+            <img src={user.bildUrl || defaultpic} alt="Profil" />
           </button>
         </div>
       )}

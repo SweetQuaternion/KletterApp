@@ -6,8 +6,25 @@ export type Halle = {
 };
 
 export type User = {
-  // id: number;
+  id: number;
+  name: string;
+  email: string;
+  bildUrl: string;
+  role: string;
+};
+
+export type LoginRequest = {
+  email: string;
+  password: string;
+};
+
+export type RegisterRequest = {
   name: string;
   email: string;
   password: string;
+};
+
+export type AuthResponse = {
+  token: string;
+  user: User;
 };

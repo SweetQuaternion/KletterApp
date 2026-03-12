@@ -11,7 +11,7 @@ import jakarta.persistence.Embeddable;
 public class UserRoutenStatusId implements Serializable{
 
     @Column(name = "user_id")
-    private int userId;
+    private String userId;
     
     @Column(name = "route_id")
     private int routeId;
@@ -19,17 +19,16 @@ public class UserRoutenStatusId implements Serializable{
     public UserRoutenStatusId() {
     }
 
-    public UserRoutenStatusId(int userId, int routeId) {
+    public UserRoutenStatusId(String userId, int routeId) {
         this.userId = userId;
         this.routeId = routeId;
     }
 
-    public int getUserId() { return userId; }
+    public String getUserId() { return userId; }
     public int getRouteId() { return routeId; }
 
-    public void setUserId(int userId) { this.userId = userId; }
-    public void setRouteId(int routenId) { this.routeId = routenId; }
-
+    public void setUserId(String userId) { this.userId = userId; }
+    public void setRouteId(int routeId) { this.routeId = routeId; }
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;

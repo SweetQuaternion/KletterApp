@@ -1,6 +1,6 @@
 import "../../styles/App.css";
 import Header from "../Header";
-import type { User } from "../../constants/APIResponseTypes";
+import type { AuthResponse, User } from "../../constants/APIResponseTypes";
 import { useNavigate } from "react-router";
 
 interface Props {
@@ -10,25 +10,29 @@ interface Props {
 
 function Login({ user, setUser }: Props) {
   const Navigate = useNavigate();
-  async function getUser(event: React.FormEvent<HTMLFormElement>) {
+  async function getUser(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const form = event.currentTarget;
     const formData = new FormData(form);
 
     const user = {
-      //   name: formData.get("username") as string,
       email: formData.get("email") as string,
       password: formData.get("password") as string,
     };
 
-    const response = await fetch(
-      `http://localhost:8080/users/einloggen?email=${user.email}&password=${user.password}`,
-    );
+    const response = await fetch(`http://localhost:8080/api/users/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
 
     if (response.ok) {
-      const user = (await response.json()) as User;
-      setUser(user);
+      const authResponse = (await response.json()) as AuthResponse;
+      console.log("Login erfolgreich:", authResponse);
+      setUser(authResponse.user);
       Navigate("/hallenfinder");
     } else if (response.status === 401) {
       alert("Ungültige E-Mail oder Passwort.");

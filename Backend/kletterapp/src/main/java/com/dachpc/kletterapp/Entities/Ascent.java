@@ -15,7 +15,7 @@ public class Ascent {
     private int id;
 
     @Column(name = "user_id")
-    private int userId;
+    private String userId;
 
     @Column(name = "route_id")
     private int routenId;
@@ -32,7 +32,7 @@ public class Ascent {
     protected Ascent() {
     }
 
-    public Ascent(int userId, int routenId, LocalDateTime datum, String style, String sicherungsart) {
+    public Ascent(String userId, int routenId, LocalDateTime datum, String style, String sicherungsart) {
         this.userId = userId;
         this.routenId = routenId;
         this.datum = datum;
@@ -42,14 +42,14 @@ public class Ascent {
 
     // Getters and setters
     public int getId() { return id; }
-    public int getUserId() { return userId; }
+    public String getUserId() { return userId; }
     public int getRoutenId() { return routenId; }
     public LocalDateTime getDatum() { return datum; }
     public String getStyle() { return style; }
     public String getSicherung() { return sicherung; }
 
     public void setId(int id) { this.id = id; }
-    public void setUserId(int userId) { this.userId = userId; }
+    public void setUserId(String userId) { this.userId = userId; }
     public void setRoutenId(int routenId) { this.routenId = routenId; }
     public void setDatum(LocalDateTime datum) { this.datum = datum; }
     public void setStyle(String style) { this.style = style; }

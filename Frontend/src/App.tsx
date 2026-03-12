@@ -7,6 +7,7 @@ import type { Halle, User } from "./constants/APIResponseTypes";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/login/Login";
+import Willkommen from "./components/login/Willkommen";
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -31,9 +32,15 @@ function App() {
           element={<Login user={user} setUser={setUser} />}
         />
         <Route
+          path="/willkommen"
+          element={<Willkommen user={user} setUser={setUser} />}
+        />
+        <Route
           path="/routenkarte"
           element={
-            selectedHalle ? <RoutenKarte selectedHalle={selectedHalle} /> : null
+            selectedHalle ? (
+              <RoutenKarte selectedHalle={selectedHalle} user={user} />
+            ) : null
           }
         />
       </Routes>

@@ -26,7 +26,7 @@ public class UserRoutenStatus {
 
     protected UserRoutenStatus() {}
 
-    public UserRoutenStatus(int userId, int routenId, boolean isFavorit, boolean isProjekt, float geschSchwierigkeit, String notiz) {
+    public UserRoutenStatus(String userId, int routenId, boolean isFavorit, boolean isProjekt, float geschSchwierigkeit, String notiz) {
         this.id = new UserRoutenStatusId(userId, routenId);
         this.isFavorit = isFavorit;
         this.isProjekt = isProjekt;
@@ -35,14 +35,14 @@ public class UserRoutenStatus {
     }
 
     // Getters and setters
-    public int getUserId() { return id.getUserId(); }
+    public String getUserId() { return id.getUserId(); }
     public int getRoutenId() { return id.getRouteId(); }
     public boolean isFavorit() { return isFavorit; }
     public boolean isProjekt() { return isProjekt; }
     public float getGeschSchwierigkeit() { return geschSchwierigkeit; }
     public String getNotiz() { return notiz; }
 
-    public void setUserId(int userId) { this.id.setUserId(userId); }
+    public void setUserId(String userId) { this.id.setUserId(userId); }
     public void setRoutenId(int routenId) { this.id.setRouteId(routenId); }
     public void setFavorit(boolean favorit) { isFavorit = favorit; }
     public void setProjekt(boolean projekt) { isProjekt = projekt; }
