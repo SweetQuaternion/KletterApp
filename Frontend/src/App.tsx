@@ -1,16 +1,17 @@
 import "./styles/App.css";
 import HallenFinder from "./components/hallensuche/HallenFinder";
 import RoutenKarte from "./components/routenkarte/RoutenKarte";
-import Signup from "./components/login/Signup";
+import Willkommen from "./components/login/Willkommen";
 import { useState } from "react";
 import type { Halle, User } from "./constants/APIResponseTypes";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./components/login/Login";
-import Willkommen from "./components/login/Willkommen";
 
-function App() {
-  const [user, setUser] = useState<User | null>(null);
+interface Props {
+  user: User | null;
+}
+
+function App({ user }: Props) {
   const [selectedHalle, setSelectedHalle] = useState<Halle | null>(null);
 
   return (
@@ -23,18 +24,7 @@ function App() {
             <HallenFinder user={user} setSelectedHalle={setSelectedHalle} />
           }
         />
-        <Route
-          path="/signup"
-          element={<Signup user={user} setUser={setUser} />}
-        />
-        <Route
-          path="/login"
-          element={<Login user={user} setUser={setUser} />}
-        />
-        <Route
-          path="/willkommen"
-          element={<Willkommen user={user} setUser={setUser} />}
-        />
+        <Route path="/willkommen" element={<Willkommen user={user} />} />
         <Route
           path="/routenkarte"
           element={

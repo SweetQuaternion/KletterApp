@@ -3,8 +3,12 @@ package com.dachpc.kletterapp.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,8 +34,29 @@ public class RoutenController {
     }
 
     @PostMapping
-    public Route add(@RequestBody Route route) {
-        return routenRepository.save(route);
+    public ResponseEntity<Route> add(@RequestBody Route route) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(routenRepository.save(route));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PatchMapping
+    public ResponseEntity<Route> update(@RequestBody Route route) {
+        if (!routenRepository.existsById(route.getId())) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(routenRepository.save(route));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> delete(@RequestParam Integer id) {
+        if (!routenRepository.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        routenRepository.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     // @GetMapping("/grade/{grade}")

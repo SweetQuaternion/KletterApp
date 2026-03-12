@@ -8,9 +8,7 @@ export type Halle = {
 export type User = {
   id: number;
   name: string;
-  email: string;
   bildUrl: string;
-  role: string;
 };
 
 export type LoginRequest = {

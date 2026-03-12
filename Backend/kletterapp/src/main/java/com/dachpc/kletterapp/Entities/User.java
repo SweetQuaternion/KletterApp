@@ -23,9 +23,9 @@ public class User {
     protected User() {
     }
 
-    public User(String name, String keycloakId) {
-        this.name = name;
+    public User(String keycloakId, String name) {
         this.keycloakId = keycloakId;
+        this.name = name;
     }
 
     // Getters and setters

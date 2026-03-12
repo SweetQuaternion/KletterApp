@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,6 +73,19 @@ public class UserRoutenStatusController {
         }
         catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteUserRoutenStatus(@RequestParam (required = false) String userId, @RequestParam (required = false) int routenId) {
+        if (userId != null) {
+            userRoutenStatusRepository.deleteByIdUserId(userId);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } else if (routenId != 0) {
+            userRoutenStatusRepository.deleteByIdRouteId(routenId);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Either userId or routenId must be provided.");
         }
     }
 }

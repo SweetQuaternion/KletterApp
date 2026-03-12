@@ -26,14 +26,6 @@ function Header({ user }: Props) {
         <div className="right-part">
           <button onClick={() => login()}>Anmelden</button>
           <button onClick={() => register()}>Registrieren</button>
-          <button onClick={() => logout()}>Abmelden</button>
-
-          {/* <Link to="/login">
-            <button>Anmelden</button>
-          </Link>
-          <Link to="/signup">
-            <button>Registrieren</button>
-          </Link> */}
         </div>
       )}
       {user && (

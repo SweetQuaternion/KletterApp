@@ -12,5 +12,6 @@ public interface UserRoutenStatusRepository extends JpaRepository<UserRoutenStat
     UserRoutenStatus findByIdUserIdAndIdRouteId(int userId, int routeId);
     List<UserRoutenStatus> findByIdUserId(int userId);
     List<UserRoutenStatus> findByIdRouteId(int routeId);
-    void deleteById(UserRoutenStatusId id);
+    void deleteByIdUserId(String userId);
+    void deleteByIdRouteId(int routeId);
 }

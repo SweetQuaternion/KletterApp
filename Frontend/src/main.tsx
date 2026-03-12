@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { keycloak } from "./keycloak.ts";
+import { type User } from "./constants/APIResponseTypes.ts";
 
 keycloak
   .init({
@@ -10,10 +11,30 @@ keycloak
     silentCheckSsoRedirectUri:
       window.location.origin + "/silent-check-sso.html",
   })
-  .then(() => {
+  .then(async (authenticated) => {
+    let user = null;
+    if (authenticated) {
+      const token = keycloak.token;
+      const keycloakId = keycloak.tokenParsed?.sub;
+      const name = keycloak.tokenParsed?.preferred_username;
+      console.log("Name:", name);
+      console.log("Keycloak ID:", keycloakId);
+      const response = await fetch("http://localhost:8080/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ keycloakId, name }),
+      });
+      user = await response.json();
+      console.log("User authenticated:", user);
+    } else {
+      console.log("User not authenticated");
+    }
     createRoot(document.getElementById("root")!).render(
       <StrictMode>
-        <App />
+        <App user={user} />
       </StrictMode>,
     );
   });
