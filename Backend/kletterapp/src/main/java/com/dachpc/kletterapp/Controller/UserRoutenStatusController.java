@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dachpc.kletterapp.Entities.UserRoutenStatus;
@@ -47,45 +47,26 @@ public class UserRoutenStatusController {
     }
 
     @PostMapping
-    public ResponseEntity<UserRoutenStatus> createUserRoutenStatus(@RequestBody UserRoutenStatus userRoutenStatus) {
-        try {
-            userRoutenStatusRepository.save(userRoutenStatus);
-            return ResponseEntity.status(HttpStatus.CREATED).body(userRoutenStatus);
-        }
-        catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createUserRoutenStatus(@RequestBody UserRoutenStatus userRoutenStatus) {
+        userRoutenStatusRepository.save(userRoutenStatus);
     }
     
     // braucht eigentlich immer eine id -> hier schwierig
     // müsste man nochmal drüber nachdenken
     @PatchMapping
-    public ResponseEntity<UserRoutenStatus> updateUserRoutenStatus(@RequestBody UserRoutenStatus userRoutenStatus) {
-        try {
-            userRoutenStatusRepository.save(userRoutenStatus);
-            return ResponseEntity.status(HttpStatus.OK).body(userRoutenStatus);
-        }
-        catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    @ResponseStatus(HttpStatus.OK)
+    public void updateUserRoutenStatus(@RequestBody UserRoutenStatus userRoutenStatus) {
+        userRoutenStatusRepository.save(userRoutenStatus);
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteUserRoutenStatus(@RequestParam (required = false) String userId, @RequestParam (required = false) int routenId) {
-        if (userId != null) {
-            userRoutenStatusRepository.deleteByIdUserId(userId);
-            return ResponseEntity.status(HttpStatus.OK).body(null);
-        } else if (routenId != 0) {
-            userRoutenStatusRepository.deleteByIdRouteId(routenId);
-            return ResponseEntity.status(HttpStatus.OK).body(null);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Either userId or routenId must be provided.");
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUserRoutenStatus(@RequestParam (required = false) String userId, @RequestParam (required = false) int routenId) {
+        if (userId == null || routenId == 0) {
+            throw new IllegalArgumentException("UserId or RoutenId must be provided");
         }
+        UserRoutenStatus existingStatus = userRoutenStatusRepository.findByIdUserIdAndIdRouteId(Integer.parseInt(userId), routenId);
+        userRoutenStatusRepository.delete(existingStatus);
     }
 }

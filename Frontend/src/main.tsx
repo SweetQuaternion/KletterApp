@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { keycloak } from "./keycloak.ts";
-import { type User } from "./constants/APIResponseTypes.ts";
 
 keycloak
   .init({
@@ -19,6 +18,7 @@ keycloak
       const name = keycloak.tokenParsed?.preferred_username;
       console.log("Name:", name);
       console.log("Keycloak ID:", keycloakId);
+      console.log("Token:", token);
       const response = await fetch("http://localhost:8080/api/users", {
         method: "POST",
         headers: {

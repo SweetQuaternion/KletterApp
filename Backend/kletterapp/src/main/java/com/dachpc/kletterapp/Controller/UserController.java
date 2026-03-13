@@ -4,19 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.dachpc.kletterapp.Entities.User;
 import com.dachpc.kletterapp.Repositories.UserRepository;
 import com.dachpc.kletterapp.Security.UserSyncRequest;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 @CrossOrigin(origins = "http://localhost:5173") 
@@ -27,51 +31,48 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-
+    // kann ungesichert bleiben, da wir nur die ID, Username und Profilbild abfragen und keine sensiblen Daten zurückgeben
+    // User sollen einander sehen können
     @GetMapping
     public ResponseEntity<User> get(@RequestParam String id) {
-        User user = userRepository.findByKeycloakId(id).orElse(null);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        User user = userRepository.findByKeycloakId(id).orElseThrow(() -> new EntityNotFoundException());
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
     
-
+    // müssen wir absichern, damit sich User nur selbst synchronisieren / hinzufügen können (oder Admins),
+    // an diesem Punkt wurde das Token schon geprüft, ist also gültig, darum müssen wir uns hier nicht kümmern
+    // man will das Token eigentlich nie in die Hand nehmen
     @PostMapping
-    public ResponseEntity<User> sync(@RequestBody UserSyncRequest request) {
-        User user = null;
-        if (!userRepository.existsByKeycloakId(request.keycloakId())) { // User noch nicht in DB, müssen wir anlegen
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #request.keycloakId == authentication.principal.subject")
+    public ResponseEntity<User> sync(@RequestBody UserSyncRequest request) { 
+        User user = userRepository.findByKeycloakId(request.keycloakId()).orElse(null);
+        if (user == null) {
             user = userRepository.save(new User(request.keycloakId(), request.name()));
             return ResponseEntity.status(HttpStatus.CREATED).body(user);
-            
         } else {
-            user = userRepository.findByKeycloakId(request.keycloakId()).orElse(null); // User ist schon in DB, holen wir ihn einfach raus
+            return ResponseEntity.status(HttpStatus.OK).body(user);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
-
+    // müssen wir absichern, damit nur der User selbst seine Daten ändern kann (oder Admins)
+    // an diesem Punkt wurde aber das Token schon geprüft, ist also gültig, darum müssen wir uns hier nicht kümmern
     @PatchMapping
-    public ResponseEntity<User> change(@RequestBody User updatedUser) {
-        User prevUser = userRepository.findByKeycloakId(updatedUser.getKeycloakId()).orElse(null);
-        if (prevUser == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #request.keycloakId == authentication.principal.subject")
+    public void change(@RequestBody User updatedUser) {
+        User prevUser = userRepository.findByKeycloakId(updatedUser.getKeycloakId()).orElseThrow(() -> new EntityNotFoundException());
         if (updatedUser.getName() != null) prevUser.setName(updatedUser.getName());
         if (updatedUser.getBildUrl() != null) prevUser.setBildUrl(updatedUser.getBildUrl());
         userRepository.save(prevUser);
-        return ResponseEntity.status(HttpStatus.OK).body(prevUser);
     }
     
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable String id) {
-        if (!userRepository.existsByKeycloakId(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        userRepository.deleteByKeycloakId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+    // müssen wir absichern, damit nur der User selbst seine Daten löschen kann (oder Admins)
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #request.keycloakId == authentication.principal.subject")
+    public void deleteUser(@RequestParam String keycloakId) {
+        User user = userRepository.findByKeycloakId(keycloakId).orElseThrow(() -> new EntityNotFoundException());
+        userRepository.delete(user);
     }
     
 }
