@@ -11,7 +11,7 @@ body {
   flex-direction: row;
   min-height: 100vh;
   background-color: var(--abendsonne);
-
+  color: var(--espresso);
   font-family:
     playfair display,
     serif;
@@ -36,11 +36,33 @@ button:hover {
 .flex-row {
   display: flex;
   flex-direction: row;
+  width: 100%;
 }
 
 .flex-column {
   display: flex;
   flex-direction: column;
+  width: 100%;
+}
+
+.small-gap {
+  gap: 1em;
+}
+
+.wide-gap {
+  gap: 2em;
+  margin-bottom: 1em;
+}
+
+.sans-serif {
+  font-family:
+    DM Sans,
+    sans-serif;
+}
+
+.bottom {
+  position: fixed;
+  bottom: 2em;
 }
 
 h2 {

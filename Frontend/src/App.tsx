@@ -1,6 +1,7 @@
 import "./styles/App.css";
 import HallenFinder from "./components/hallensuche/HallenFinder";
 import RoutenKarte from "./components/routenkarte/RoutenKarte";
+import Profil from "./components/profil/Profil";
 import Willkommen from "./components/login/Willkommen";
 import { useState } from "react";
 import type { Halle, User } from "./constants/APIResponseTypes";
@@ -25,6 +26,7 @@ function App({ user }: Props) {
           }
         />
         <Route path="/willkommen" element={<Willkommen user={user} />} />
+        <Route path="/profil" element={<Profil user={user} />} />
         <Route
           path="/routenkarte"
           element={

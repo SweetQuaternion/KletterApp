@@ -60,6 +60,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_ADMIN') or #request.keycloakId == authentication.principal.subject")
     public void change(@RequestBody User updatedUser) {
+        System.out.println("Received update request for user:" + updatedUser.toString());
         User prevUser = userRepository.findByKeycloakId(updatedUser.getKeycloakId()).orElseThrow(() -> new EntityNotFoundException());
         if (updatedUser.getName() != null) prevUser.setName(updatedUser.getName());
         if (updatedUser.getBildUrl() != null) prevUser.setBildUrl(updatedUser.getBildUrl());

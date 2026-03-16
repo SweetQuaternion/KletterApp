@@ -9,6 +9,7 @@ export type User = {
   id: number;
   name: string;
   bildUrl: string;
+  bio: string;
 };
 
 export type LoginRequest = {

@@ -1,0 +1,71 @@
+.white-box.large {
+  top: 5em;
+  transform: translate(-50%, 0%);
+  width: 50%;
+  height: 85%;
+}
+
+.profile h2 {
+  font-size: 2em;
+  margin-bottom: 0.5em;
+}
+
+.profile-picture-container {
+  display: flex;
+  justify-content: center;
+  width: 10em;
+  height: 10em;
+  min-width: 10em;
+  max-width: 10em;
+  border-radius: 999px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.profile-picture-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.editable:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+textarea.invisible {
+  field-sizing: content;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-family:
+    DM Sans,
+    sans-serif;
+  font-size: small;
+  padding: 0.5em;
+  align-items: center;
+  color: var(--espresso);
+  background-color: white;
+  border: none;
+}
+
+textarea.large {
+  font-size: 2em;
+}
+
+.highlight-feld {
+  display: flex;
+  flex-direction: row;
+  font-family:
+    DM Sans,
+    sans-serif;
+  font-size: small;
+  align-items: center;
+  background-color: var(--abendsonne);
+  color: var(--espresso);
+  padding: 0.5em;
+  padding-right: 1em;
+  border-radius: 999px;
+  box-shadow: none;
+  /* width: 100%; */
+}

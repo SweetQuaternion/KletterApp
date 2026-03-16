@@ -16,9 +16,6 @@ keycloak
       const token = keycloak.token;
       const keycloakId = keycloak.tokenParsed?.sub;
       const name = keycloak.tokenParsed?.preferred_username;
-      console.log("Name:", name);
-      console.log("Keycloak ID:", keycloakId);
-      console.log("Token:", token);
       const response = await fetch("http://localhost:8080/api/users", {
         method: "POST",
         headers: {

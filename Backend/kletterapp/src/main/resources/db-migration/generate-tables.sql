@@ -31,7 +31,8 @@ CREATE TABLE routen(
 CREATE TABLE users(
     keycloak_id text PRIMARY KEY,
     name text NOT NULL,
-    bild_url text
+    bild_url text,
+    bio text
 );
 
 CREATE TYPE style_enum AS ENUM ('onsight', 'flash', 'redpoint', 'pinkpoint', 'toprope', 'hangdog', 'attempt');

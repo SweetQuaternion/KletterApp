@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+// import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,10 +28,11 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/hallen", "/api/routen").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/users").permitAll()          // Daten von Usern können ungeschützt abgefragt werden, da wir nur die ID, Username und Profilbild zurückgeben und keine sensiblen Daten
-                .requestMatchers(HttpMethod.POST, "/api/users").authenticated()     // User müssen sich synchronisieren können, wenn sie sich das erste Mal anmelden, also muss diese Route ungeschützt bleiben
-                .requestMatchers(HttpMethod.PATCH, "/api/users").authenticated()    // User müssen ihre Daten ändern können, aber nur wenn sie eingeloggt sind (und idealerweise nur, wenn sie sich selbst ändern oder Admins)
-                .requestMatchers(HttpMethod.DELETE, "/api/users").authenticated()   // User müssen ihre Daten löschen können, aber nur wenn sie eingeloggt sind (und idealerweise nur, wenn sie sich selbst löschen oder Admins)
+                // nur Nutzer sollen andere Nutzer sehen können, die Allgemeineheit geht das nen Scheiß an
+                // .requestMatchers(HttpMethod.GET, "/api/users").permitAll()          // Daten von Usern können ungeschützt abgefragt werden, da wir nur die ID, Username und Profilbild zurückgeben und keine sensiblen Daten
+                // .requestMatchers(HttpMethod.POST, "/api/users").authenticated()     // User müssen sich synchronisieren können, wenn sie sich das erste Mal anmelden, also muss diese Route ungeschützt bleiben
+                // .requestMatchers(HttpMethod.PATCH, "/api/users").authenticated()    // User müssen ihre Daten ändern können, aber nur wenn sie eingeloggt sind (und idealerweise nur, wenn sie sich selbst ändern oder Admins)
+                // .requestMatchers(HttpMethod.DELETE, "/api/users").authenticated()   // User müssen ihre Daten löschen können, aber nur wenn sie eingeloggt sind (und idealerweise nur, wenn sie sich selbst löschen oder Admins)
                 .anyRequest().authenticated()                                                   // der Rest - erstmal alles schützen
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // REST-API, also keine Sessions
