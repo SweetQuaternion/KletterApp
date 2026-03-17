@@ -8,11 +8,15 @@ interface Props {
 }
 
 function HallenErgebnisFeld({ ergebnis, setSelectedHalle }: Props) {
+  const handleHallenSelection = (ergebnis: Halle) => {
+    localStorage.setItem("Halle", JSON.stringify(ergebnis));
+    setSelectedHalle(ergebnis);
+  };
   return (
     <Link to="/routenkarte">
       <button
         className="hallen-ergebnis-feld"
-        onClick={() => setSelectedHalle(ergebnis)}
+        onClick={() => handleHallenSelection(ergebnis)}
       >
         <div className="mini-dot"></div>
         <p>{ergebnis.name}</p>

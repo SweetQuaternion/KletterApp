@@ -3,6 +3,8 @@ import Header from "./../Header";
 import "../../styles/RoutenKarte.css";
 import HallenInfoBox from "./HallenInfoBox";
 import TestMap from "./TestMap";
+import Knopfsis from "./Knopfsis";
+import { useState } from "react";
 
 interface Props {
   selectedHalle: Halle;
@@ -10,11 +12,14 @@ interface Props {
 }
 
 const RoutenKarte = ({ selectedHalle, user }: Props) => {
+  const [scale, setScale] = useState(1);
+
   return (
     <>
+      <TestMap scale={scale} setScale={setScale} />
       <Header user={user} />
       <HallenInfoBox selectedHalle={selectedHalle} />
-      <TestMap />
+      <Knopfsis scale={scale} setScale={setScale} />
     </>
   );
 };
