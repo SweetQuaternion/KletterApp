@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dachpc.kletterapp.Entities.Wand;
+import com.dachpc.kletterapp.Entities.WandId;
 import com.dachpc.kletterapp.Repositories.WandRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -32,10 +33,9 @@ public class WandController {
     @Autowired
     private WandRepository wandRepository;
 
-    // oder hallen/wände/routen
     @GetMapping
     public List<Wand> getByHallenId(@RequestParam int hallenId) {
-        return wandRepository.findByHallenId(hallenId);
+        return wandRepository.findByIdHallenId(hallenId);
     }
 
     @PostMapping
@@ -52,7 +52,7 @@ public class WandController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@RequestParam Integer id) {
+    public void delete(@RequestParam WandId id) {
         Wand wand = wandRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
         wandRepository.delete(wand);
     }

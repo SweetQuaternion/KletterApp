@@ -27,7 +27,7 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/hallen", "/api/routen").permitAll()
+                .requestMatchers("/api/hallen", "/api/waende", "/api/routen").permitAll()
                 // nur Nutzer sollen andere Nutzer sehen können, die Allgemeineheit geht das nen Scheiß an
                 // .requestMatchers(HttpMethod.GET, "/api/users").permitAll()          // Daten von Usern können ungeschützt abgefragt werden, da wir nur die ID, Username und Profilbild zurückgeben und keine sensiblen Daten
                 // .requestMatchers(HttpMethod.POST, "/api/users").authenticated()     // User müssen sich synchronisieren können, wenn sie sich das erste Mal anmelden, also muss diese Route ungeschützt bleiben

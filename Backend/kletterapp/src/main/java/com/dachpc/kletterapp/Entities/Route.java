@@ -13,11 +13,12 @@ import jakarta.persistence.*;
 @JsonPropertyOrder({"id", "name", "schwierigkeit", "farbe", "wand_id", "is_vorstieg", "is_toprope", "is_active", "schrauber", "schraubdatum", "beschreibung"})
 public class Route {
 
+    // TODO : foreign keys hinzufügen, mehr annotationen bzgl nullable benutzen
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    private Integer wand_id;
+    private int hallenId;
+    private int wandNr;
     private String name;
     private String farbe;
     private Float schwierigkeit;
@@ -30,8 +31,9 @@ public class Route {
 
     protected Route() {}
 
-    public Route(int wand_id, String name, String farbe, Float schwierigkeit, Boolean is_toprope, Boolean is_vorstieg, String schrauber, LocalDateTime schraubdatum, Boolean is_active, String beschreibung) {
-        this.wand_id = wand_id;
+    public Route(int hallenId, int wandNr, String name, String farbe, Float schwierigkeit, Boolean is_toprope, Boolean is_vorstieg, String schrauber, LocalDateTime schraubdatum, Boolean is_active, String beschreibung) {
+        this.hallenId = hallenId;
+        this.wandNr = wandNr;
         this.name = name;
         this.farbe = farbe;
         this.schwierigkeit = schwierigkeit;
@@ -43,8 +45,9 @@ public class Route {
         this.beschreibung = beschreibung;
     }
 
-    public Route(Integer wand_id, String name, String farbe, Float schwierigkeit) {
-        this.wand_id = wand_id;
+    public Route(int hallenId, int wandNr, String name, String farbe, Float schwierigkeit) {
+        this.hallenId = hallenId;
+        this.wandNr = wandNr;
         this.name = name;
         this.farbe = farbe;
         this.schwierigkeit = schwierigkeit;
@@ -60,7 +63,8 @@ public class Route {
     // Getters and setters
 
     public Integer getId() { return id; }
-    public Integer getWand_id() { return wand_id; }
+    public Integer getHallenId() { return hallenId; }
+    public Integer getWandNr() { return wandNr; }
     public String getName() { return name; }
     public String getFarbe() { return farbe; }
     public Float getSchwierigkeit() { return schwierigkeit; }
@@ -72,7 +76,8 @@ public class Route {
     public String getBeschreibung() { return beschreibung; }
 
     public void setId(Integer id) { this.id = id; }
-    public void setWand_id(Integer wand_id) { this.wand_id = wand_id; }
+    public void setHallenId(Integer hallenId) { this.hallenId = hallenId; }
+    public void setWandNr(Integer wandNr) { this.wandNr = wandNr; }
     public void setName(String name) { this.name = name; }
     public void setFarbe(String farbe) { this.farbe = farbe; }
     public void setSchwierigkeit(Float schwierigkeit) { this.schwierigkeit = schwierigkeit; }

@@ -14,20 +14,35 @@ INSERT INTO wände (hallen_id, wand_nr, sektor) VALUES
 (2, 7, 'Easy going'),
 (2, 8, 'links oben')
 
-INSERT INTO routen (wand_id, name, schwierigkeit) VALUES
-(1, 'Dreamteam', 8.3),
-(1, 'Körnung', 9.7),
-(1, '3 Sterne Quergang', 5.7),
-(1, 'Bahnhof Heubach', 5.7),
-(1, 'Abstellgleis', 7.3),
-(1, 'Teamwork', 7.3),
-(1, 'Ufbasse', 7.0),
-(1, 'Heinzelmännchen', 7.3),
-(1, 'Nachthemd', 7.0),
-(1, 'Projekt', NULL),
-(1, 'Ju.did.it', 6.7),
-(1, 'Sandomasso', 7.7),
-(1, 'Elektra', 8.7)
+-- INSERT INTO routen (hallen_id, wand_nr, name, schwierigkeit) VALUES
+-- (2, 1, 'Dreamteam', 8.3),
+-- (2, 1, 'Körnung', 9.7),
+-- (2, 1, '3 Sterne Quergang', 5.7),
+-- (2, 1, 'Bahnhof Heubach', 5.7),
+-- (2, 1, 'Abstellgleis', 7.3),
+-- (2, 1, 'Teamwork', 7.3),
+-- (2, 1, 'Ufbasse', 7.0),
+-- (2, 1, 'Heinzelmännchen', 7.3),
+-- (2, 1, 'Nachthemd', 7.0),
+-- (2, 1, 'Projekt', NULL),
+-- (2, 1, 'Ju.did.it', 6.7),
+-- (2, 1, 'Sandomasso', 7.7),
+-- (2, 1, 'Elektra', 8.7)
+
+
+INSERT INTO wände (hallen_id, wand_nr, sektor, start_x, start_y, end_x, end_y) VALUES
+(1, 1, 'Sektor links', -500, 300, -500, 0),
+(1, 2, 'Sektor links', -500, 0, -200, -200),
+(1, 3, 'Sektor Mitte', -200, -200, 200, -200),
+(1, 4, 'Sektor rechts', 200, -200, 500, 0),
+(1, 5, 'Sektor rechts', 500, 0, 500, 300)
+
+INSERT INTO routen (hallen_id, wand_nr, name, farbe, schwierigkeit) VALUES
+(1, 1, 'grüne Route', 'grün',  8.3),
+(1, 1, 'blaue Route', 'blau', 9.7),
+(1, 2, 'rote Route', 'rot', 5.7),
+(1, 2, 'gelbe Route', 'gelb', 7.3)
+
 
 -- INSERT INTO routen (wand_id, name, schwierigkeit) VALUES
 -- (2, 'Steinbeißer', 7),

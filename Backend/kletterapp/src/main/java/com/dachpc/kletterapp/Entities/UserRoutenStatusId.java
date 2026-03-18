@@ -29,6 +29,7 @@ public class UserRoutenStatusId implements Serializable{
 
     public void setUserId(String userId) { this.userId = userId; }
     public void setRouteId(int routeId) { this.routeId = routeId; }
+    
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;

@@ -5,11 +5,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.dachpc.kletterapp.Entities.Wand;
+import com.dachpc.kletterapp.Entities.WandId;
 
-public interface WandRepository extends JpaRepository<Wand, Integer> {
-    List<Wand> findByHallenId(int hallenId);
+public interface WandRepository extends JpaRepository<Wand, WandId> {
+    List<Wand> findByIdHallenId(int hallenId);
 
     // List<Wand> findByHallenIdAndWandNr(int hallenId, int wandNr);
     // List<Wand> findBySektor(String sektor);
-    void deleteById(int id);
+    void deleteById(WandId id);
 }

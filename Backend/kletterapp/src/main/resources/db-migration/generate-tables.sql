@@ -5,17 +5,26 @@ CREATE TABLE hallen(
     betreiber text NOT NULL DEFAULT 'Unbekannt'
 );
 
+create type position_enum as enum ('indoor', 'outdoor');
+
 CREATE TABLE wände(
-    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     hallen_id INT NOT NULL,
     wand_nr INT,
     sektor text,
-    FOREIGN KEY (hallen_id) REFERENCES hallen(id)
+    start_x FLOAT,
+    start_y FLOAT,
+    end_x FLOAT,
+    end_y FLOAT,
+    position position_enum,
+    FOREIGN KEY (hallen_id) REFERENCES hallen(id),
+    PRIMARY KEY (hallen_id, wand_nr)
 );
+
 
 CREATE TABLE routen(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    wand_id INT NOT NULL,
+    hallen_id INT NOT NULL,
+    wand_nr INT NOT NULL,
     name text,
     farbe text,
     schwierigkeit float,
@@ -25,7 +34,7 @@ CREATE TABLE routen(
     schraubdatum timestamp,
     is_active boolean DEFAULT true,
     beschreibung text,
-    FOREIGN KEY (wand_id) REFERENCES wände(id)
+    FOREIGN KEY (hallen_id, wand_nr) REFERENCES wände(hallen_id, wand_nr)
 );
 
 CREATE TABLE users(

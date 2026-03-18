@@ -3,7 +3,7 @@ import HallenFinder from "./components/hallensuche/HallenFinder";
 import RoutenKarte from "./components/routenkarte/RoutenKarte";
 import Profil from "./components/profil/Profil";
 import Willkommen from "./components/login/Willkommen";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { Halle, User } from "./constants/APIResponseTypes";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";

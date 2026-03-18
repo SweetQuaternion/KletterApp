@@ -29,10 +29,15 @@ public class RoutenController {
     @Autowired
     private RoutenRepository routenRepository;
 
+    // @GetMapping
+    // public List<Route> filter(@RequestParam int hallenID, @RequestParam(required = false) Float minGrade, @RequestParam(required = false) Float maxGrade, @RequestParam(required = false) Boolean isToprope, @RequestParam(required = false) Boolean isVorstieg, @RequestParam(required = false) Boolean isActive) {
+    //     System.out.println("Filter-Endpoint aufgerufen");
+    //     return routenRepository.filter(hallenID, minGrade, maxGrade, isToprope, isVorstieg, isActive);
+    // }
+
     @GetMapping
-    public List<Route> filter(@RequestParam int hallenID, @RequestParam(required = false) Float minGrade, @RequestParam(required = false) Float maxGrade, @RequestParam(required = false) Boolean isToprope, @RequestParam(required = false) Boolean isVorstieg, @RequestParam(required = false) Boolean isActive) {
-        System.out.println("Filter-Endpoint aufgerufen");
-        return routenRepository.filter(hallenID, minGrade, maxGrade, isToprope, isVorstieg, isActive);
+    public List<Route> getByHallenId(@RequestParam int hallenId) {
+        return routenRepository.findByHallenId(hallenId);
     }
 
     @PostMapping

@@ -61,10 +61,102 @@
 
 line {
   stroke: var(--mokka);
-  stroke-width: 4;
+  stroke-width: 7;
+  stroke-linecap: round;
 }
 
-line:hover {
-  stroke: black;
-  stroke-width: 5;
+/* line:hover {
+  stroke: var(--espresso);
+} */
+
+circle {
+  color: var(--espresso);
+}
+
+g:hover > g > circle {
+  fill: var(--blassblau);
+}
+
+g:hover > line {
+  stroke: var(--espresso);
+}
+
+.wand-infobox {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 4.5em;
+  right: 1em;
+  min-width: 20em;
+  margin: 0;
+  padding: 2em;
+  background-color: white;
+  border-radius: 15px;
+  color: var(--espresso);
+  box-shadow: 0px 0px 20px -5px var(--mokka);
+}
+
+.wand-infobox-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.position-tag {
+  display: inline-block;
+  padding: 0.2em 0.7em;
+  margin: 0.2em;
+  color: var(--espresso);
+  border-radius: 999px;
+  font-size: small;
+  font-family:
+    DM Sans,
+    sans-serif;
+  /* background-color: var(--himmelsblau); */
+}
+
+.routen-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  margin-top: 1em;
+}
+
+.routen-ergebnis-feld {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family:
+    DM Sans,
+    sans-serif;
+  font-size: 0.9em;
+  align-items: center;
+  background-color: var(--abendsonne);
+  color: var(--espresso);
+  padding: 0.3em;
+  border-radius: 999px;
+  box-shadow: none;
+  width: 100%;
+}
+
+.routen-ergebnis-feld .left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.routen-ergebnis-feld .right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 1em;
+}
+
+.mini-dot-colour {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  margin: 0.5em;
+  margin-left: 0.7em;
+  margin-right: 1em;
 }
