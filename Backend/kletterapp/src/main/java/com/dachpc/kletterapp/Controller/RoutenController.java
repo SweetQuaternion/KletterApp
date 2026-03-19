@@ -37,7 +37,7 @@ public class RoutenController {
 
     @GetMapping
     public List<Route> getByHallenId(@RequestParam int hallenId) {
-        return routenRepository.findByHallenId(hallenId);
+        return routenRepository.findByWand_Id_HallenId(hallenId);
     }
 
     @PostMapping

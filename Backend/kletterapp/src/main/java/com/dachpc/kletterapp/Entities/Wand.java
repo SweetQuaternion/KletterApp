@@ -1,12 +1,14 @@
 package com.dachpc.kletterapp.Entities;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "wände")
-@JsonPropertyOrder({"id", "hallenId", "wandNr", "sektor"})
+@JsonPropertyOrder({"id", "hallenId", "wandNr", "sektor", "startX", "startY", "endX", "endY", "position", "routen"})
 public class Wand {
 
     @EmbeddedId
@@ -30,6 +32,9 @@ public class Wand {
     @Column(name = "position")
     private String position;
 
+    @OneToMany(mappedBy = "wand")
+    private List<Route> routen;
+
     protected Wand() {}
 
     public Wand(Integer hallenId, Integer wandNr, String sektor, Float startX, Float startY, Float endX, Float endY, String position) {
@@ -51,6 +56,7 @@ public class Wand {
     public Float getEndX() { return endX; }
     public Float getEndY() { return endY; }
     public String getPosition() { return position; }
+    public List<Route> getRouten() { return routen; }
 
     public void setId(WandId id) { this.id = id; }
     public void setHallenId(Integer hallenId) { this.id.setHallenId(hallenId); }

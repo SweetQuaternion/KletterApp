@@ -1,5 +1,5 @@
 import type { Route } from "../../constants/APIResponseTypes";
-import { colors, schwierigkeiten } from "../../constants/APIResponseTypes";
+import { schwierigkeiten } from "../../constants/APIResponseTypes";
 
 interface Props {
   route: Route;
@@ -11,7 +11,7 @@ const RoutenErgebnisFeld = ({ route }: Props) => {
       <div className="left">
         <div
           className="mini-dot-colour"
-          style={{ backgroundColor: colors[route.farbe] }}
+          style={{ backgroundColor: `var(--${route.farbe})` }}
         ></div>
         {route.name ? <p>{route.name}</p> : <p>{route.farbe}</p>}
       </div>

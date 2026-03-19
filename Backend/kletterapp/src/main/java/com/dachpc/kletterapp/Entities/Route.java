@@ -2,6 +2,7 @@ package com.dachpc.kletterapp.Entities;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import jakarta.persistence.*;
@@ -17,23 +18,48 @@ public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int hallenId;
-    private int wandNr;
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumns({
+        @JoinColumn(name = "hallen_id", referencedColumnName = "hallen_id"),
+        @JoinColumn(name = "wand_nr", referencedColumnName = "wand_nr")
+    })
+    private Wand wand;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "farbe")
     private String farbe;
+
+    @Column(name = "schwierigkeit")
     private Float schwierigkeit;
+
+    @Column (name = "is_toprope")
     private Boolean is_toprope;
+
+    @Column (name = "is_vorstieg")
     private Boolean is_vorstieg;
+
+    @Column (name = "schrauber")
     private String schrauber;
+
+    @Column (name = "schraubdatum")
     private LocalDateTime schraubdatum;
+
+    @Column (name = "is_active")
     private Boolean is_active;
+
+    @Column (name = "beschreibung")
     private String beschreibung;
 
     protected Route() {}
 
-    public Route(int hallenId, int wandNr, String name, String farbe, Float schwierigkeit, Boolean is_toprope, Boolean is_vorstieg, String schrauber, LocalDateTime schraubdatum, Boolean is_active, String beschreibung) {
-        this.hallenId = hallenId;
-        this.wandNr = wandNr;
+    public Route(Wand wand, String name, String farbe, Float schwierigkeit, 
+                Boolean is_toprope, Boolean is_vorstieg, String schrauber, 
+                LocalDateTime schraubdatum, Boolean is_active, String beschreibung) {
+        this.wand = wand;
         this.name = name;
         this.farbe = farbe;
         this.schwierigkeit = schwierigkeit;
@@ -45,26 +71,13 @@ public class Route {
         this.beschreibung = beschreibung;
     }
 
-    public Route(int hallenId, int wandNr, String name, String farbe, Float schwierigkeit) {
-        this.hallenId = hallenId;
-        this.wandNr = wandNr;
-        this.name = name;
-        this.farbe = farbe;
-        this.schwierigkeit = schwierigkeit;
-        this.is_toprope = false;
-        this.is_vorstieg = true;
-        this.schrauber = null;
-        this.schraubdatum = LocalDateTime.now();
-        this.is_active = true;
-        this.beschreibung = null;
-    }
-
 
     // Getters and setters
 
     public Integer getId() { return id; }
-    public Integer getHallenId() { return hallenId; }
-    public Integer getWandNr() { return wandNr; }
+    public Integer getHallenId() { return wand.getHallenId(); }
+    public Integer getWandNr() { return wand.getWandNr(); }
+    public Wand getWand() { return wand; }
     public String getName() { return name; }
     public String getFarbe() { return farbe; }
     public Float getSchwierigkeit() { return schwierigkeit; }
@@ -76,8 +89,7 @@ public class Route {
     public String getBeschreibung() { return beschreibung; }
 
     public void setId(Integer id) { this.id = id; }
-    public void setHallenId(Integer hallenId) { this.hallenId = hallenId; }
-    public void setWandNr(Integer wandNr) { this.wandNr = wandNr; }
+    public void setWand(Wand wand) { this.wand = wand; }
     public void setName(String name) { this.name = name; }
     public void setFarbe(String farbe) { this.farbe = farbe; }
     public void setSchwierigkeit(Float schwierigkeit) { this.schwierigkeit = schwierigkeit; }

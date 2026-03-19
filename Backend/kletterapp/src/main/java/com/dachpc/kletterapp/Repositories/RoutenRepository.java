@@ -11,7 +11,7 @@ public interface RoutenRepository extends JpaRepository<Route, Integer> {
     List<Route> findByName(String name);
     List<Route> findBySchwierigkeit(String schwierigkeit);
 
-    List<Route> findByHallenId(int hallenId);
+    List<Route> findByWand_Id_HallenId(int hallenId);
 
     // @Query(
     //     value = """
