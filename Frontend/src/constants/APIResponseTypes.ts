@@ -14,20 +14,21 @@ export type Wand = {
   endX: number;
   endY: number;
   position: String;
-};
-
-export type WandParsed = {
-  wandNr: number;
-  startX: number;
-  startY: number;
-  endX: number;
-  endY: number;
-  centerX: number;
-  centerY: number;
-  offsetX: number;
-  offsetY: number;
   routen: Route[];
 };
+
+// export type WandParsed = {
+//   wandNr: number;
+//   startX: number;
+//   startY: number;
+//   endX: number;
+//   endY: number;
+//   centerX: number;
+//   centerY: number;
+//   offsetX: number;
+//   offsetY: number;
+//   routen: Route[];
+// };
 
 export type Route = {
   id: number;

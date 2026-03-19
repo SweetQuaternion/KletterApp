@@ -3,11 +3,15 @@ import { schwierigkeiten } from "../../constants/APIResponseTypes";
 
 interface Props {
   route: Route;
+  setSelectedRoute: (route: Route | null) => void;
 }
 
-const RoutenErgebnisFeld = ({ route }: Props) => {
+const RoutenErgebnisFeld = ({ route, setSelectedRoute }: Props) => {
   return (
-    <div className="routen-ergebnis-feld">
+    <button
+      className="routen-ergebnis-feld"
+      onClick={() => setSelectedRoute(route)}
+    >
       <div className="left">
         <div
           className="mini-dot-colour"
@@ -18,7 +22,7 @@ const RoutenErgebnisFeld = ({ route }: Props) => {
       <div className="right">
         <p>{schwierigkeiten[route.schwierigkeit]}</p>
       </div>
-    </div>
+    </button>
   );
 };
 

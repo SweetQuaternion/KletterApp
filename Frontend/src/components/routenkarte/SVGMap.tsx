@@ -1,15 +1,24 @@
 import { useRef, useState } from "react";
-import { type Route, type WandParsed } from "../../constants/APIResponseTypes";
+import { type Route, type Wand } from "../../constants/APIResponseTypes";
+import WandInfoBox from "./WandInfoBox";
 
 interface Props {
   scale: number;
   setScale: (scale: number) => void;
-  wände: WandParsed[];
-  routen: Route[];
-  setSelectedWand: (wandNr: number | null) => void;
+  wände: Wand[];
+  selectedWand: Wand | null;
+  setSelectedWand: (wand: Wand | null) => void;
+  setSelectedRoute: (route: Route | null) => void;
 }
 
-function SVGMap({ scale, setScale, wände, setSelectedWand }: Props) {
+function SVGMap({
+  scale,
+  setScale,
+  wände,
+  selectedWand,
+  setSelectedWand,
+  setSelectedRoute,
+}: Props) {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const dragging = useRef(false);
   const dragStart = useRef({ x: 0, y: 0, offsetX: 0, offsetY: 0 });
@@ -42,9 +51,10 @@ function SVGMap({ scale, setScale, wände, setSelectedWand }: Props) {
     setScale(scale + (e.deltaY > 0 ? -0.02 : 0.02));
   }
 
-  const handleWandClick = (wandNr: number) => {
-    console.log("Wand " + wandNr + " clicked");
-    setSelectedWand(wandNr);
+  const handleWandClick = (wand: Wand | null) => {
+    console.log("Wand " + wand?.wandNr + " clicked");
+    setSelectedWand(wand);
+    if (selectedWand == null) setSelectedRoute(null);
   };
 
   return (
@@ -54,6 +64,7 @@ function SVGMap({ scale, setScale, wände, setSelectedWand }: Props) {
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onWheel={onWheel}
+        onClick={() => handleWandClick(null)}
         className="routenkarte"
         xmlns="http://www.w3.org/2000/svg"
         width="100%"
@@ -67,7 +78,13 @@ function SVGMap({ scale, setScale, wände, setSelectedWand }: Props) {
           `}
         >
           {wände.map((wand) => (
-            <g key={wand.wandNr} onClick={() => handleWandClick(wand.wandNr)}>
+            <g
+              key={wand.wandNr}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleWandClick(wand);
+              }}
+            >
               <line
                 x1={wand.startX}
                 y1={wand.startY}
@@ -75,18 +92,32 @@ function SVGMap({ scale, setScale, wände, setSelectedWand }: Props) {
                 y2={wand.endY}
                 stroke="black"
                 strokeWidth={5}
+                style={{ cursor: "pointer" }}
               />
               {wand.routen.length > 0 && (
                 <g>
                   <circle
-                    cx={wand.centerX - wand.offsetX}
-                    cy={wand.centerY - wand.offsetY}
+                    cx={
+                      (wand.startX + wand.endX) / 2 -
+                      (wand.endY - wand.startY) * 0.1
+                    }
+                    cy={
+                      (wand.startY + wand.endY) / 2 +
+                      (wand.endX - wand.startX) * 0.1
+                    }
                     r={20}
                     fill={"white"}
+                    style={{ cursor: "pointer" }}
                   />
                   <text
-                    x={wand.centerX - wand.offsetX}
-                    y={wand.centerY - wand.offsetY}
+                    x={
+                      (wand.startX + wand.endX) / 2 -
+                      (wand.endY - wand.startY) * 0.1
+                    }
+                    y={
+                      (wand.startY + wand.endY) / 2 +
+                      (wand.endX - wand.startX) * 0.1
+                    }
                     fontSize={16}
                     fill="black"
                     textAnchor="middle"
@@ -94,6 +125,27 @@ function SVGMap({ scale, setScale, wände, setSelectedWand }: Props) {
                   >
                     {wand.routen.length}
                   </text>
+                  {wand === selectedWand && (
+                    <foreignObject
+                      x={
+                        (wand.startX + wand.endX) / 2 -
+                        (wand.endY - wand.startY) * 0.05
+                      }
+                      y={
+                        (wand.startY + wand.endY) / 2 +
+                        (wand.endX - wand.startX) * 0.05
+                      }
+                      width="9999"
+                      height="9999"
+                      pointerEvents="none"
+                    >
+                      <WandInfoBox
+                        selectedWand={wand}
+                        routen={wand.routen}
+                        setSelectedRoute={setSelectedRoute}
+                      />
+                    </foreignObject>
+                  )}
                 </g>
               )}
             </g>

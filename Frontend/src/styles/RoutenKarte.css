@@ -65,12 +65,11 @@ line {
   stroke-linecap: round;
 }
 
-/* line:hover {
-  stroke: var(--espresso);
-} */
-
 circle {
   color: var(--espresso);
+  box-shadow: 0px 0px 10px -5px var(--mokka);
+  filter: drop-shadow(0px 0px 5px #7a5c4550);
+  /* mokka aber mit Transparenz weil drop shadow komisch ist */
 }
 
 g:hover > g > circle {
@@ -84,16 +83,15 @@ g:hover > line {
 .wand-infobox {
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 4.5em;
-  right: 1em;
   min-width: 20em;
-  margin: 0;
+  width: max-content;
+  margin: 2em;
   padding: 2em;
   background-color: white;
   border-radius: 15px;
   color: var(--espresso);
   box-shadow: 0px 0px 20px -5px var(--mokka);
+  pointer-events: auto;
 }
 
 .wand-infobox-header {
@@ -112,7 +110,6 @@ g:hover > line {
   font-family:
     DM Sans,
     sans-serif;
-  /* background-color: var(--himmelsblau); */
 }
 
 .routen-container {
@@ -137,6 +134,10 @@ g:hover > line {
   border-radius: 999px;
   box-shadow: none;
   width: 100%;
+}
+
+.routen-ergebnis-feld:hover {
+  background-color: var(--buttergelb);
 }
 
 .routen-ergebnis-feld .left {
