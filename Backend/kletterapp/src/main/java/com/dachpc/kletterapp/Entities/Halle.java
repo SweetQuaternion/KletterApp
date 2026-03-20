@@ -13,10 +13,10 @@ public class Halle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "adresse")
+    @Column(name = "adresse", nullable = false)
     private String adresse;
 
     @Column(name = "betreiber")

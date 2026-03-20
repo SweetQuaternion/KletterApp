@@ -17,22 +17,22 @@ public class Wand {
     @Column(name = "sektor")
     private String sektor;
 
-    @Column(name = "start_x")
+    @Column(name = "start_x", nullable = false)
     private Float startX;
 
-    @Column(name = "start_y")
+    @Column(name = "start_y", nullable = false)
     private Float startY;
 
-    @Column(name = "end_x")
+    @Column(name = "end_x", nullable = false)
     private Float endX;
 
-    @Column(name = "end_y")
+    @Column(name = "end_y", nullable = false)
     private Float endY;
 
     @Column(name = "position")
     private String position;
 
-    @OneToMany(mappedBy = "wand")
+    @OneToMany(mappedBy = "wand") // fetch = FetchType.EAGER hat es irgendwie nicht getan
     private List<Route> routen;
 
     protected Wand() {}

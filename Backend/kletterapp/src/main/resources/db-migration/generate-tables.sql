@@ -9,17 +9,18 @@ create type position_enum as enum ('indoor', 'outdoor');
 
 CREATE TABLE wände(
     hallen_id INT NOT NULL,
-    wand_nr INT,
+    wand_nr INT NOT NULL,
     sektor text,
-    start_x FLOAT,
-    start_y FLOAT,
-    end_x FLOAT,
-    end_y FLOAT,
+    start_x FLOAT not null,
+    start_y FLOAT not null,
+    end_x FLOAT not null,
+    end_y FLOAT not null,
     position position_enum,
     FOREIGN KEY (hallen_id) REFERENCES hallen(id),
     PRIMARY KEY (hallen_id, wand_nr)
 );
 
+alter table wände alter column wand_nr set not null;
 
 CREATE TABLE routen(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,

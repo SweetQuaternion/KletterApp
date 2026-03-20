@@ -35,7 +35,8 @@ public class WandController {
 
     @GetMapping
     public List<Wand> getByHallenId(@RequestParam int hallenId) {
-        return wandRepository.findByIdHallenId(hallenId);
+        // return wandRepository.findByIdHallenId(hallenId);
+        return wandRepository.findByHallenIdWithRouten(hallenId);
     }
 
     @PostMapping

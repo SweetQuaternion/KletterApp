@@ -14,13 +14,13 @@ public class Ascent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private String userId;
 
-    @Column(name = "route_id")
+    @Column(name = "route_id", nullable = false)
     private int routenId;
 
-    @Column(name = "datum")
+    @Column(name = "datum", nullable = false)
     private LocalDateTime datum;
 
     @Column(name = "style")

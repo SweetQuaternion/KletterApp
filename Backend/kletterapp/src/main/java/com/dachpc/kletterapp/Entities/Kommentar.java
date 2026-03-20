@@ -14,16 +14,16 @@ public class Kommentar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "route_id")
+    @Column(name = "route_id", nullable = false)
     private int routenId;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private String userId;
 
-    @Column(name = "datum")
+    @Column(name = "datum", nullable = false)
     private LocalDateTime datum;
 
-    @Column(name = "kommentar_text")
+    @Column(name = "kommentar_text", nullable = false)
     private String text;
 
     protected Kommentar() {

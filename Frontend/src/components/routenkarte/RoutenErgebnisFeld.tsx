@@ -15,7 +15,7 @@ const RoutenErgebnisFeld = ({ route, setSelectedRoute }: Props) => {
       <div className="left">
         <div
           className="mini-dot-colour"
-          style={{ backgroundColor: `var(--${route.farbe})` }}
+          style={{ background: `var(--${route.farbe})` }}
         ></div>
         {route.name ? <p>{route.name}</p> : <p>{route.farbe}</p>}
       </div>

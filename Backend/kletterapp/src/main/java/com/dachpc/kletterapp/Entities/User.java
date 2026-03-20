@@ -14,7 +14,7 @@ public class User {
     @Column(name = "keycloak_id")
     private String keycloakId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "bild_url")
