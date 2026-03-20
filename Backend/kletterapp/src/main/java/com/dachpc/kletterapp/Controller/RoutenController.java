@@ -43,12 +43,14 @@ public class RoutenController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void add(@RequestBody Route route) {
+        System.out.println("Adding new route: HallenID:" + route.getHallenId() + ", WandNr:" + route.getWandNr() + ", Name:" + route.getName() + ", Farbe:" + route.getFarbe() + ", Schwierigkeit:" + route.getSchwierigkeit() + ", isToprope:" + route.getIs_toprope() + ", isVorstieg:" + route.getIs_vorstieg() + ", Schrauber:" + route.getSchrauber() + ", Beschreibung:" + route.getBeschreibung());
         routenRepository.save(route);
     }
 
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
     public void update(@RequestBody Route route) {
+        System.out.println("Updating route: HallenID:" + route.getHallenId() + ", WandNr:" + route.getWandNr() + ", Name:" + route.getName() + ", Farbe:" + route.getFarbe() + ", Schwierigkeit:" + route.getSchwierigkeit() + ", isToprope:" + route.getIs_toprope() + ", isVorstieg:" + route.getIs_vorstieg() + ", Schrauber:" + route.getSchrauber() + ", Beschreibung:" + route.getBeschreibung());
         routenRepository.save(route);
     }
 

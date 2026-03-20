@@ -11,6 +11,7 @@ import SVGMap from "./SVGMap";
 import Knopfsis from "./Knopfsis";
 import { useEffect, useState } from "react";
 import RoutenDetails from "./RoutenDetails";
+import NeueRoute from "./NeueRoute";
 
 interface Props {
   selectedHalle: Halle;
@@ -22,6 +23,7 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
   const [wände, setWände] = useState<Wand[]>([]);
   const [selectedWand, setSelectedWand] = useState<Wand | null>(null);
   const [selectedRoute, setSelectedRoute] = useState<Route | null>(null);
+  const [showNeueRoute, setShowNeueRoute] = useState(false);
 
   async function getWände() {
     const response = await fetch(
@@ -49,11 +51,19 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
         selectedWand={selectedWand}
         setSelectedWand={setSelectedWand}
         setSelectedRoute={setSelectedRoute}
+        setShowNeueRoute={setShowNeueRoute}
       />
       <Header user={user} />
       <HallenInfoBox selectedHalle={selectedHalle} />
       <Knopfsis scale={scale} setScale={setScale} />
       {selectedRoute && <RoutenDetails selectedRoute={selectedRoute} />}
+      {showNeueRoute && selectedWand && (
+        <NeueRoute
+          selectedHalle={selectedHalle}
+          selectedWand={selectedWand}
+          setShowNeueRoute={setShowNeueRoute}
+        />
+      )}
     </>
   );
 };

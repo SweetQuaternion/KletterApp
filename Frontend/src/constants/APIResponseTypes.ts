@@ -40,7 +40,7 @@ export type Route = {
   is_toprope: boolean;
   is_vorstieg: boolean;
   schrauber: string;
-  schraubdatum: Date;
+  schraubdatum: string;
   is_active: boolean;
   beschreibung: string;
 };
@@ -68,50 +68,31 @@ export type AuthResponse = {
   user: User;
 };
 
-export const colors: Record<string, string> = {
-  rot: "#FF0000",
-  grün: "#00FF00",
-  blau: "#0000FF",
-  gelb: "#FFFF00",
-  orange: "#FFA500",
-  lila: "#800080",
-  schwarz: "#000000",
-  weiß: "#FFFFFF",
+// export const colors: Record<string, string> = {
+//   rot: "#FF0000",
+//   grün: "#00FF00",
+//   blau: "#0000FF",
+//   gelb: "#FFFF00",
+//   orange: "#FFA500",
+//   lila: "#800080",
+//   schwarz: "#000000",
+//   weiß: "#FFFFFF",
+// };
+
+export const convertSchwierigkeitToString = (schwierigkeit: number): string => {
+  if (schwierigkeit % 1 === 0) return schwierigkeit.toString();
+  let base = Math.floor(schwierigkeit);
+  const modifier = schwierigkeit % 1 < 0.5 ? "+" : "-";
+  if (modifier === "-") base++;
+  return `${base}${modifier}`;
 };
 
-export const schwierigkeiten: Record<number, string> = {
-  1: "1",
-  1.3: "1+",
-  1.7: "2-",
-  2: "2",
-  2.3: "2+",
-  2.7: "3-",
-  3: "3",
-  3.3: "3+",
-  3.7: "4-",
-  4: "4",
-  4.3: "4+",
-  4.7: "5-",
-  5: "5",
-  5.3: "5+",
-  5.7: "6-",
-  6: "6",
-  6.3: "6+",
-  6.7: "7-",
-  7: "7",
-  7.3: "7+",
-  7.7: "8-",
-  8: "8",
-  8.3: "8+",
-  8.7: "9-",
-  9: "9",
-  9.3: "9+",
-  9.7: "10-",
-  10: "10",
-  10.3: "10+",
-  10.7: "11-",
-  11: "11",
-  11.3: "11+",
-  11.7: "12-",
-  12: "12",
+export const convertSchwierigkeitToNumber = (schwierigkeit: string): number => {
+  const match = schwierigkeit.match(/^(\d+)([+-]?)$/);
+  if (!match) throw new Error("Ungültiges Format");
+  const base = parseInt(match[1], 10);
+  const modifier = match[2];
+  if (modifier === "+") return base + 0.3;
+  if (modifier === "-") return base - 0.3;
+  return base;
 };

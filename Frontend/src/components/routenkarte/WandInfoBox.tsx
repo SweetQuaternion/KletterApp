@@ -5,9 +5,15 @@ interface Props {
   selectedWand: Wand;
   routen: Route[];
   setSelectedRoute: (route: Route | null) => void;
+  setShowNeueRoute: (show: boolean) => void;
 }
 
-const WandInfoBox = ({ selectedWand, routen, setSelectedRoute }: Props) => {
+const WandInfoBox = ({
+  selectedWand,
+  routen,
+  setSelectedRoute,
+  setShowNeueRoute,
+}: Props) => {
   return (
     <div
       className="wand-infobox"
@@ -35,6 +41,9 @@ const WandInfoBox = ({ selectedWand, routen, setSelectedRoute }: Props) => {
             setSelectedRoute={setSelectedRoute}
           />
         ))}
+      </div>
+      <div className="route-hinzufügen" onClick={() => setShowNeueRoute(true)}>
+        Route hinzufügen
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
 package com.dachpc.kletterapp.Entities;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import jakarta.persistence.*;
@@ -14,13 +14,12 @@ import jakarta.persistence.*;
 @JsonPropertyOrder({"id", "name", "schwierigkeit", "farbe", "wand_id", "is_vorstieg", "is_toprope", "is_active", "schrauber", "schraubdatum", "beschreibung"})
 public class Route {
 
-    // TODO : foreign keys hinzufügen, mehr annotationen bzgl nullable benutzen
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumns({
         @JoinColumn(name = "hallen_id", referencedColumnName = "hallen_id"),
         @JoinColumn(name = "wand_nr", referencedColumnName = "wand_nr")
@@ -46,7 +45,7 @@ public class Route {
     private String schrauber;
 
     @Column (name = "schraubdatum")
-    private LocalDateTime schraubdatum;
+    private LocalDate schraubdatum;
 
     @Column (name = "is_active")
     private Boolean is_active;
@@ -58,7 +57,7 @@ public class Route {
 
     public Route(Wand wand, String name, String farbe, Float schwierigkeit, 
                 Boolean is_toprope, Boolean is_vorstieg, String schrauber, 
-                LocalDateTime schraubdatum, Boolean is_active, String beschreibung) {
+                LocalDate schraubdatum, Boolean is_active, String beschreibung) {
         this.wand = wand;
         this.name = name;
         this.farbe = farbe;
@@ -84,7 +83,7 @@ public class Route {
     public Boolean getIs_toprope() { return is_toprope; }
     public Boolean getIs_vorstieg() { return is_vorstieg; }
     public String getSchrauber() { return schrauber; }
-    public LocalDateTime getSchraubdatum() { return schraubdatum; }
+    public LocalDate getSchraubdatum() { return schraubdatum; }
     public Boolean isIs_active() { return is_active; }
     public String getBeschreibung() { return beschreibung; }
 
@@ -96,7 +95,7 @@ public class Route {
     public void setIs_toprope(Boolean is_toprope) { this.is_toprope = is_toprope; }
     public void setIs_vorstieg(Boolean is_vorstieg) { this.is_vorstieg = is_vorstieg; }
     public void setSchrauber(String schrauber) { this.schrauber = schrauber; }
-    public void setSchraubdatum(LocalDateTime schraubdatum) { this.schraubdatum = schraubdatum; }
+    public void setSchraubdatum(LocalDate schraubdatum) { this.schraubdatum = schraubdatum; }
     public void setIsActive(Boolean isActive) { this.is_active = isActive; }
     public void setBeschreibung(String beschreibung) { this.beschreibung = beschreibung; }
 }

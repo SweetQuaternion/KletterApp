@@ -161,3 +161,19 @@ g:hover > line {
   margin-left: 0.7em;
   margin-right: 1em;
 }
+
+.route-hinzufügen {
+  margin-top: 1em;
+  margin-bottom: -0.5em;
+  font-size: 1em;
+  cursor: pointer;
+  font-size: small;
+  font-family:
+    DM Sans,
+    sans-serif;
+  width: fit-content;
+}
+
+.route-hinzufügen:hover {
+  color: var(--ozeanblau);
+}

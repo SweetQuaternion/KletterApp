@@ -24,7 +24,7 @@ function HallenSuchmaske({ setSelectedHalle }: Props) {
   };
 
   return (
-    <div className="white-box">
+    <div className="hallensuche white-box">
       <h2>Wähle deine Halle aus</h2>
       <form
         className="flex-row"

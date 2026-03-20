@@ -1,5 +1,5 @@
 import type { Route } from "../../constants/APIResponseTypes";
-import { schwierigkeiten } from "../../constants/APIResponseTypes";
+import { convertSchwierigkeitToString } from "../../constants/APIResponseTypes";
 
 interface Props {
   route: Route;
@@ -20,7 +20,7 @@ const RoutenErgebnisFeld = ({ route, setSelectedRoute }: Props) => {
         {route.name ? <p>{route.name}</p> : <p>{route.farbe}</p>}
       </div>
       <div className="right">
-        <p>{schwierigkeiten[route.schwierigkeit]}</p>
+        <p>{convertSchwierigkeitToString(route.schwierigkeit)}</p>
       </div>
     </button>
   );

@@ -32,7 +32,7 @@ CREATE TABLE routen(
     is_toprope boolean DEFAULT false,
     is_vorstieg boolean DEFAULT true,
     schrauber text,
-    schraubdatum timestamp,
+    schraubdatum date,
     is_active boolean DEFAULT true,
     beschreibung text,
     FOREIGN KEY (hallen_id, wand_nr) REFERENCES wände(hallen_id, wand_nr)
