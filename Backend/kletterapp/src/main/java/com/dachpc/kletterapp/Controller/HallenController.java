@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,7 @@ public class HallenController {
     private HallenRepository hallenRepository;
     
     @GetMapping
-    public List<Halle> find(@RequestParam(required = false) String name) {
+    public List<Halle> findHalle(@RequestParam(required = false) String name) {
         if (name == null || name.isEmpty()) {
             return hallenRepository.findAll();
         }
@@ -40,20 +41,25 @@ public class HallenController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public void add(@RequestBody Halle halle) {
+    public Halle addHalle(@RequestBody Halle halle) {
         hallenRepository.save(halle);
+        return halle;
     }
     
     @PatchMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@RequestBody Halle halle) {
+    public Halle updateHalle(@RequestBody Halle halle) {
         hallenRepository.save(halle);
+        return halle;
     }
 
     @DeleteMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@RequestParam Integer id) {
+    public void deleteHalle(@RequestParam Integer id) {
         Halle halle = hallenRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
         hallenRepository.delete(halle);
     }

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,13 +15,16 @@ public class Ascent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id")
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private String userId;
 
-    @Column(name = "route_id", nullable = false)
+    @Column(name = "route_id")
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private int routenId;
 
-    @Column(name = "datum", nullable = false)
+    @Column(name = "datum")
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private LocalDateTime datum;
 
     @Column(name = "style")

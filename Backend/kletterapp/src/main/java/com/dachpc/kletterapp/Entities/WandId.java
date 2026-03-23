@@ -3,6 +3,7 @@ package com.dachpc.kletterapp.Entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
@@ -11,25 +12,27 @@ import jakarta.persistence.Embeddable;
 public class WandId implements Serializable{
 
     @Column(name = "hallen_id")
-    private Integer hallenId;
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
+    private int hallenId;
 
     @Column(name = "wand_nr")
-    private Integer wandNr;
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
+    private int wandNr;
 
     public WandId() {
     }
 
-    public WandId(Integer hallenId, Integer wandNr) {
+    public WandId(int hallenId, int wandNr) {
         this.hallenId = hallenId;
         this.wandNr = wandNr;
     }
 
-    public Integer getHallenId() { return hallenId; }
-    public Integer getWandNr() { return wandNr; }
+    public int getHallenId() { return hallenId; }
+    public int getWandNr() { return wandNr; }
 
-    public void setHallenId(Integer hallenId) { this.hallenId = hallenId; }
-    public void setWandNr(Integer wandNr) { this.wandNr = wandNr; }
-
+    public void setHallenId(int hallenId) { this.hallenId = hallenId; }
+    public void setWandNr(int wandNr) { this.wandNr = wandNr; }
+    
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,26 +35,32 @@ public class WandController {
     private WandRepository wandRepository;
 
     @GetMapping
-    public List<Wand> getByHallenId(@RequestParam int hallenId) {
+    public List<Wand> getWaendeByHallenId(@RequestParam int hallenId) {
         // return wandRepository.findByIdHallenId(hallenId);
         return wandRepository.findByHallenIdWithRouten(hallenId);
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public void add(@RequestBody Wand wand) {
+    public Wand addWand(@RequestBody Wand wand) {
         wandRepository.save(wand);
+        return wand;
     }
 
     @PatchMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@RequestBody Wand wand) {
+    public Wand updateWand(@RequestBody Wand wand) {
         wandRepository.save(wand);
+        return wand;
     }
 
+    // TODO noch parameter fixen
     @DeleteMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@RequestParam WandId id) {
+    public void deleteWand(@RequestParam WandId id) {
         Wand wand = wandRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
         wandRepository.delete(wand);
     }

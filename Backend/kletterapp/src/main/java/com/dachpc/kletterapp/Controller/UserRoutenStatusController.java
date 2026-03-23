@@ -29,14 +29,9 @@ public class UserRoutenStatusController {
     @Autowired
     private UserRoutenStatusRepository userRoutenStatusRepository;
 
-    @GetMapping
-    public UserRoutenStatus getStatus(@RequestParam int userId, @RequestParam int routenId) {
-        return userRoutenStatusRepository.findByIdUserIdAndIdRouteId(userId, routenId);
-    }
 
-    // Wie würde das in einer Ordnerstruktur aussehen?
-    @GetMapping("/all")
-    public List<UserRoutenStatus> getAll(@PathVariable(required = false) Integer userId, @PathVariable(required = false) Integer routenId) {
+    @GetMapping
+    public List<UserRoutenStatus> getUserRoutenStatusList(@PathVariable(required = false) Integer userId, @PathVariable(required = false) Integer routenId) {
         if (userId != null) {
             return userRoutenStatusRepository.findByIdUserId(userId);
         } else if (routenId != null) {
@@ -48,16 +43,18 @@ public class UserRoutenStatusController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createUserRoutenStatus(@RequestBody UserRoutenStatus userRoutenStatus) {
+    public UserRoutenStatus createUserRoutenStatus(@RequestBody UserRoutenStatus userRoutenStatus) {
         userRoutenStatusRepository.save(userRoutenStatus);
+        return userRoutenStatus;
     }
     
     // braucht eigentlich immer eine id -> hier schwierig
     // müsste man nochmal drüber nachdenken
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
-    public void updateUserRoutenStatus(@RequestBody UserRoutenStatus userRoutenStatus) {
+    public UserRoutenStatus updateUserRoutenStatus(@RequestBody UserRoutenStatus userRoutenStatus) {
         userRoutenStatusRepository.save(userRoutenStatus);
+        return userRoutenStatus;
     }
 
     @DeleteMapping

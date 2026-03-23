@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,21 +13,26 @@ import jakarta.persistence.*;
 public class Wand {
 
     @EmbeddedId
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private WandId id;
 
     @Column(name = "sektor")
     private String sektor;
 
-    @Column(name = "start_x", nullable = false)
+    @Column(name = "start_x")
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private Float startX;
 
-    @Column(name = "start_y", nullable = false)
+    @Column(name = "start_y")
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private Float startY;
 
-    @Column(name = "end_x", nullable = false)
+    @Column(name = "end_x")
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private Float endX;
 
-    @Column(name = "end_y", nullable = false)
+    @Column(name = "end_y")
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private Float endY;
 
     @Column(name = "position")

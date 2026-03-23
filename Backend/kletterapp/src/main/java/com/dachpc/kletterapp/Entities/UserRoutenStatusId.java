@@ -3,6 +3,7 @@ package com.dachpc.kletterapp.Entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
@@ -11,9 +12,11 @@ import jakarta.persistence.Embeddable;
 public class UserRoutenStatusId implements Serializable{
 
     @Column(name = "user_id")
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private String userId;
     
     @Column(name = "route_id")
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private int routeId;
 
     public UserRoutenStatusId() {

@@ -1,5 +1,6 @@
 import type { Route, Wand } from "../../constants/APIResponseTypes";
 import RoutenErgebnisFeld from "./RoutenErgebnisFeld";
+import { isAdmin } from "../../constants/keycloak.ts";
 
 interface Props {
   selectedWand: Wand;
@@ -15,10 +16,7 @@ const WandInfoBox = ({
   setShowNeueRoute,
 }: Props) => {
   return (
-    <div
-      className="wand-infobox"
-      // style={{ top: `${position?.y}`, left: `${position?.x}` }}
-    >
+    <div className="wand-infobox">
       <div className="wand-infobox-header">
         <h3>Wand {selectedWand?.wandNr}</h3>
         <div
@@ -42,9 +40,14 @@ const WandInfoBox = ({
           />
         ))}
       </div>
-      <div className="route-hinzufügen" onClick={() => setShowNeueRoute(true)}>
-        Route hinzufügen
-      </div>
+      {isAdmin() && (
+        <div
+          className="route-hinzufügen"
+          onClick={() => setShowNeueRoute(true)}
+        >
+          Route hinzufügen
+        </div>
+      )}
     </div>
   );
 };

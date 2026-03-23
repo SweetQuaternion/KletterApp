@@ -34,7 +34,7 @@ public class UserController {
     // kann ungesichert bleiben, da wir nur die ID, Username und Profilbild abfragen und keine sensiblen Daten zurückgeben
     // User sollen einander sehen können
     @GetMapping
-    public ResponseEntity<User> get(@RequestParam String id) {
+    public ResponseEntity<User> getUser(@RequestParam String id) {
         User user = userRepository.findByKeycloakId(id).orElseThrow(() -> new EntityNotFoundException());
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
@@ -44,7 +44,7 @@ public class UserController {
     // man will das Token eigentlich nie in die Hand nehmen
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN') or #request.keycloakId == authentication.principal.subject")
-    public ResponseEntity<User> sync(@RequestBody UserSyncRequest request) { 
+    public ResponseEntity<User> syncUser(@RequestBody UserSyncRequest request) { 
         User user = userRepository.findByKeycloakId(request.keycloakId()).orElse(null);
         if (user == null) {
             user = userRepository.save(new User(request.keycloakId(), request.name()));
@@ -59,12 +59,13 @@ public class UserController {
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_ADMIN') or #request.keycloakId == authentication.principal.subject")
-    public void change(@RequestBody User updatedUser) {
+    public User changeUser(@RequestBody User updatedUser) {
         System.out.println("Received update request for user:" + updatedUser.toString());
         User prevUser = userRepository.findByKeycloakId(updatedUser.getKeycloakId()).orElseThrow(() -> new EntityNotFoundException());
         if (updatedUser.getName() != null) prevUser.setName(updatedUser.getName());
         if (updatedUser.getBildUrl() != null) prevUser.setBildUrl(updatedUser.getBildUrl());
         userRepository.save(prevUser);
+        return prevUser;
     }
     
     // müssen wir absichern, damit nur der User selbst seine Daten löschen kann (oder Admins)

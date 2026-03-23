@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 // Tells Hibernate that this class should be tracked as a table
@@ -16,6 +17,7 @@ public class Route {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private int id;
 
     @ManyToOne
@@ -24,6 +26,7 @@ public class Route {
         @JoinColumn(name = "hallen_id", referencedColumnName = "hallen_id"),
         @JoinColumn(name = "wand_nr", referencedColumnName = "wand_nr")
     })
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private Wand wand;
 
     @Column(name = "name")

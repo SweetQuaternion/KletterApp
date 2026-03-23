@@ -32,3 +32,19 @@
 .routen-details b {
   margin-top: 1em;
 }
+
+.routen-details p {
+  font-family:
+    DM Sans,
+    sans-serif;
+}
+
+.routen-details .small {
+  font-size: 0.9em;
+}
+
+.routen-details-badges {
+  display: flex;
+  gap: 0.5em;
+  margin-top: 1em;
+}

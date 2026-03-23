@@ -2,14 +2,16 @@ package com.dachpc.kletterapp.Entities;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "user_routen_status", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "route_id"}))
-@JsonPropertyOrder({"userId", "routenId", "isFavorite", "isProjekt", "geschSchwierigkeit", "notiz"})
+@JsonPropertyOrder({"userId", "routenId", "isFavorit", "isProjekt", "geschSchwierigkeit", "notiz"})
 public class UserRoutenStatus {
 
     @EmbeddedId
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private UserRoutenStatusId id;
 
     @Column(name = "isfavorit")

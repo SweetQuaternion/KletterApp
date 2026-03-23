@@ -4,7 +4,7 @@ import "../../styles/Profil.css";
 import Header from "../Header";
 import defaultpic from "../../assets/default-pic.png";
 import { useState } from "react";
-import { keycloak } from "../../keycloak.ts";
+import { keycloak } from "../../constants/keycloak.ts";
 
 interface Props {
   user: User | null;

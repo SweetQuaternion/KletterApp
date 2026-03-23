@@ -89,3 +89,11 @@ label {
     sans-serif;
   font-size: small;
 }
+
+.routen-details select {
+  background-color: white;
+  color: var(--espresso);
+  padding: 0.3em;
+  border: 1px solid var(--mokka);
+  border-radius: 5px;
+}

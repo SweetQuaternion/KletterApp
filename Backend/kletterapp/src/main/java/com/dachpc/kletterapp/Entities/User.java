@@ -2,7 +2,7 @@ package com.dachpc.kletterapp.Entities;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,9 +12,11 @@ public class User {
 
     @Id
     @Column(name = "keycloak_id")
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private String keycloakId;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @Column(name = "bild_url")

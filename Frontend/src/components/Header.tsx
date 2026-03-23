@@ -2,15 +2,9 @@ import "../styles/App.css";
 import "../styles/Header.css";
 import logo from "../assets/react.svg";
 import defaultpic from "../assets/default-pic.png";
-// import { Link } from "react-router";
 import type { User } from "../constants/APIResponseTypes";
-import {
-  // keycloak,
-  login,
-  register,
-  logout,
-} from "../keycloak";
-import { useState } from "react";
+import { login, register, logout } from "../constants/keycloak";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 interface Props {
@@ -19,6 +13,12 @@ interface Props {
 
 function Header({ user }: Props) {
   const [menuToggled, setMenuToggled] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setMenuToggled(false);
+    document.addEventListener("click", handler);
+    return () => document.removeEventListener("click", handler);
+  }, []);
 
   return (
     <>
@@ -38,7 +38,10 @@ function Header({ user }: Props) {
             <span>Hallo {user.name}</span>
             <button
               className="profile-button"
-              onClick={() => setMenuToggled(!menuToggled)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setMenuToggled(!menuToggled);
+              }}
             >
               <img src={user.bildUrl || defaultpic} alt="Profil" />
             </button>

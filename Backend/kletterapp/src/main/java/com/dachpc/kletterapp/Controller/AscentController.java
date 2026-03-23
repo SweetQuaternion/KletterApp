@@ -29,25 +29,27 @@ public class AscentController {
     private AscentRepository ascentRepository;
 
     @GetMapping
-    public List<Ascent> findByUserId(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer routenId) {
+    public List<Ascent> findAscentsByUserId(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer routenId) {
         return ascentRepository.search(userId, routenId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void add(@RequestBody Ascent ascent) {
+    public Ascent addAscent(@RequestBody Ascent ascent) {
         ascentRepository.save(ascent);
+        return ascent;
     }
 
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
-    public void update(@RequestBody Ascent ascent) {
+    public Ascent updateAscent(@RequestBody Ascent ascent) {
         ascentRepository.save(ascent);
+        return ascent;
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@RequestParam Integer id) {
+    public void deleteAscent(@RequestParam Integer id) {
         ascentRepository.deleteById(id);
     }
     

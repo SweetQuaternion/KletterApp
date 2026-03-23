@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,27 +37,32 @@ public class RoutenController {
     // }
 
     @GetMapping
-    public List<Route> getByHallenId(@RequestParam int hallenId) {
+    public List<Route> getRoutenByHallenId(@RequestParam int hallenId) {
         return routenRepository.findByWand_Id_HallenId(hallenId);
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public void add(@RequestBody Route route) {
+    public Route addRoute(@RequestBody Route route) {
         System.out.println("Adding new route: HallenID:" + route.getHallenId() + ", WandNr:" + route.getWandNr() + ", Name:" + route.getName() + ", Farbe:" + route.getFarbe() + ", Schwierigkeit:" + route.getSchwierigkeit() + ", isToprope:" + route.getIs_toprope() + ", isVorstieg:" + route.getIs_vorstieg() + ", Schrauber:" + route.getSchrauber() + ", Beschreibung:" + route.getBeschreibung());
         routenRepository.save(route);
+        return route;
     }
 
     @PatchMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@RequestBody Route route) {
+    public Route updateRoute(@RequestBody Route route) {
         System.out.println("Updating route: HallenID:" + route.getHallenId() + ", WandNr:" + route.getWandNr() + ", Name:" + route.getName() + ", Farbe:" + route.getFarbe() + ", Schwierigkeit:" + route.getSchwierigkeit() + ", isToprope:" + route.getIs_toprope() + ", isVorstieg:" + route.getIs_vorstieg() + ", Schrauber:" + route.getSchrauber() + ", Beschreibung:" + route.getBeschreibung());
         routenRepository.save(route);
+        return route;
     }
 
     @DeleteMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@RequestParam Integer id) {
+    public void deleteRoute(@RequestParam Integer id) {
         Route route = routenRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
         routenRepository.delete(route);
     }

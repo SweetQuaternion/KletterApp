@@ -2,6 +2,7 @@ package com.dachpc.kletterapp.Entities;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,12 +12,16 @@ public class Halle {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private int id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Column(name = "adresse", nullable = false)
+    @Column(name = "adresse")
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
+    
     private String adresse;
 
     @Column(name = "betreiber")
