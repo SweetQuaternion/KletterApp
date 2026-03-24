@@ -27,10 +27,9 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                // .requestMatchers("/api/hallen", "/api/waende", "/api/routen").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/hallen").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/waende").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/routen").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/hallen/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/waende/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/routen/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/v3/*").permitAll() // Swagger UI und API-Dokumentation
                 .anyRequest().authenticated()
             )

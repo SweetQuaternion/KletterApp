@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,31 +21,23 @@ import com.dachpc.kletterapp.Repositories.RoutenRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
-
-@CrossOrigin(origins = "http://localhost:5173") 
+ 
 @RestController
-@RequestMapping("/api/routen")
+@RequestMapping("/api/hallen/{hallenId}/routen")
 public class RoutenController {
 
     @Autowired
     private RoutenRepository routenRepository;
 
-    // @GetMapping
-    // public List<Route> filter(@RequestParam int hallenID, @RequestParam(required = false) Float minGrade, @RequestParam(required = false) Float maxGrade, @RequestParam(required = false) Boolean isToprope, @RequestParam(required = false) Boolean isVorstieg, @RequestParam(required = false) Boolean isActive) {
-    //     System.out.println("Filter-Endpoint aufgerufen");
-    //     return routenRepository.filter(hallenID, minGrade, maxGrade, isToprope, isVorstieg, isActive);
-    // }
-
     @GetMapping
-    public List<Route> getRoutenByHallenId(@RequestParam int hallenId) {
+    public List<Route> getRoutenByHallenId(@PathVariable int hallenId) {
         return routenRepository.findByWand_Id_HallenId(hallenId);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Route addRoute(@RequestBody Route route) {
-        System.out.println("Adding new route: HallenID:" + route.getHallenId() + ", WandNr:" + route.getWandNr() + ", Name:" + route.getName() + ", Farbe:" + route.getFarbe() + ", Schwierigkeit:" + route.getSchwierigkeit() + ", isToprope:" + route.getIs_toprope() + ", isVorstieg:" + route.getIs_vorstieg() + ", Schrauber:" + route.getSchrauber() + ", Beschreibung:" + route.getBeschreibung());
+    public Route addRoute(@PathVariable int hallenId, @RequestBody Route route) {
         routenRepository.save(route);
         return route;
     }
@@ -53,8 +45,7 @@ public class RoutenController {
     @PatchMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public Route updateRoute(@RequestBody Route route) {
-        System.out.println("Updating route: HallenID:" + route.getHallenId() + ", WandNr:" + route.getWandNr() + ", Name:" + route.getName() + ", Farbe:" + route.getFarbe() + ", Schwierigkeit:" + route.getSchwierigkeit() + ", isToprope:" + route.getIs_toprope() + ", isVorstieg:" + route.getIs_vorstieg() + ", Schrauber:" + route.getSchrauber() + ", Beschreibung:" + route.getBeschreibung());
+    public Route updateRoute(@PathVariable int hallenId, @RequestBody Route route) {
         routenRepository.save(route);
         return route;
     }
@@ -62,7 +53,7 @@ public class RoutenController {
     @DeleteMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteRoute(@RequestParam Integer id) {
+    public void deleteRoute(@PathVariable int hallenId, @RequestParam Integer id) {
         Route route = routenRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
         routenRepository.delete(route);
     }

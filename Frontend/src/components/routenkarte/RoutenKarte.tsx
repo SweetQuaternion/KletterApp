@@ -27,7 +27,7 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
 
   async function getWände() {
     const response = await fetch(
-      "http://localhost:8080/api/waende?hallenId=" + selectedHalle.id,
+      `http://localhost:8080/api/hallen/${selectedHalle.id}/waende`,
     );
     const data = (await response.json()) as Wand[];
     if (!response.ok) {

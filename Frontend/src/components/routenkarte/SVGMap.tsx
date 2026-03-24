@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { type Route, type Wand } from "../../constants/APIResponseTypes";
 import WandInfoBox from "./WandInfoBox";
+import { isAdmin } from "../../constants/keycloak";
 
 interface Props {
   scale: number;
@@ -66,6 +67,17 @@ function SVGMap({
     if (wand == null) setSelectedRoute(null);
   };
 
+  const selectedWandBox = selectedWand
+    ? {
+        boxX:
+          (selectedWand.startX + selectedWand.endX) / 2 -
+          (selectedWand.endY - selectedWand.startY) * 0.05,
+        boxY:
+          (selectedWand.startY + selectedWand.endY) / 2 +
+          (selectedWand.endX - selectedWand.startX) * 0.05,
+      }
+    : null;
+
   return (
     <div className="routenkarte-container">
       <svg
@@ -103,7 +115,7 @@ function SVGMap({
                 strokeWidth={5}
                 style={{ cursor: "pointer" }}
               />
-              {wand.routen.length > 0 && (
+              {(wand.routen.length > 0 || isAdmin()) && (
                 <g>
                   <circle
                     cx={
@@ -134,39 +146,32 @@ function SVGMap({
                   >
                     {wand.routen.length}
                   </text>
-                  {wand === selectedWand &&
-                    (() => {
-                      const boxX =
-                        (wand.startX + wand.endX) / 2 -
-                        (wand.endY - wand.startY) * 0.05;
-                      const boxY =
-                        (wand.startY + wand.endY) / 2 +
-                        (wand.endX - wand.startX) * 0.05;
-                      return (
-                        <g
-                          transform={`translate(${boxX}, ${boxY}) scale(${1 / scale}) translate(${-boxX}, ${-boxY})`}
-                        >
-                          <foreignObject
-                            x={boxX}
-                            y={boxY}
-                            width="9999"
-                            height="9999"
-                            pointerEvents="none"
-                          >
-                            <WandInfoBox
-                              selectedWand={wand}
-                              routen={wand.routen}
-                              setSelectedRoute={setSelectedRoute}
-                              setShowNeueRoute={setShowNeueRoute}
-                            />
-                          </foreignObject>
-                        </g>
-                      );
-                    })()}
                 </g>
               )}
             </g>
           ))}
+
+          {selectedWand && selectedWandBox && (
+            <g
+              onPointerDown={(e) => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
+              transform={`translate(${selectedWandBox.boxX}, ${selectedWandBox.boxY}) scale(${1 / scale}) translate(${-selectedWandBox.boxX}, ${-selectedWandBox.boxY})`}
+            >
+              <foreignObject
+                x={selectedWandBox.boxX}
+                y={selectedWandBox.boxY}
+                width="370"
+                height="300"
+              >
+                <WandInfoBox
+                  selectedWand={selectedWand}
+                  routen={selectedWand.routen}
+                  setSelectedRoute={setSelectedRoute}
+                  setShowNeueRoute={setShowNeueRoute}
+                />
+              </foreignObject>
+            </g>
+          )}
         </g>
       </svg>
     </div>

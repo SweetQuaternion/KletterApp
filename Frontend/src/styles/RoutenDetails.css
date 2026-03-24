@@ -19,14 +19,28 @@
   justify-content: space-between;
   flex-direction: row;
   align-items: baseline;
+  margin-top: -0.5em;
 }
 
 .routen-details-schwierigkeit {
   /* margin-top: -1em; */
   padding: 0;
-  font-size: 2em;
+  font-size: 2.4em;
   font-weight: bold;
   color: var(--espresso);
+}
+
+.tag-colour {
+  display: inline-block;
+  padding: 0.2em 0.7em;
+  margin-bottom: 1em;
+  /* border: 1px solid var(--espresso); */
+  border-radius: 999px;
+  font-size: small;
+  font-family:
+    DM Sans,
+    sans-serif;
+  width: fit-content;
 }
 
 .routen-details b {

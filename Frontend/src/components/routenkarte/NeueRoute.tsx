@@ -1,5 +1,6 @@
 import type { Halle, Wand } from "../../constants/APIResponseTypes";
 import { convertSchwierigkeitToNumber } from "../../constants/APIResponseTypes";
+import { keycloak } from "../../constants/keycloak";
 import "../../styles/RoutenKarte.css";
 
 interface Props {
@@ -32,13 +33,17 @@ const NeueRoute = ({
     };
     console.log("Submitting new route:", data);
 
-    const response = await fetch("http://localhost:8080/api/routen", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `http://localhost:8080/api/hallen/${selectedHalle.id}/routen`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${keycloak.token}`,
+        },
+        body: JSON.stringify(data),
       },
-      body: JSON.stringify(data),
-    });
+    );
 
     if (!response.ok) {
       throw new Error("Failed to create route");

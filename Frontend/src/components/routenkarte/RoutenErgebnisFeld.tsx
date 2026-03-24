@@ -4,13 +4,20 @@ import { convertSchwierigkeitToString } from "../../constants/APIResponseTypes";
 interface Props {
   route: Route;
   setSelectedRoute: (route: Route | null) => void;
+  setShowNeueRoute: (show: boolean) => void;
 }
 
-const RoutenErgebnisFeld = ({ route, setSelectedRoute }: Props) => {
+const RoutenErgebnisFeld = ({
+  route,
+  setSelectedRoute,
+  setShowNeueRoute,
+}: Props) => {
   return (
     <button
       className="routen-ergebnis-feld"
-      onClick={() => setSelectedRoute(route)}
+      onClick={() => {
+        (setSelectedRoute(route), setShowNeueRoute(false));
+      }}
     >
       <div className="left">
         <div

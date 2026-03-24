@@ -37,6 +37,7 @@ const WandInfoBox = ({
             key={route.id}
             route={route}
             setSelectedRoute={setSelectedRoute}
+            setShowNeueRoute={setShowNeueRoute}
           />
         ))}
       </div>

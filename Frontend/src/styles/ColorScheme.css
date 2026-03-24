@@ -25,5 +25,6 @@
   --blau: #04a5e5;
   --lila: #8839ef;
   --schwarz: #232634;
-  /* --zweifarbig: linear-gradient(90deg, #d54444 0%, #ff8c69 100%); */
+  --weiß: #ffffff;
+  --rot-weiß: linear-gradient(90deg, #d54444 0%, #ffe3db 100%);
 }

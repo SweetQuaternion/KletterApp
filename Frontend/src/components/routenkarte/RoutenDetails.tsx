@@ -27,10 +27,21 @@ const RoutenDetails = ({ selectedRoute }: Props) => {
   return (
     <div className="routen-details">
       <div className="routen-details-header">
-        <h2>{selectedRoute?.name || selectedRoute?.farbe}</h2>
+        <h2>{selectedRoute?.name || "Route"}</h2>
+
         <div className="routen-details-schwierigkeit">
           {convertSchwierigkeitToString(selectedRoute.schwierigkeit)}
         </div>
+      </div>
+      <div
+        className="tag-colour"
+        style={{
+          background: `var(--${selectedRoute.farbe})`,
+          color: `${selectedRoute.farbe === "schwarz" ? "white" : "black"}`,
+          border: `${selectedRoute.farbe === "weiß" ? "1px solid black" : "none"}`,
+        }}
+      >
+        {selectedRoute.farbe}
       </div>
       <p className="small">
         geschraubt{" "}
@@ -79,7 +90,7 @@ const RoutenDetails = ({ selectedRoute }: Props) => {
       )}
 
       <b>Beschreibung</b>
-      <p>{selectedRoute.beschreibung || "keine"}</p>
+      <p className="small">{selectedRoute.beschreibung || "keine"}</p>
     </div>
   );
 };
