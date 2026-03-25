@@ -5,6 +5,8 @@ import Header from "../Header";
 import defaultpic from "../../assets/default-pic.png";
 import { useState } from "react";
 import { keycloak } from "../../constants/keycloak.ts";
+import { useMutation } from "@tanstack/react-query";
+import { createUserSyncMutation } from "../../constants/queries.ts";
 
 interface Props {
   user: User | null;
@@ -15,56 +17,14 @@ const Profil = ({ user }: Props) => {
   const [username, setUsername] = useState(user?.name || "");
   const [bildUrl, setBildUrl] = useState(user?.bildUrl || "");
   const [bio, setBio] = useState(user?.bio || "");
-  const [status, setStatus] = useState(""); // speichern... / gespeichert / Fehler / nichts
+
+  const { mutate, isPending, isSuccess, isError } = useMutation(
+    createUserSyncMutation(),
+  );
 
   const handleBildUpload = () => {
     setBildUrl("");
   };
-
-  async function handleSave() {
-    setStatus("speichern...");
-    try {
-      const response = await fetch(
-        `${keycloak.authServerUrl}/realms/${keycloak.realm}/account`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${keycloak.token}`,
-          },
-          body: JSON.stringify({
-            username: username,
-            email: keycloak.tokenParsed?.email,
-            firstName: keycloak.tokenParsed?.given_name,
-            lastName: keycloak.tokenParsed?.family_name,
-          }),
-        },
-      );
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-      const userResponse = await fetch("http://localhost:8080/api/users", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${keycloak.token}`,
-        },
-        body: JSON.stringify({
-          keycloakId: keycloak.tokenParsed?.sub,
-          name: username,
-          bildUrl: bildUrl,
-          bio: bio,
-        }),
-      });
-      if (!userResponse.ok) {
-        throw new Error(await userResponse.text());
-      }
-      setStatus("gespeichert");
-    } catch (e) {
-      console.error(e);
-      setStatus("Fehler beim Speichern");
-    }
-  }
 
   return (
     <>
@@ -125,8 +85,23 @@ const Profil = ({ user }: Props) => {
             <button onClick={() => setIsEditing(!isEditing)}>
               {isEditing ? "Abbrechen" : "Bearbeiten"}
             </button>
-            {isEditing && <button onClick={handleSave}>Speichern</button>}
-            {isEditing && status && <p className="status">{status}</p>}
+            {isEditing && (
+              <button
+                onClick={() =>
+                  mutate({
+                    keycloakId: keycloak.tokenParsed?.sub || "",
+                    name: username,
+                    bildUrl,
+                    bio,
+                  })
+                }
+              >
+                Speichern
+              </button>
+            )}
+            {isPending && <p className="status">speichern...</p>}
+            {isSuccess && <p className="status success">gespeichert!</p>}
+            {isError && <p className="status error">Fehler beim Speichern</p>}
           </div>
         </div>
       )}

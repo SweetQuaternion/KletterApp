@@ -3,6 +3,11 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { keycloak } from "./constants/keycloak.ts";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { fetchUser } from "./constants/queries.ts";
+import type { User } from "./constants/APIResponseTypes.ts";
+
+const queryClient = new QueryClient();
 
 keycloak
   .init({
@@ -10,28 +15,21 @@ keycloak
     silentCheckSsoRedirectUri:
       window.location.origin + "/silent-check-sso.html",
   })
+
   .then(async (authenticated) => {
-    let user = null;
+    let user: User | null = null;
     if (authenticated) {
-      const token = keycloak.token;
-      const keycloakId = keycloak.tokenParsed?.sub;
-      const name = keycloak.tokenParsed?.preferred_username;
-      const response = await fetch("http://localhost:8080/api/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ keycloakId, name }),
-      });
-      user = await response.json();
+      user = await fetchUser(keycloak.subject!, keycloak.tokenParsed?.name!);
       console.log("User authenticated:", user);
     } else {
       console.log("User not authenticated");
     }
+
     createRoot(document.getElementById("root")!).render(
       <StrictMode>
-        <App user={user} />
+        <QueryClientProvider client={queryClient}>
+          <App user={user} />
+        </QueryClientProvider>
       </StrictMode>,
     );
   });

@@ -1,7 +1,8 @@
-import type { Halle, Wand } from "../../constants/APIResponseTypes";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { Halle, Route, Wand } from "../../constants/APIResponseTypes";
 import { convertSchwierigkeitToNumber } from "../../constants/APIResponseTypes";
-import { keycloak } from "../../constants/keycloak";
 import "../../styles/RoutenKarte.css";
+import { createPostRouteMutation } from "../../constants/queries";
 
 interface Props {
   selectedHalle: Halle;
@@ -9,48 +10,30 @@ interface Props {
   setShowNeueRoute: (show: boolean) => void;
 }
 
-const NeueRoute = ({
-  selectedHalle,
-  selectedWand,
-  setShowNeueRoute,
-}: Props) => {
+const NeueRoute = ({ selectedHalle, selectedWand }: Props) => {
+  const queryClient = useQueryClient();
+  const { mutate, isSuccess, isError } = useMutation(createPostRouteMutation());
+
   const handleRoutenSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {
       wand: { hallenId: selectedHalle.id, wandNr: selectedWand.wandNr },
-      name: formData.get("name"),
-      farbe: formData.get("farbe"),
+      name: formData.get("name") as string,
+      farbe: formData.get("farbe") as string,
       schwierigkeit: convertSchwierigkeitToNumber(
         formData.get("schwierigkeit") as string,
       ),
       is_toprope: formData.get("is_toprope") === "on",
       is_vorstieg: formData.get("is_vorstieg") === "on",
-      schrauber: formData.get("schrauber"),
-      schraubdatum: formData.get("schraubdatum"),
+      schrauber: formData.get("schrauber") as string,
+      schraubdatum: formData.get("schraubdatum") as string,
       is_active: true,
-      beschreibung: formData.get("beschreibung"),
-    };
+      beschreibung: formData.get("beschreibung") as string,
+    } as Route;
     console.log("Submitting new route:", data);
-
-    const response = await fetch(
-      `http://localhost:8080/api/hallen/${selectedHalle.id}/routen`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${keycloak.token}`,
-        },
-        body: JSON.stringify(data),
-      },
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to create route");
-    } else {
-      alert("Route erfolgreich hinzugefügt!");
-      setShowNeueRoute(false);
-    }
+    mutate(data);
+    queryClient.invalidateQueries({ queryKey: ["waende", selectedHalle.id] });
   };
 
   return (
@@ -108,6 +91,8 @@ const NeueRoute = ({
           ></textarea>
         </div>
         <button type="submit">Route hinzufügen</button>
+        {isSuccess && <p className="small">Route erfolgreich hinzugefügt!</p>}
+        {isError && <p className="small">Fehler beim Hinzufügen der Route</p>}
       </form>
     </div>
   );

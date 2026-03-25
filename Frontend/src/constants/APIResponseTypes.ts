@@ -19,8 +19,7 @@ export type Wand = {
 
 export type Route = {
   id: number;
-  hallenId: number;
-  wandNr: number;
+  wand: { hallenId: number; wandNr: number };
   name: string;
   farbe: string;
   schwierigkeit: number;
@@ -33,38 +32,11 @@ export type Route = {
 };
 
 export type User = {
-  id: number;
+  keycloakId: string;
   name: string;
   bildUrl: string;
   bio: string;
 };
-
-export type LoginRequest = {
-  email: string;
-  password: string;
-};
-
-export type RegisterRequest = {
-  name: string;
-  email: string;
-  password: string;
-};
-
-export type AuthResponse = {
-  token: string;
-  user: User;
-};
-
-// export const colors: Record<string, string> = {
-//   rot: "#FF0000",
-//   grün: "#00FF00",
-//   blau: "#0000FF",
-//   gelb: "#FFFF00",
-//   orange: "#FFA500",
-//   lila: "#800080",
-//   schwarz: "#000000",
-//   weiß: "#FFFFFF",
-// };
 
 export const convertSchwierigkeitToString = (schwierigkeit: number): string => {
   if (schwierigkeit % 1 === 0) return schwierigkeit.toString();

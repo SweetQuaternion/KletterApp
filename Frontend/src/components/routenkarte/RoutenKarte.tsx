@@ -9,9 +9,11 @@ import "../../styles/RoutenKarte.css";
 import HallenInfoBox from "./HallenInfoBox";
 import SVGMap from "./SVGMap";
 import Knopfsis from "./Knopfsis";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import RoutenDetails from "./RoutenDetails";
 import NeueRoute from "./NeueRoute";
+import { createWändeQueryOptions } from "../../constants/queries";
+import { useQuery } from "@tanstack/react-query";
 
 interface Props {
   selectedHalle: Halle;
@@ -20,34 +22,18 @@ interface Props {
 
 const RoutenKarte = ({ selectedHalle, user }: Props) => {
   const [scale, setScale] = useState(1);
-  const [wände, setWände] = useState<Wand[]>([]);
   const [selectedWand, setSelectedWand] = useState<Wand | null>(null);
   const [selectedRoute, setSelectedRoute] = useState<Route | null>(null);
   const [showNeueRoute, setShowNeueRoute] = useState(false);
 
-  async function getWände() {
-    const response = await fetch(
-      `http://localhost:8080/api/hallen/${selectedHalle.id}/waende`,
-    );
-    const data = (await response.json()) as Wand[];
-    if (!response.ok) {
-      console.error("Fehler beim Laden der Wände:", response.statusText);
-      return;
-    }
-    console.log("Fetched wände:", data);
-    setWände(data);
-  }
-
-  useEffect(() => {
-    getWände();
-  }, []);
+  const { data } = useQuery(createWändeQueryOptions(selectedHalle.id));
 
   return (
     <>
       <SVGMap
         scale={scale}
         setScale={setScale}
-        wände={wände}
+        wände={data || []}
         selectedWand={selectedWand}
         setSelectedWand={setSelectedWand}
         setSelectedRoute={setSelectedRoute}

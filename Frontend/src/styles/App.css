@@ -60,6 +60,10 @@ button:hover {
     sans-serif;
 }
 
+.small {
+  font-size: small;
+}
+
 .bottom {
   position: fixed;
   bottom: 2em;

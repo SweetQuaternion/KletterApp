@@ -161,7 +161,7 @@ function SVGMap({
                 x={selectedWandBox.boxX}
                 y={selectedWandBox.boxY}
                 width="370"
-                height="300"
+                height={selectedWand.routen.length * 40 + 200}
               >
                 <WandInfoBox
                   selectedWand={selectedWand}
