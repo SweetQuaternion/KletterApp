@@ -4,7 +4,7 @@ import RoutenKarte from "./components/routenkarte/RoutenKarte";
 import Profil from "./components/profil/Profil";
 import Willkommen from "./components/login/Willkommen";
 import { useState } from "react";
-import type { Halle, User } from "./constants/APIResponseTypes";
+import type { Halle, User } from "./api/model";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 

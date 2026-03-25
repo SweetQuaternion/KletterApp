@@ -1,4 +1,3 @@
-import type { User } from "../../constants/APIResponseTypes";
 import "../../styles/App.css";
 import "../../styles/Profil.css";
 import Header from "../Header";
@@ -7,6 +6,7 @@ import { useState } from "react";
 import { keycloak } from "../../constants/keycloak.ts";
 import { useMutation } from "@tanstack/react-query";
 import { createUserSyncMutation } from "../../constants/queries.ts";
+import type { User } from "../../api/model/user.ts";
 
 interface Props {
   user: User | null;

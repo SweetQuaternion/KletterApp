@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { type Route, type Wand } from "../../constants/APIResponseTypes";
+import type { Route, Wand } from "../../api/model";
 import WandInfoBox from "./WandInfoBox";
 import { isAdmin } from "../../constants/keycloak";
 
@@ -115,7 +115,7 @@ function SVGMap({
                 strokeWidth={5}
                 style={{ cursor: "pointer" }}
               />
-              {(wand.routen.length > 0 || isAdmin()) && (
+              {(wand.routen?.length || 0) > 0 || isAdmin() ? (
                 <g>
                   <circle
                     cx={
@@ -144,10 +144,10 @@ function SVGMap({
                     textAnchor="middle"
                     dominantBaseline="central"
                   >
-                    {wand.routen.length}
+                    {wand.routen?.length || 0}
                   </text>
                 </g>
-              )}
+              ) : null}
             </g>
           ))}
 
@@ -161,11 +161,15 @@ function SVGMap({
                 x={selectedWandBox.boxX}
                 y={selectedWandBox.boxY}
                 width="370"
-                height={selectedWand.routen.length * 40 + 200}
+                height={
+                  (selectedWand.routen?.length || 0) * 40 +
+                  (isAdmin() ? 40 : 0) +
+                  160
+                }
               >
                 <WandInfoBox
                   selectedWand={selectedWand}
-                  routen={selectedWand.routen}
+                  routen={selectedWand.routen || []}
                   setSelectedRoute={setSelectedRoute}
                   setShowNeueRoute={setShowNeueRoute}
                 />

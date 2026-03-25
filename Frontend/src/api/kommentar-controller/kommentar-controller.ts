@@ -9,9 +9,14 @@ import {
   useQuery
 } from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -101,7 +106,7 @@ export const getGetKommentareByRouteIDQueryKey = (params?: GetKommentareByRouteI
     }
 
     
-export const getGetKommentareByRouteIDQueryOptions = <TData = Awaited<ReturnType<typeof getKommentareByRouteID>>, TError = void>(params?: GetKommentareByRouteIDParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>, fetch?: RequestInit}
+export const getGetKommentareByRouteIDQueryOptions = <TData = Awaited<ReturnType<typeof getKommentareByRouteID>>, TError = void>(params?: GetKommentareByRouteIDParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -116,22 +121,46 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetKommentareByRouteIDQueryResult = NonNullable<Awaited<ReturnType<typeof getKommentareByRouteID>>>
 export type GetKommentareByRouteIDQueryError = void
 
 
+export function useGetKommentareByRouteID<TData = Awaited<ReturnType<typeof getKommentareByRouteID>>, TError = void>(
+ params: undefined |  GetKommentareByRouteIDParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getKommentareByRouteID>>,
+          TError,
+          Awaited<ReturnType<typeof getKommentareByRouteID>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetKommentareByRouteID<TData = Awaited<ReturnType<typeof getKommentareByRouteID>>, TError = void>(
+ params?: GetKommentareByRouteIDParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getKommentareByRouteID>>,
+          TError,
+          Awaited<ReturnType<typeof getKommentareByRouteID>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetKommentareByRouteID<TData = Awaited<ReturnType<typeof getKommentareByRouteID>>, TError = void>(
+ params?: GetKommentareByRouteIDParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetKommentareByRouteID<TData = Awaited<ReturnType<typeof getKommentareByRouteID>>, TError = void>(
- params?: GetKommentareByRouteIDParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>, fetch?: RequestInit}
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetKommentareByRouteIDParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetKommentareByRouteIDQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -230,13 +259,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const useAddKommentar = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addKommentar>>, TError,{data: Kommentar}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof addKommentar>>,
         TError,
         {data: Kommentar},
         TContext
       > => {
-      return useMutation(getAddKommentarMutationOptions(options));
+      return useMutation(getAddKommentarMutationOptions(options), queryClient);
     }
     export type deleteKommentarResponse204 = {
   data: void
@@ -335,13 +364,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const useDeleteKommentar = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteKommentar>>, TError,{params: DeleteKommentarParams}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteKommentar>>,
         TError,
         {params: DeleteKommentarParams},
         TContext
       > => {
-      return useMutation(getDeleteKommentarMutationOptions(options));
+      return useMutation(getDeleteKommentarMutationOptions(options), queryClient);
     }
     export type updateKommentarResponse200 = {
   data: Blob
@@ -440,12 +469,12 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const useUpdateKommentar = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateKommentar>>, TError,{params: UpdateKommentarParams}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateKommentar>>,
         TError,
         {params: UpdateKommentarParams},
         TContext
       > => {
-      return useMutation(getUpdateKommentarMutationOptions(options));
+      return useMutation(getUpdateKommentarMutationOptions(options), queryClient);
     }
     

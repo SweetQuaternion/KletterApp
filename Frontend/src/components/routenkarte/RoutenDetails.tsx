@@ -1,10 +1,8 @@
 import { useState } from "react";
-import {
-  convertSchwierigkeitToString,
-  type Route,
-} from "../../constants/APIResponseTypes";
+import { convertSchwierigkeitToString } from "../../constants/conversions";
 import { isAuthenticated } from "../../constants/keycloak";
 import "../../styles/RoutenDetails.css";
+import type { Route } from "../../api/model/route";
 
 interface Props {
   selectedRoute: Route;
@@ -30,7 +28,7 @@ const RoutenDetails = ({ selectedRoute }: Props) => {
         <h2>{selectedRoute?.name || "Route"}</h2>
 
         <div className="routen-details-schwierigkeit">
-          {convertSchwierigkeitToString(selectedRoute.schwierigkeit)}
+          {convertSchwierigkeitToString(selectedRoute.schwierigkeit || 0)}
         </div>
       </div>
       <div
@@ -38,7 +36,7 @@ const RoutenDetails = ({ selectedRoute }: Props) => {
         style={{
           background: `var(--${selectedRoute.farbe})`,
           color: `${selectedRoute.farbe === "schwarz" ? "white" : "black"}`,
-          border: `${selectedRoute.farbe === "weiß" ? "1px solid black" : "none"}`,
+          border: `${selectedRoute.farbe === "weiß" ? "1px solid grey" : "none"}`,
         }}
       >
         {selectedRoute.farbe}
@@ -56,41 +54,62 @@ const RoutenDetails = ({ selectedRoute }: Props) => {
       {isAuthenticated() && (
         <>
           <div className="routen-details-badges">
-            <button>Favorit</button>
-            <button>Projekt</button>
-            <button onClick={() => setAscentToggled(!ascentToggled)}>
+            <button className="favorit" title="Als Favorit markieren">
+              <div className="icon-wrapper">
+                <img src="/favorite.svg" />
+              </div>
+            </button>
+            <button className="projekt" title="Als Projekt markieren">
+              <div className="icon-wrapper">
+                <img src="/projekt.svg" />
+              </div>
+            </button>
+            <button
+              onClick={() => setAscentToggled(!ascentToggled)}
+              title="Als geschafft markieren"
+            >
               Geschafft
             </button>
           </div>
           {ascentToggled && (
-            <form onSubmit={handleAscent}>
-              <div className="form-group">
-                <label htmlFor="sicherungsart">Sicherungsart</label>
-                <select name="sicherungsart" id="sicherungsart">
-                  <option value="toprope">Toprope</option>
-                  <option value="vorstieg">Vorstieg</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label htmlFor="Style">Style</label>
-                <select name="style" id="style">
-                  <option value="onsight">onsight</option>
-                  <option value="flash">flash</option>
-                  <option value="redpoint">redpoint</option>
-                  <option value="pinkpoint">pinkpoint</option>
-                  <option value="toprope">toprope</option>
-                  <option value="hangdog">hangdog</option>
-                  <option value="attempt">attempt</option>
-                </select>
-              </div>
-              <button type="submit">Speichern</button>
-            </form>
+            <>
+              <b>Glückwunsch!</b>
+              <form onSubmit={handleAscent}>
+                <div className="form-group">
+                  <label htmlFor="sicherungsart">Sicherungsart</label>
+                  <select name="sicherungsart" id="sicherungsart">
+                    <option value="toprope">Toprope</option>
+                    <option value="vorstieg">Vorstieg</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="Style">Style</label>
+                  <select name="style" id="style">
+                    <option value="onsight">onsight</option>
+                    <option value="flash">flash</option>
+                    <option value="redpoint">redpoint</option>
+                    <option value="pinkpoint">pinkpoint</option>
+                    <option value="toprope">toprope</option>
+                    <option value="hangdog">hangdog</option>
+                    <option value="attempt">attempt</option>
+                  </select>
+                </div>
+                <button type="submit">Speichern</button>
+              </form>
+            </>
           )}
         </>
       )}
 
-      <b>Beschreibung</b>
-      <p className="small">{selectedRoute.beschreibung || "keine"}</p>
+      {!ascentToggled && (
+        <>
+          <b>Beschreibung</b>
+          <p className="small">{selectedRoute.beschreibung || "keine"}</p>
+
+          <b>Kommentare</b>
+          <p className="small">keine</p>
+        </>
+      )}
     </div>
   );
 };

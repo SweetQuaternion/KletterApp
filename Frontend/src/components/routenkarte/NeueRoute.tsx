@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Halle, Route, Wand } from "../../constants/APIResponseTypes";
-import { convertSchwierigkeitToNumber } from "../../constants/APIResponseTypes";
+import type { Halle, Route, Wand } from "../../api/model";
+import { convertSchwierigkeitToNumber } from "../../constants/conversions";
 import "../../styles/RoutenKarte.css";
 import { createPostRouteMutation } from "../../constants/queries";
 

@@ -2,7 +2,7 @@ import "../styles/App.css";
 import "../styles/Header.css";
 import logo from "../assets/react.svg";
 import defaultpic from "../assets/default-pic.png";
-import type { User } from "../constants/APIResponseTypes";
+import type { User } from "../api/model/user";
 import { login, register, logout } from "../constants/keycloak";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";

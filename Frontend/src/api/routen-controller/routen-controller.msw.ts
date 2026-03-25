@@ -25,7 +25,7 @@ export const getUpdateRouteResponseMock = (overrideResponse: Partial<Extract<Arr
 
 
 export const getGetRoutenByHallenIdMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
-  return http.get('*/api/routen', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+  return http.get('*/api/hallen/:hallenId/routen', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
   
   const binaryBody = overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
@@ -41,7 +41,7 @@ export const getGetRoutenByHallenIdMockHandler = (overrideResponse?: ArrayBuffer
 }
 
 export const getAddRouteMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
-  return http.post('*/api/routen', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  return http.post('*/api/hallen/:hallenId/routen', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
   
   const binaryBody = overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
@@ -57,7 +57,7 @@ export const getAddRouteMockHandler = (overrideResponse?: ArrayBuffer | ((info: 
 }
 
 export const getDeleteRouteMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
-  return http.delete('*/api/routen', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  return http.delete('*/api/hallen/:hallenId/routen', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
   if (typeof overrideResponse === 'function') {await overrideResponse(info); }
   
     return new HttpResponse(null,
@@ -67,7 +67,7 @@ export const getDeleteRouteMockHandler = (overrideResponse?: void | ((info: Para
 }
 
 export const getUpdateRouteMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
-  return http.patch('*/api/routen', async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
+  return http.patch('*/api/hallen/:hallenId/routen', async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
   
   const binaryBody = overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)

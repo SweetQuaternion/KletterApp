@@ -60,6 +60,62 @@
 
 .routen-details-badges {
   display: flex;
+  flex-direction: row;
   gap: 0.5em;
   margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+b {
+  font-size: 0.9em;
+  font-weight: bold;
+  color: var(--espresso);
+  margin-top: 1.5em;
+}
+
+.favorit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--goldgelb);
+}
+
+.favorit:hover {
+  background-color: var(--goldgelb);
+  box-shadow: 0px 0px 10px 2px var(--goldgelb);
+}
+
+.favorit .marked {
+  box-shadow: 0px 0px 10px 5px var(--goldgelb);
+}
+
+.projekt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--pfirsichorange);
+  margin-right: 1.5em;
+}
+
+.projekt:hover {
+  background-color: var(--pfirsichorange);
+  box-shadow: 0px 0px 10px 2px var(--pfirsichorange);
+}
+
+.projekt .marked {
+  box-shadow: 0px 0px 10px 5px var(--pfirsichorange);
+}
+
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1em;
+  max-width: 1em;
+  aspect-ratio: 1/1;
+}
+
+.icon-wrapper img {
+  width: 100%;
+  aspect-ratio: 1/1;
 }

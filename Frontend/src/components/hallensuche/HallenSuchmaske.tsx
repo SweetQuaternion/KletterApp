@@ -2,9 +2,9 @@ import { useState } from "react";
 import "../../styles/HallenFinder.css";
 import "../../styles/Form.css";
 import HallenErgebnisFeld from "./HallenErgebnisFeld";
-import { type Halle } from "../../constants/APIResponseTypes";
 import { useQuery } from "@tanstack/react-query";
 import { createHallenQueryOptions } from "../../constants/queries";
+import type { Halle } from "../../api/model/halle";
 
 interface Props {
   setSelectedHalle: (id: Halle) => void;

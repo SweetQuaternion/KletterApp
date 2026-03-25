@@ -1,7 +1,7 @@
 import { Link } from "react-router";
-import type { User } from "../../constants/APIResponseTypes";
 import "../../styles/App.css";
 import Header from "../Header";
+import type { User } from "../../api/model/user";
 
 interface Props {
   user: User | null;

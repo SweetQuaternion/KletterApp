@@ -25,7 +25,7 @@ export const getUpdateWandResponseMock = (overrideResponse: Partial<Extract<Arra
 
 
 export const getGetWaendeByHallenIdMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
-  return http.get('*/api/waende', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+  return http.get('*/api/hallen/:hallenId/waende', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
   
   const binaryBody = overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
@@ -41,7 +41,7 @@ export const getGetWaendeByHallenIdMockHandler = (overrideResponse?: ArrayBuffer
 }
 
 export const getAddWandMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
-  return http.post('*/api/waende', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  return http.post('*/api/hallen/:hallenId/waende', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
   
   const binaryBody = overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
@@ -57,7 +57,7 @@ export const getAddWandMockHandler = (overrideResponse?: ArrayBuffer | ((info: P
 }
 
 export const getDeleteWandMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
-  return http.delete('*/api/waende', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  return http.delete('*/api/hallen/:hallenId/waende', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
   if (typeof overrideResponse === 'function') {await overrideResponse(info); }
   
     return new HttpResponse(null,
@@ -67,7 +67,7 @@ export const getDeleteWandMockHandler = (overrideResponse?: void | ((info: Param
 }
 
 export const getUpdateWandMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
-  return http.patch('*/api/waende', async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
+  return http.patch('*/api/hallen/:hallenId/waende', async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
   
   const binaryBody = overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)

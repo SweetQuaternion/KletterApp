@@ -16,42 +16,38 @@ import type {
   RequestHandlerOptions
 } from 'msw';
 
-
-export const getFindHalleResponseMock = (): ArrayBuffer => (Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.number.int(), name: faker.string.alpha({length: {min: 10, max: 20}}), adresse: faker.string.alpha({length: {min: 10, max: 20}}), betreiber: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])})))
-
-export const getAddHalleResponseMock = (overrideResponse: Partial<Extract<ArrayBuffer, object>> = {}): ArrayBuffer => ({id: faker.number.int(), name: faker.string.alpha({length: {min: 10, max: 20}}), adresse: faker.string.alpha({length: {min: 10, max: 20}}), betreiber: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ...overrideResponse})
-
-export const getUpdateHalleResponseMock = (overrideResponse: Partial<Extract<ArrayBuffer, object>> = {}): ArrayBuffer => ({id: faker.number.int(), name: faker.string.alpha({length: {min: 10, max: 20}}), adresse: faker.string.alpha({length: {min: 10, max: 20}}), betreiber: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ...overrideResponse})
+import type {
+  Halle
+} from '../model';
 
 
-export const getFindHalleMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
+export const getFindHalleResponseMock = (): Halle[] => (Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.number.int(), name: faker.string.alpha({length: {min: 10, max: 20}}), adresse: faker.string.alpha({length: {min: 10, max: 20}}), betreiber: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])})))
+
+export const getAddHalleResponseMock = (overrideResponse: Partial<Extract<Halle, object>> = {}): Halle => ({id: faker.number.int(), name: faker.string.alpha({length: {min: 10, max: 20}}), adresse: faker.string.alpha({length: {min: 10, max: 20}}), betreiber: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ...overrideResponse})
+
+export const getUpdateHalleResponseMock = (overrideResponse: Partial<Extract<Halle, object>> = {}): Halle => ({id: faker.number.int(), name: faker.string.alpha({length: {min: 10, max: 20}}), adresse: faker.string.alpha({length: {min: 10, max: 20}}), betreiber: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ...overrideResponse})
+
+
+export const getFindHalleMockHandler = (overrideResponse?: Halle[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Halle[]> | Halle[]), options?: RequestHandlerOptions) => {
   return http.get('*/api/hallen', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
   
-  const binaryBody = overrideResponse !== undefined
+  
+    return HttpResponse.json(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getFindHalleResponseMock();
-    return HttpResponse.arrayBuffer(
-      binaryBody instanceof ArrayBuffer
-        ? binaryBody
-        : new ArrayBuffer(0),
-      { status: 200,
-        headers: { 'Content-Type': 'application/octet-stream' }
+    : getFindHalleResponseMock(),
+      { status: 200
       })
   }, options)
 }
 
-export const getAddHalleMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
+export const getAddHalleMockHandler = (overrideResponse?: Halle | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Halle> | Halle), options?: RequestHandlerOptions) => {
   return http.post('*/api/hallen', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
   
-  const binaryBody = overrideResponse !== undefined
+  
+    return HttpResponse.json(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getAddHalleResponseMock();
-    return HttpResponse.arrayBuffer(
-      binaryBody instanceof ArrayBuffer
-        ? binaryBody
-        : new ArrayBuffer(0),
-      { status: 201,
-        headers: { 'Content-Type': 'application/octet-stream' }
+    : getAddHalleResponseMock(),
+      { status: 201
       })
   }, options)
 }
@@ -66,18 +62,14 @@ export const getDeleteHalleMockHandler = (overrideResponse?: void | ((info: Para
   }, options)
 }
 
-export const getUpdateHalleMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
+export const getUpdateHalleMockHandler = (overrideResponse?: Halle | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<Halle> | Halle), options?: RequestHandlerOptions) => {
   return http.patch('*/api/hallen', async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
   
-  const binaryBody = overrideResponse !== undefined
+  
+    return HttpResponse.json(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateHalleResponseMock();
-    return HttpResponse.arrayBuffer(
-      binaryBody instanceof ArrayBuffer
-        ? binaryBody
-        : new ArrayBuffer(0),
-      { status: 200,
-        headers: { 'Content-Type': 'application/octet-stream' }
+    : getUpdateHalleResponseMock(),
+      { status: 200
       })
   }, options)
 }

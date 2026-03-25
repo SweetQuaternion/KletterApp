@@ -9,9 +9,14 @@ import {
   useQuery
 } from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -92,7 +97,7 @@ export const getGetUserRoutenStatusListQueryKey = () => {
     }
 
     
-export const getGetUserRoutenStatusListQueryOptions = <TData = Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError = void>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError, TData>, fetch?: RequestInit}
+export const getGetUserRoutenStatusListQueryOptions = <TData = Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError = void>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -107,22 +112,46 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetUserRoutenStatusListQueryResult = NonNullable<Awaited<ReturnType<typeof getUserRoutenStatusList>>>
 export type GetUserRoutenStatusListQueryError = void
 
 
+export function useGetUserRoutenStatusList<TData = Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError = void>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUserRoutenStatusList>>,
+          TError,
+          Awaited<ReturnType<typeof getUserRoutenStatusList>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetUserRoutenStatusList<TData = Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError = void>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUserRoutenStatusList>>,
+          TError,
+          Awaited<ReturnType<typeof getUserRoutenStatusList>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetUserRoutenStatusList<TData = Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError = void>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetUserRoutenStatusList<TData = Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError = void>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError, TData>, fetch?: RequestInit}
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetUserRoutenStatusListQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -221,13 +250,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const useCreateUserRoutenStatus = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createUserRoutenStatus>>, TError,{data: UserRoutenStatus}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createUserRoutenStatus>>,
         TError,
         {data: UserRoutenStatus},
         TContext
       > => {
-      return useMutation(getCreateUserRoutenStatusMutationOptions(options));
+      return useMutation(getCreateUserRoutenStatusMutationOptions(options), queryClient);
     }
     export type deleteUserRoutenStatusResponse204 = {
   data: void
@@ -326,13 +355,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const useDeleteUserRoutenStatus = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUserRoutenStatus>>, TError,{params?: DeleteUserRoutenStatusParams}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteUserRoutenStatus>>,
         TError,
         {params?: DeleteUserRoutenStatusParams},
         TContext
       > => {
-      return useMutation(getDeleteUserRoutenStatusMutationOptions(options));
+      return useMutation(getDeleteUserRoutenStatusMutationOptions(options), queryClient);
     }
     export type updateUserRoutenStatusResponse200 = {
   data: Blob
@@ -425,12 +454,12 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const useUpdateUserRoutenStatus = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateUserRoutenStatus>>, TError,{data: UserRoutenStatus}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateUserRoutenStatus>>,
         TError,
         {data: UserRoutenStatus},
         TContext
       > => {
-      return useMutation(getUpdateUserRoutenStatusMutationOptions(options));
+      return useMutation(getUpdateUserRoutenStatusMutationOptions(options), queryClient);
     }
     

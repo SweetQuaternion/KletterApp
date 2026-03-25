@@ -1,7 +1,7 @@
-import type { Halle, User } from "../../constants/APIResponseTypes";
 import "../../styles/App.css";
 import HallenSuchmaske from "./HallenSuchmaske";
 import Header from "../Header";
+import type { Halle, User } from "../../api/model";
 
 interface Props {
   user: User | null;

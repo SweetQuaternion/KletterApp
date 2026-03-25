@@ -29,7 +29,7 @@ public class HallenController {
     @Autowired
     private HallenRepository hallenRepository;
     
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public List<Halle> findHalle(@RequestParam(required = false) String name) {
         if (name == null || name.isEmpty()) {
             return hallenRepository.findAll();
@@ -37,7 +37,7 @@ public class HallenController {
         return hallenRepository.search(name);
     }
 
-    @PostMapping
+    @PostMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Halle addHalle(@RequestBody Halle halle) {
@@ -45,7 +45,7 @@ public class HallenController {
         return halle;
     }
     
-    @PatchMapping
+    @PatchMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public Halle updateHalle(@RequestBody Halle halle) {

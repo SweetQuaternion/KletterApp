@@ -1,5 +1,5 @@
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
-import type { Halle, Route, User, Wand } from "./APIResponseTypes";
+import type { Halle, Route, User, Wand } from "../api/model";
 import { keycloak } from "./keycloak";
 
 export function createHallenQueryOptions(search: String | null) {

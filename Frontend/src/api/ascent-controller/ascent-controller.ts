@@ -9,9 +9,14 @@ import {
   useQuery
 } from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -100,7 +105,7 @@ export const getFindAscentsByUserIdQueryKey = (params?: FindAscentsByUserIdParam
     }
 
     
-export const getFindAscentsByUserIdQueryOptions = <TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(params?: FindAscentsByUserIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>, fetch?: RequestInit}
+export const getFindAscentsByUserIdQueryOptions = <TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(params?: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -115,22 +120,46 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type FindAscentsByUserIdQueryResult = NonNullable<Awaited<ReturnType<typeof findAscentsByUserId>>>
 export type FindAscentsByUserIdQueryError = void
 
 
+export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(
+ params: undefined |  FindAscentsByUserIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof findAscentsByUserId>>,
+          TError,
+          Awaited<ReturnType<typeof findAscentsByUserId>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(
+ params?: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof findAscentsByUserId>>,
+          TError,
+          Awaited<ReturnType<typeof findAscentsByUserId>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(
+ params?: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(
- params?: FindAscentsByUserIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>, fetch?: RequestInit}
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getFindAscentsByUserIdQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -229,13 +258,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const useAddAscent = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addAscent>>, TError,{data: Ascent}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof addAscent>>,
         TError,
         {data: Ascent},
         TContext
       > => {
-      return useMutation(getAddAscentMutationOptions(options));
+      return useMutation(getAddAscentMutationOptions(options), queryClient);
     }
     export type deleteAscentResponse204 = {
   data: void
@@ -334,13 +363,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const useDeleteAscent = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAscent>>, TError,{params: DeleteAscentParams}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteAscent>>,
         TError,
         {params: DeleteAscentParams},
         TContext
       > => {
-      return useMutation(getDeleteAscentMutationOptions(options));
+      return useMutation(getDeleteAscentMutationOptions(options), queryClient);
     }
     export type updateAscentResponse200 = {
   data: Blob
@@ -433,12 +462,12 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const useUpdateAscent = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAscent>>, TError,{data: Ascent}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateAscent>>,
         TError,
         {data: Ascent},
         TContext
       > => {
-      return useMutation(getUpdateAscentMutationOptions(options));
+      return useMutation(getUpdateAscentMutationOptions(options), queryClient);
     }
     

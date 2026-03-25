@@ -1,9 +1,4 @@
-import {
-  type Route,
-  type Halle,
-  type User,
-  type Wand,
-} from "../../constants/APIResponseTypes";
+import { type Route, type Halle, type User, type Wand } from "../../api/model";
 import Header from "./../Header";
 import "../../styles/RoutenKarte.css";
 import HallenInfoBox from "./HallenInfoBox";

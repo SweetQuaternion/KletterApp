@@ -1,4 +1,4 @@
-import type { Route, Wand } from "../../constants/APIResponseTypes";
+import type { Route, Wand } from "../../api/model";
 import RoutenErgebnisFeld from "./RoutenErgebnisFeld";
 import { isAdmin } from "../../constants/keycloak.ts";
 

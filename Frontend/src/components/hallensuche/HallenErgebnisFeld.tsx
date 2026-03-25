@@ -1,6 +1,6 @@
-import { type Halle } from "../../constants/APIResponseTypes";
 import { Link } from "react-router";
 import "../../styles/HallenFinder.css";
+import type { Halle } from "../../api/model/halle";
 
 interface Props {
   ergebnis: Halle;

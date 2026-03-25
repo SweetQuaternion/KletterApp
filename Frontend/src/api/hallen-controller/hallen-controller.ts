@@ -9,9 +9,14 @@ import {
   useQuery
 } from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -29,7 +34,7 @@ import type {
 
 
 export type findHalleResponse200 = {
-  data: Blob
+  data: Halle[]
   status: 200
 }
 
@@ -100,7 +105,7 @@ export const getFindHalleQueryKey = (params?: FindHalleParams,) => {
     }
 
     
-export const getFindHalleQueryOptions = <TData = Awaited<ReturnType<typeof findHalle>>, TError = void>(params?: FindHalleParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>, fetch?: RequestInit}
+export const getFindHalleQueryOptions = <TData = Awaited<ReturnType<typeof findHalle>>, TError = void>(params?: FindHalleParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -115,22 +120,46 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type FindHalleQueryResult = NonNullable<Awaited<ReturnType<typeof findHalle>>>
 export type FindHalleQueryError = void
 
 
+export function useFindHalle<TData = Awaited<ReturnType<typeof findHalle>>, TError = void>(
+ params: undefined |  FindHalleParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof findHalle>>,
+          TError,
+          Awaited<ReturnType<typeof findHalle>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useFindHalle<TData = Awaited<ReturnType<typeof findHalle>>, TError = void>(
+ params?: FindHalleParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof findHalle>>,
+          TError,
+          Awaited<ReturnType<typeof findHalle>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useFindHalle<TData = Awaited<ReturnType<typeof findHalle>>, TError = void>(
+ params?: FindHalleParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useFindHalle<TData = Awaited<ReturnType<typeof findHalle>>, TError = void>(
- params?: FindHalleParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>, fetch?: RequestInit}
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: FindHalleParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getFindHalleQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
@@ -139,7 +168,7 @@ export function useFindHalle<TData = Awaited<ReturnType<typeof findHalle>>, TErr
 
 
 export type addHalleResponse201 = {
-  data: Blob
+  data: Halle
   status: 201
 }
 
@@ -229,13 +258,13 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const useAddHalle = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addHalle>>, TError,{data: Halle}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof addHalle>>,
         TError,
         {data: Halle},
         TContext
       > => {
-      return useMutation(getAddHalleMutationOptions(options));
+      return useMutation(getAddHalleMutationOptions(options), queryClient);
     }
     export type deleteHalleResponse204 = {
   data: void
@@ -334,16 +363,16 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const useDeleteHalle = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteHalle>>, TError,{params: DeleteHalleParams}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteHalle>>,
         TError,
         {params: DeleteHalleParams},
         TContext
       > => {
-      return useMutation(getDeleteHalleMutationOptions(options));
+      return useMutation(getDeleteHalleMutationOptions(options), queryClient);
     }
     export type updateHalleResponse200 = {
-  data: Blob
+  data: Halle
   status: 200
 }
 
@@ -433,12 +462,12 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export const useUpdateHalle = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHalle>>, TError,{data: Halle}, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateHalle>>,
         TError,
         {data: Halle},
         TContext
       > => {
-      return useMutation(getUpdateHalleMutationOptions(options));
+      return useMutation(getUpdateHalleMutationOptions(options), queryClient);
     }
     

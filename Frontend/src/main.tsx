@@ -5,7 +5,7 @@ import App from "./App.tsx";
 import { keycloak } from "./constants/keycloak.ts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fetchUser } from "./constants/queries.ts";
-import type { User } from "./constants/APIResponseTypes.ts";
+import type { User } from "./api/model";
 
 const queryClient = new QueryClient();
 
