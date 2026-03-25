@@ -34,7 +34,7 @@ import type {
 
 
 export type findAscentsByUserIdResponse200 = {
-  data: Blob
+  data: Ascent[]
   status: 200
 }
 
@@ -168,7 +168,7 @@ export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAsc
 
 
 export type addAscentResponse201 = {
-  data: Blob
+  data: Ascent
   status: 201
 }
 
@@ -372,7 +372,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(getDeleteAscentMutationOptions(options), queryClient);
     }
     export type updateAscentResponse200 = {
-  data: Blob
+  data: Ascent
   status: 200
 }
 

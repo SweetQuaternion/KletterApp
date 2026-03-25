@@ -63,6 +63,7 @@ const Profil = ({ user }: Props) => {
                 <p
                   className="sans-serif"
                   contentEditable="plaintext-only"
+                  data-placeholder="Hier könnte deine Bio stehen..."
                   suppressContentEditableWarning
                   onBlur={(e) => setBio(e.currentTarget.textContent)}
                 >

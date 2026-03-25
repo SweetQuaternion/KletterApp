@@ -7,8 +7,8 @@ import Knopfsis from "./Knopfsis";
 import { useState } from "react";
 import RoutenDetails from "./RoutenDetails";
 import NeueRoute from "./NeueRoute";
-import { createWändeQueryOptions } from "../../constants/queries";
 import { useQuery } from "@tanstack/react-query";
+import { getGetWaendeByHallenIdQueryOptions } from "../../api/wand-controller/wand-controller";
 
 interface Props {
   selectedHalle: Halle;
@@ -21,14 +21,16 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
   const [selectedRoute, setSelectedRoute] = useState<Route | null>(null);
   const [showNeueRoute, setShowNeueRoute] = useState(false);
 
-  const { data } = useQuery(createWändeQueryOptions(selectedHalle.id));
+  const { data } = useQuery(
+    getGetWaendeByHallenIdQueryOptions(selectedHalle.id),
+  );
 
   return (
     <>
       <SVGMap
         scale={scale}
         setScale={setScale}
-        wände={data || []}
+        wände={data?.data || []}
         selectedWand={selectedWand}
         setSelectedWand={setSelectedWand}
         setSelectedRoute={setSelectedRoute}

@@ -1,74 +1,22 @@
-import { mutationOptions, queryOptions } from "@tanstack/react-query";
-import type { Halle, Route, User, Wand } from "../api/model";
+import { mutationOptions } from "@tanstack/react-query";
+import type { User } from "../api/model";
 import { keycloak } from "./keycloak";
-
-export function createHallenQueryOptions(search: String | null) {
-  return queryOptions({
-    queryKey: ["hallen", search],
-    queryFn: async (): Promise<Halle[]> => {
-      const response = await fetch(
-        `http://localhost:8080/api/hallen?name=${search}`,
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch hallen");
-      }
-      return (await response.json()) as Halle[];
-    },
-    enabled: search !== null,
-    staleTime: 1000 * 60 * 60 * 24,
-  });
-}
-
-export function createWändeQueryOptions(hallenId: number) {
-  return queryOptions({
-    queryKey: ["waende", hallenId],
-    queryFn: async (): Promise<Wand[]> => {
-      const response = await fetch(
-        `http://localhost:8080/api/hallen/${hallenId}/waende`,
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch wände");
-      }
-      return (await response.json()) as Wand[];
-    },
-    staleTime: 1000 * 60 * 60 * 24,
-  });
-}
+import { changeUser, syncUser } from "../api/user-controller/user-controller";
 
 export async function fetchUser(keycloakId: string, name: string) {
-  const response = await fetch("http://localhost:8080/api/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${keycloak.token}`,
+  const response = await syncUser(
+    {
+      keycloakId,
+      name,
     },
-    body: JSON.stringify({ keycloakId, name }),
-  });
-  if (!response.ok) {
-    throw new Error("Failed to fetch user");
-  }
-  return (await response.json()) as User;
-}
-
-export function createPostRouteMutation() {
-  return mutationOptions({
-    mutationFn: async (data: Route) => {
-      const response = await fetch(
-        `http://localhost:8080/api/hallen/${data.wand.hallenId}/routen`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${keycloak.token}`,
-          },
-          body: JSON.stringify(data),
-        },
-      );
-      if (!response.ok) {
-        throw new Error("Failed to post route");
-      }
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${keycloak.token}`,
+      },
     },
-  });
+  );
+  return response.data as User;
 }
 
 export function createUserSyncMutation() {
@@ -93,22 +41,15 @@ export function createUserSyncMutation() {
       if (!response.ok) {
         throw new Error(await response.text());
       }
-      const userResponse = await fetch("http://localhost:8080/api/users", {
-        method: "PATCH",
+
+      console.log(data);
+
+      changeUser(data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${keycloak.token}`,
         },
-        body: JSON.stringify({
-          keycloakId: keycloak.tokenParsed?.sub,
-          name: data.name,
-          bildUrl: data.bildUrl,
-          bio: data.bio,
-        }),
       });
-      if (!userResponse.ok) {
-        throw new Error(await userResponse.text());
-      }
     },
   });
 }

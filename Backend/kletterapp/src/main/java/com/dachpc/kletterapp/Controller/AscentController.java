@@ -25,19 +25,19 @@ public class AscentController {
     @Autowired
     private AscentRepository ascentRepository;
 
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public List<Ascent> findAscentsByUserId(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer routenId) {
         return ascentRepository.search(userId, routenId);
     }
 
-    @PostMapping
+    @PostMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public Ascent addAscent(@RequestBody Ascent ascent) {
         ascentRepository.save(ascent);
         return ascent;
     }
 
-    @PatchMapping
+    @PatchMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public Ascent updateAscent(@RequestBody Ascent ascent) {
         ascentRepository.save(ascent);

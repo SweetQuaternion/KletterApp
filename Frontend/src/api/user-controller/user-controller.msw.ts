@@ -16,42 +16,38 @@ import type {
   RequestHandlerOptions
 } from 'msw';
 
-
-export const getGetUserResponseMock = (overrideResponse: Partial<Extract<ArrayBuffer, object>> = {}): ArrayBuffer => ({name: faker.string.alpha({length: {min: 10, max: 20}}), keycloakId: faker.string.alpha({length: {min: 10, max: 20}}), bildUrl: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), bio: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ...overrideResponse})
-
-export const getSyncUserResponseMock = (overrideResponse: Partial<Extract<ArrayBuffer, object>> = {}): ArrayBuffer => ({name: faker.string.alpha({length: {min: 10, max: 20}}), keycloakId: faker.string.alpha({length: {min: 10, max: 20}}), bildUrl: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), bio: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ...overrideResponse})
-
-export const getChangeUserResponseMock = (overrideResponse: Partial<Extract<ArrayBuffer, object>> = {}): ArrayBuffer => ({name: faker.string.alpha({length: {min: 10, max: 20}}), keycloakId: faker.string.alpha({length: {min: 10, max: 20}}), bildUrl: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), bio: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ...overrideResponse})
+import type {
+  User
+} from '../model';
 
 
-export const getGetUserMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
+export const getGetUserResponseMock = (overrideResponse: Partial<Extract<User, object>> = {}): User => ({name: faker.string.alpha({length: {min: 10, max: 20}}), keycloakId: faker.string.alpha({length: {min: 10, max: 20}}), bildUrl: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), bio: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ...overrideResponse})
+
+export const getSyncUserResponseMock = (overrideResponse: Partial<Extract<User, object>> = {}): User => ({name: faker.string.alpha({length: {min: 10, max: 20}}), keycloakId: faker.string.alpha({length: {min: 10, max: 20}}), bildUrl: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), bio: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ...overrideResponse})
+
+export const getChangeUserResponseMock = (overrideResponse: Partial<Extract<User, object>> = {}): User => ({name: faker.string.alpha({length: {min: 10, max: 20}}), keycloakId: faker.string.alpha({length: {min: 10, max: 20}}), bildUrl: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), bio: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ...overrideResponse})
+
+
+export const getGetUserMockHandler = (overrideResponse?: User | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<User> | User), options?: RequestHandlerOptions) => {
   return http.get('*/api/users', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
   
-  const binaryBody = overrideResponse !== undefined
+  
+    return HttpResponse.json(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetUserResponseMock();
-    return HttpResponse.arrayBuffer(
-      binaryBody instanceof ArrayBuffer
-        ? binaryBody
-        : new ArrayBuffer(0),
-      { status: 200,
-        headers: { 'Content-Type': 'application/octet-stream' }
+    : getGetUserResponseMock(),
+      { status: 200
       })
   }, options)
 }
 
-export const getSyncUserMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
+export const getSyncUserMockHandler = (overrideResponse?: User | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<User> | User), options?: RequestHandlerOptions) => {
   return http.post('*/api/users', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
   
-  const binaryBody = overrideResponse !== undefined
+  
+    return HttpResponse.json(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getSyncUserResponseMock();
-    return HttpResponse.arrayBuffer(
-      binaryBody instanceof ArrayBuffer
-        ? binaryBody
-        : new ArrayBuffer(0),
-      { status: 200,
-        headers: { 'Content-Type': 'application/octet-stream' }
+    : getSyncUserResponseMock(),
+      { status: 200
       })
   }, options)
 }
@@ -66,18 +62,14 @@ export const getDeleteUserMockHandler = (overrideResponse?: void | ((info: Param
   }, options)
 }
 
-export const getChangeUserMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
+export const getChangeUserMockHandler = (overrideResponse?: User | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<User> | User), options?: RequestHandlerOptions) => {
   return http.patch('*/api/users', async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
   
-  const binaryBody = overrideResponse !== undefined
+  
+    return HttpResponse.json(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getChangeUserResponseMock();
-    return HttpResponse.arrayBuffer(
-      binaryBody instanceof ArrayBuffer
-        ? binaryBody
-        : new ArrayBuffer(0),
-      { status: 200,
-        headers: { 'Content-Type': 'application/octet-stream' }
+    : getChangeUserResponseMock(),
+      { status: 200
       })
   }, options)
 }

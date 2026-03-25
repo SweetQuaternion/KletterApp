@@ -27,7 +27,7 @@ public class UserRoutenStatusController {
     private UserRoutenStatusRepository userRoutenStatusRepository;
 
 
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public List<UserRoutenStatus> getUserRoutenStatusList(@PathVariable(required = false) Integer userId, @PathVariable(required = false) Integer routenId) {
         if (userId != null) {
             return userRoutenStatusRepository.findByIdUserId(userId);
@@ -38,7 +38,7 @@ public class UserRoutenStatusController {
         }
     }
 
-    @PostMapping
+    @PostMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public UserRoutenStatus createUserRoutenStatus(@RequestBody UserRoutenStatus userRoutenStatus) {
         userRoutenStatusRepository.save(userRoutenStatus);
@@ -47,7 +47,7 @@ public class UserRoutenStatusController {
     
     // braucht eigentlich immer eine id -> hier schwierig
     // müsste man nochmal drüber nachdenken
-    @PatchMapping
+    @PatchMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public UserRoutenStatus updateUserRoutenStatus(@RequestBody UserRoutenStatus userRoutenStatus) {
         userRoutenStatusRepository.save(userRoutenStatus);

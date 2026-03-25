@@ -16,42 +16,38 @@ import type {
   RequestHandlerOptions
 } from 'msw';
 
-
-export const getGetKommentareByRouteIDResponseMock = (): ArrayBuffer => (Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.number.int(), routenId: faker.number.int(), userId: faker.string.alpha({length: {min: 10, max: 20}}), datum: faker.date.past().toISOString().slice(0, 19) + 'Z', text: faker.string.alpha({length: {min: 10, max: 20}})})))
-
-export const getAddKommentarResponseMock = (overrideResponse: Partial<Extract<ArrayBuffer, object>> = {}): ArrayBuffer => ({id: faker.number.int(), routenId: faker.number.int(), userId: faker.string.alpha({length: {min: 10, max: 20}}), datum: faker.date.past().toISOString().slice(0, 19) + 'Z', text: faker.string.alpha({length: {min: 10, max: 20}}), ...overrideResponse})
-
-export const getUpdateKommentarResponseMock = (overrideResponse: Partial<Extract<ArrayBuffer, object>> = {}): ArrayBuffer => ({id: faker.number.int(), routenId: faker.number.int(), userId: faker.string.alpha({length: {min: 10, max: 20}}), datum: faker.date.past().toISOString().slice(0, 19) + 'Z', text: faker.string.alpha({length: {min: 10, max: 20}}), ...overrideResponse})
+import type {
+  Kommentar
+} from '../model';
 
 
-export const getGetKommentareByRouteIDMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
+export const getGetKommentareByRouteIDResponseMock = (): Kommentar[] => (Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.number.int(), routenId: faker.number.int(), userId: faker.string.alpha({length: {min: 10, max: 20}}), datum: faker.date.past().toISOString().slice(0, 19) + 'Z', text: faker.string.alpha({length: {min: 10, max: 20}})})))
+
+export const getAddKommentarResponseMock = (overrideResponse: Partial<Extract<Kommentar, object>> = {}): Kommentar => ({id: faker.number.int(), routenId: faker.number.int(), userId: faker.string.alpha({length: {min: 10, max: 20}}), datum: faker.date.past().toISOString().slice(0, 19) + 'Z', text: faker.string.alpha({length: {min: 10, max: 20}}), ...overrideResponse})
+
+export const getUpdateKommentarResponseMock = (overrideResponse: Partial<Extract<Kommentar, object>> = {}): Kommentar => ({id: faker.number.int(), routenId: faker.number.int(), userId: faker.string.alpha({length: {min: 10, max: 20}}), datum: faker.date.past().toISOString().slice(0, 19) + 'Z', text: faker.string.alpha({length: {min: 10, max: 20}}), ...overrideResponse})
+
+
+export const getGetKommentareByRouteIDMockHandler = (overrideResponse?: Kommentar[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Kommentar[]> | Kommentar[]), options?: RequestHandlerOptions) => {
   return http.get('*/api/kommentare', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
   
-  const binaryBody = overrideResponse !== undefined
+  
+    return HttpResponse.json(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetKommentareByRouteIDResponseMock();
-    return HttpResponse.arrayBuffer(
-      binaryBody instanceof ArrayBuffer
-        ? binaryBody
-        : new ArrayBuffer(0),
-      { status: 200,
-        headers: { 'Content-Type': 'application/octet-stream' }
+    : getGetKommentareByRouteIDResponseMock(),
+      { status: 200
       })
   }, options)
 }
 
-export const getAddKommentarMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
+export const getAddKommentarMockHandler = (overrideResponse?: Kommentar | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Kommentar> | Kommentar), options?: RequestHandlerOptions) => {
   return http.post('*/api/kommentare', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
   
-  const binaryBody = overrideResponse !== undefined
+  
+    return HttpResponse.json(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getAddKommentarResponseMock();
-    return HttpResponse.arrayBuffer(
-      binaryBody instanceof ArrayBuffer
-        ? binaryBody
-        : new ArrayBuffer(0),
-      { status: 201,
-        headers: { 'Content-Type': 'application/octet-stream' }
+    : getAddKommentarResponseMock(),
+      { status: 201
       })
   }, options)
 }
@@ -66,18 +62,14 @@ export const getDeleteKommentarMockHandler = (overrideResponse?: void | ((info: 
   }, options)
 }
 
-export const getUpdateKommentarMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
+export const getUpdateKommentarMockHandler = (overrideResponse?: Kommentar | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<Kommentar> | Kommentar), options?: RequestHandlerOptions) => {
   return http.patch('*/api/kommentare', async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
   
-  const binaryBody = overrideResponse !== undefined
+  
+    return HttpResponse.json(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateKommentarResponseMock();
-    return HttpResponse.arrayBuffer(
-      binaryBody instanceof ArrayBuffer
-        ? binaryBody
-        : new ArrayBuffer(0),
-      { status: 200,
-        headers: { 'Content-Type': 'application/octet-stream' }
+    : getUpdateKommentarResponseMock(),
+      { status: 200
       })
   }, options)
 }

@@ -31,7 +31,7 @@ public class KommentarController {
     
     // per Konvention hier eher requestparams nutzen, statt eine Baumstruktur
     // beide GetMappings müssen daher in eine Methode, nicht in zwei
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public List<Kommentar> getKommentareByRouteID(@RequestParam(required = false) Integer routeId, @RequestParam(required = false) Integer userId) {
         if (routeId != null) {
             return kommentarRepository.findByRoutenId(routeId);
@@ -42,14 +42,14 @@ public class KommentarController {
         }
     }
 
-    @PostMapping
+    @PostMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public Kommentar addKommentar(@RequestBody Kommentar kommentar) {
         kommentarRepository.save(kommentar);
         return kommentar;
     }
 
-    @PatchMapping
+    @PatchMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public Kommentar updateKommentar(@RequestParam int id, @RequestParam String newText) {
         Kommentar prevKommentar = kommentarRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());

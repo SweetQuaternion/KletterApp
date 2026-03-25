@@ -35,7 +35,7 @@ import type {
 
 
 export type getKommentareByRouteIDResponse200 = {
-  data: Blob
+  data: Kommentar[]
   status: 200
 }
 
@@ -169,7 +169,7 @@ export function useGetKommentareByRouteID<TData = Awaited<ReturnType<typeof getK
 
 
 export type addKommentarResponse201 = {
-  data: Blob
+  data: Kommentar
   status: 201
 }
 
@@ -373,7 +373,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(getDeleteKommentarMutationOptions(options), queryClient);
     }
     export type updateKommentarResponse200 = {
-  data: Blob
+  data: Kommentar
   status: 200
 }
 

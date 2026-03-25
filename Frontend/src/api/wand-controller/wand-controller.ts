@@ -33,7 +33,7 @@ import type {
 
 
 export type getWaendeByHallenIdResponse200 = {
-  data: Blob
+  data: Wand[]
   status: 200
 }
 
@@ -160,7 +160,7 @@ export function useGetWaendeByHallenId<TData = Awaited<ReturnType<typeof getWaen
 
 
 export type addWandResponse201 = {
-  data: Blob
+  data: Wand
   status: 201
 }
 
@@ -367,7 +367,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(getDeleteWandMutationOptions(options), queryClient);
     }
     export type updateWandResponse200 = {
-  data: Blob
+  data: Wand
   status: 200
 }
 

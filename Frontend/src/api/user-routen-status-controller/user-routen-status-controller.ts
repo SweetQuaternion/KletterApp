@@ -33,7 +33,7 @@ import type {
 
 
 export type getUserRoutenStatusListResponse200 = {
-  data: Blob
+  data: UserRoutenStatus[]
   status: 200
 }
 
@@ -160,7 +160,7 @@ export function useGetUserRoutenStatusList<TData = Awaited<ReturnType<typeof get
 
 
 export type createUserRoutenStatusResponse201 = {
-  data: Blob
+  data: UserRoutenStatus
   status: 201
 }
 
@@ -364,7 +364,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(getDeleteUserRoutenStatusMutationOptions(options), queryClient);
     }
     export type updateUserRoutenStatusResponse200 = {
-  data: Blob
+  data: UserRoutenStatus
   status: 200
 }
 

@@ -69,3 +69,8 @@ textarea.large {
   box-shadow: none;
   /* width: 100%; */
 }
+
+[contenteditable]:empty:before {
+  content: attr(data-placeholder);
+  color: gray;
+}

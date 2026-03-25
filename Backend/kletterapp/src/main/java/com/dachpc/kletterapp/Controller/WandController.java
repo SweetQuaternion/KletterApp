@@ -31,13 +31,13 @@ public class WandController {
     @Autowired
     private WandRepository wandRepository;
 
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public List<Wand> getWaendeByHallenId(@PathVariable int hallenId) {
         // return wandRepository.findByIdHallenId(hallenId);
         return wandRepository.findByHallenIdWithRouten(hallenId);
     }
 
-    @PostMapping
+    @PostMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Wand addWand(@PathVariable int hallenId, @RequestBody Wand wand) {
@@ -45,7 +45,7 @@ public class WandController {
         return wand;
     }
 
-    @PatchMapping
+    @PatchMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public Wand updateWand(@PathVariable int hallenId, @RequestBody Wand wand) {

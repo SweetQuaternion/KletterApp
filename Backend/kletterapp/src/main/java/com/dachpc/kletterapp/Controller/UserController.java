@@ -31,7 +31,7 @@ public class UserController {
 
     // kann ungesichert bleiben, da wir nur die ID, Username und Profilbild abfragen und keine sensiblen Daten zurückgeben
     // User sollen einander sehen können
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public ResponseEntity<User> getUser(@RequestParam String id) {
         User user = userRepository.findByKeycloakId(id).orElseThrow(() -> new EntityNotFoundException());
         return ResponseEntity.status(HttpStatus.OK).body(user);
@@ -40,7 +40,7 @@ public class UserController {
     // müssen wir absichern, damit sich User nur selbst synchronisieren / hinzufügen können (oder Admins),
     // an diesem Punkt wurde das Token schon geprüft, ist also gültig, darum müssen wir uns hier nicht kümmern
     // man will das Token eigentlich nie in die Hand nehmen
-    @PostMapping
+    @PostMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN') or #request.keycloakId == authentication.principal.subject")
     public ResponseEntity<User> syncUser(@RequestBody UserSyncRequest request) { 
         User user = userRepository.findByKeycloakId(request.keycloakId()).orElse(null);
@@ -54,7 +54,7 @@ public class UserController {
 
     // müssen wir absichern, damit nur der User selbst seine Daten ändern kann (oder Admins)
     // an diesem Punkt wurde aber das Token schon geprüft, ist also gültig, darum müssen wir uns hier nicht kümmern
-    @PatchMapping
+    @PatchMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_ADMIN') or #request.keycloakId == authentication.principal.subject")
     public User changeUser(@RequestBody User updatedUser) {
@@ -62,6 +62,7 @@ public class UserController {
         User prevUser = userRepository.findByKeycloakId(updatedUser.getKeycloakId()).orElseThrow(() -> new EntityNotFoundException());
         if (updatedUser.getName() != null) prevUser.setName(updatedUser.getName());
         if (updatedUser.getBildUrl() != null) prevUser.setBildUrl(updatedUser.getBildUrl());
+        if (updatedUser.getBio() != null) prevUser.setBio(updatedUser.getBio());
         userRepository.save(prevUser);
         return prevUser;
     }

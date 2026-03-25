@@ -35,7 +35,7 @@ import type {
 
 
 export type getUserResponse200 = {
-  data: Blob
+  data: User
   status: 200
 }
 
@@ -169,7 +169,7 @@ export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError =
 
 
 export type syncUserResponse200 = {
-  data: Blob
+  data: User
   status: 200
 }
 
@@ -373,7 +373,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(getDeleteUserMutationOptions(options), queryClient);
     }
     export type changeUserResponse200 = {
-  data: Blob
+  data: User
   status: 200
 }
 

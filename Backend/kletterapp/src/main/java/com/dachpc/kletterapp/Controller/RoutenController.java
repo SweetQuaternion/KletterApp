@@ -29,12 +29,12 @@ public class RoutenController {
     @Autowired
     private RoutenRepository routenRepository;
 
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public List<Route> getRoutenByHallenId(@PathVariable int hallenId) {
         return routenRepository.findByWand_Id_HallenId(hallenId);
     }
 
-    @PostMapping
+    @PostMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Route addRoute(@PathVariable int hallenId, @RequestBody Route route) {
@@ -42,7 +42,7 @@ public class RoutenController {
         return route;
     }
 
-    @PatchMapping
+    @PatchMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public Route updateRoute(@PathVariable int hallenId, @RequestBody Route route) {

@@ -33,7 +33,7 @@ import type {
 
 
 export type getRoutenByHallenIdResponse200 = {
-  data: Blob
+  data: Route[]
   status: 200
 }
 
@@ -160,7 +160,7 @@ export function useGetRoutenByHallenId<TData = Awaited<ReturnType<typeof getRout
 
 
 export type addRouteResponse201 = {
-  data: Blob
+  data: Route
   status: 201
 }
 
@@ -367,7 +367,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       return useMutation(getDeleteRouteMutationOptions(options), queryClient);
     }
     export type updateRouteResponse200 = {
-  data: Blob
+  data: Route
   status: 200
 }
 

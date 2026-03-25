@@ -16,42 +16,38 @@ import type {
   RequestHandlerOptions
 } from 'msw';
 
-
-export const getFindAscentsByUserIdResponseMock = (): ArrayBuffer => (Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.helpers.arrayElement([faker.number.int(), undefined]), userId: faker.string.alpha({length: {min: 10, max: 20}}), routenId: faker.number.int(), datum: faker.date.past().toISOString().slice(0, 19) + 'Z', style: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), sicherung: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])})))
-
-export const getAddAscentResponseMock = (overrideResponse: Partial<Extract<ArrayBuffer, object>> = {}): ArrayBuffer => ({id: faker.helpers.arrayElement([faker.number.int(), undefined]), userId: faker.string.alpha({length: {min: 10, max: 20}}), routenId: faker.number.int(), datum: faker.date.past().toISOString().slice(0, 19) + 'Z', style: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), sicherung: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ...overrideResponse})
-
-export const getUpdateAscentResponseMock = (overrideResponse: Partial<Extract<ArrayBuffer, object>> = {}): ArrayBuffer => ({id: faker.helpers.arrayElement([faker.number.int(), undefined]), userId: faker.string.alpha({length: {min: 10, max: 20}}), routenId: faker.number.int(), datum: faker.date.past().toISOString().slice(0, 19) + 'Z', style: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), sicherung: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ...overrideResponse})
+import type {
+  Ascent
+} from '../model';
 
 
-export const getFindAscentsByUserIdMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
+export const getFindAscentsByUserIdResponseMock = (): Ascent[] => (Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.helpers.arrayElement([faker.number.int(), undefined]), userId: faker.string.alpha({length: {min: 10, max: 20}}), routenId: faker.number.int(), datum: faker.date.past().toISOString().slice(0, 19) + 'Z', style: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), sicherung: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])})))
+
+export const getAddAscentResponseMock = (overrideResponse: Partial<Extract<Ascent, object>> = {}): Ascent => ({id: faker.helpers.arrayElement([faker.number.int(), undefined]), userId: faker.string.alpha({length: {min: 10, max: 20}}), routenId: faker.number.int(), datum: faker.date.past().toISOString().slice(0, 19) + 'Z', style: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), sicherung: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ...overrideResponse})
+
+export const getUpdateAscentResponseMock = (overrideResponse: Partial<Extract<Ascent, object>> = {}): Ascent => ({id: faker.helpers.arrayElement([faker.number.int(), undefined]), userId: faker.string.alpha({length: {min: 10, max: 20}}), routenId: faker.number.int(), datum: faker.date.past().toISOString().slice(0, 19) + 'Z', style: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), sicherung: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ...overrideResponse})
+
+
+export const getFindAscentsByUserIdMockHandler = (overrideResponse?: Ascent[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Ascent[]> | Ascent[]), options?: RequestHandlerOptions) => {
   return http.get('*/api/ascents', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
   
-  const binaryBody = overrideResponse !== undefined
+  
+    return HttpResponse.json(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getFindAscentsByUserIdResponseMock();
-    return HttpResponse.arrayBuffer(
-      binaryBody instanceof ArrayBuffer
-        ? binaryBody
-        : new ArrayBuffer(0),
-      { status: 200,
-        headers: { 'Content-Type': 'application/octet-stream' }
+    : getFindAscentsByUserIdResponseMock(),
+      { status: 200
       })
   }, options)
 }
 
-export const getAddAscentMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
+export const getAddAscentMockHandler = (overrideResponse?: Ascent | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Ascent> | Ascent), options?: RequestHandlerOptions) => {
   return http.post('*/api/ascents', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
   
-  const binaryBody = overrideResponse !== undefined
+  
+    return HttpResponse.json(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getAddAscentResponseMock();
-    return HttpResponse.arrayBuffer(
-      binaryBody instanceof ArrayBuffer
-        ? binaryBody
-        : new ArrayBuffer(0),
-      { status: 201,
-        headers: { 'Content-Type': 'application/octet-stream' }
+    : getAddAscentResponseMock(),
+      { status: 201
       })
   }, options)
 }
@@ -66,18 +62,14 @@ export const getDeleteAscentMockHandler = (overrideResponse?: void | ((info: Par
   }, options)
 }
 
-export const getUpdateAscentMockHandler = (overrideResponse?: ArrayBuffer | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<ArrayBuffer> | ArrayBuffer), options?: RequestHandlerOptions) => {
+export const getUpdateAscentMockHandler = (overrideResponse?: Ascent | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<Ascent> | Ascent), options?: RequestHandlerOptions) => {
   return http.patch('*/api/ascents', async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
   
-  const binaryBody = overrideResponse !== undefined
+  
+    return HttpResponse.json(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateAscentResponseMock();
-    return HttpResponse.arrayBuffer(
-      binaryBody instanceof ArrayBuffer
-        ? binaryBody
-        : new ArrayBuffer(0),
-      { status: 200,
-        headers: { 'Content-Type': 'application/octet-stream' }
+    : getUpdateAscentResponseMock(),
+      { status: 200
       })
   }, options)
 }
