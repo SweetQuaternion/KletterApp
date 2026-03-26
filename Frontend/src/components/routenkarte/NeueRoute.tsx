@@ -2,8 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Halle, Route, Wand } from "../../api/model";
 import { convertSchwierigkeitToNumber } from "../../constants/conversions";
 import "../../styles/RoutenKarte.css";
-import { getAddRouteMutationOptions } from "../../api/routen-controller/routen-controller";
-import { keycloak } from "../../constants/keycloak";
+import { createAddRouteMutationOptions } from "../../constants/queries";
 
 interface Props {
   selectedHalle: Halle;
@@ -14,9 +13,7 @@ interface Props {
 const NeueRoute = ({ selectedHalle, selectedWand }: Props) => {
   const queryClient = useQueryClient();
   const { mutate, isSuccess, isError } = useMutation(
-    getAddRouteMutationOptions({
-      fetch: { headers: { Authorization: `Bearer ${keycloak.token}` } },
-    }),
+    createAddRouteMutationOptions(),
   );
 
   const handleRoutenSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -37,7 +34,7 @@ const NeueRoute = ({ selectedHalle, selectedWand }: Props) => {
       beschreibung: formData.get("beschreibung") as string,
     } as Route;
     console.log("Submitting new route:", data);
-    mutate({ hallenId: selectedHalle.id, data: data });
+    mutate(data);
     queryClient.invalidateQueries({ queryKey: ["waende", selectedHalle.id] });
   };
 

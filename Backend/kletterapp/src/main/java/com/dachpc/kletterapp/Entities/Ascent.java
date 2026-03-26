@@ -1,6 +1,6 @@
 package com.dachpc.kletterapp.Entities;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -11,6 +11,7 @@ import jakarta.persistence.*;
 @Table(name = "ascents")
 @JsonPropertyOrder({"id", "userId", "routenId", "datum", "style", "sicherungsart"})
 public class Ascent {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -25,37 +26,39 @@ public class Ascent {
 
     @Column(name = "datum")
     @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
-    private LocalDateTime datum;
+    private LocalDate datum;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "style")
-    private String style;
+    private Style style;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "sicherung")
-    private String sicherung;
+    private Sicherung sicherung;
 
     protected Ascent() {
     }
 
-    public Ascent(String userId, int routenId, LocalDateTime datum, String style, String sicherungsart) {
+    public Ascent(String userId, int routenId, LocalDate datum, Style style, Sicherung sicherung) {
         this.userId = userId;
         this.routenId = routenId;
         this.datum = datum;
         this.style = style;
-        this.sicherung = sicherungsart;
+        this.sicherung = sicherung;
     }
 
     // Getters and setters
     public int getId() { return id; }
     public String getUserId() { return userId; }
     public int getRoutenId() { return routenId; }
-    public LocalDateTime getDatum() { return datum; }
-    public String getStyle() { return style; }
-    public String getSicherung() { return sicherung; }
+    public LocalDate getDatum() { return datum; }
+    public Style getStyle() { return style; }
+    public Sicherung getSicherung() { return sicherung; }
 
     public void setId(int id) { this.id = id; }
     public void setUserId(String userId) { this.userId = userId; }
     public void setRoutenId(int routenId) { this.routenId = routenId; }
-    public void setDatum(LocalDateTime datum) { this.datum = datum; }
-    public void setStyle(String style) { this.style = style; }
-    public void setSicherung(String sicherung) { this.sicherung = sicherung; }
+    public void setDatum(LocalDate datum) { this.datum = datum; }
+    public void setStyle(Style style) { this.style = style; }
+    public void setSicherung(Sicherung sicherung) { this.sicherung = sicherung; }
 }

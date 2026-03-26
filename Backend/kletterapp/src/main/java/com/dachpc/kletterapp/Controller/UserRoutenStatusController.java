@@ -28,7 +28,7 @@ public class UserRoutenStatusController {
 
 
     @GetMapping(produces = "application/json")
-    public List<UserRoutenStatus> getUserRoutenStatusList(@PathVariable(required = false) Integer userId, @PathVariable(required = false) Integer routenId) {
+    public List<UserRoutenStatus> getUserRoutenStatusList(@PathVariable(required = false) String userId, @PathVariable(required = false) Integer routenId) {
         if (userId != null) {
             return userRoutenStatusRepository.findByIdUserId(userId);
         } else if (routenId != null) {
@@ -60,7 +60,7 @@ public class UserRoutenStatusController {
         if (userId == null || routenId == 0) {
             throw new IllegalArgumentException("UserId or RoutenId must be provided");
         }
-        UserRoutenStatus existingStatus = userRoutenStatusRepository.findByIdUserIdAndIdRouteId(Integer.parseInt(userId), routenId);
+        UserRoutenStatus existingStatus = userRoutenStatusRepository.findByIdUserIdAndIdRouteId(userId, routenId);
         userRoutenStatusRepository.delete(existingStatus);
     }
 }

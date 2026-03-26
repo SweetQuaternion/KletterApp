@@ -32,7 +32,7 @@ public class RoutenController {
     @GetMapping(produces = "application/json")
     public List<Route> getRoutenByHallenId(@PathVariable int hallenId) {
         return routenRepository.findByWand_Id_HallenId(hallenId);
-    }
+    }    
 
     @PostMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

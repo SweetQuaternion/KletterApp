@@ -6,6 +6,8 @@
  */
 
 export * from './ascent';
+export * from './ascentSicherung';
+export * from './ascentStyle';
 export * from './deleteAscentParams';
 export * from './deleteHalleParams';
 export * from './deleteKommentarParams';

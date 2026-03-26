@@ -20,8 +20,6 @@ CREATE TABLE wände(
     PRIMARY KEY (hallen_id, wand_nr)
 );
 
-alter table wände alter column wand_nr set not null;
-
 CREATE TABLE routen(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     hallen_id INT NOT NULL,
@@ -45,16 +43,16 @@ CREATE TABLE users(
     bio text
 );
 
-CREATE TYPE style_enum AS ENUM ('onsight', 'flash', 'redpoint', 'pinkpoint', 'toprope', 'hangdog', 'attempt');
-CREATE TYPE sicherung_enum AS ENUM ('vorstieg', 'toprope', 'solo');
+-- CREATE TYPE style_enum AS ENUM ('onsight', 'flash', 'redpoint', 'pinkpoint', 'toprope', 'hangdog', 'attempt');
+-- CREATE TYPE sicherung_enum AS ENUM ('vorstieg', 'toprope', 'solo');
 
 CREATE TABLE ascents(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     user_id text NOT NULL,
     route_id INT NOT NULL,
-    datum timestamp NOT NULL,
-    style style_enum,
-    sicherung sicherung_enum,
+    datum date NOT NULL,
+    style VARCHAR(50),
+    sicherung VARCHAR(50),
     FOREIGN KEY (user_id) REFERENCES users(keycloak_id),
     FOREIGN KEY (route_id) REFERENCES routen(id)
 );

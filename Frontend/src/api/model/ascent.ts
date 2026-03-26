@@ -4,12 +4,14 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
+import type { AscentSicherung } from './ascentSicherung';
+import type { AscentStyle } from './ascentStyle';
 
 export interface Ascent {
   id?: number;
   userId: string;
   routenId: number;
   datum: string;
-  style?: string;
-  sicherung?: string;
+  style?: AscentStyle;
+  sicherung?: AscentSicherung;
 }

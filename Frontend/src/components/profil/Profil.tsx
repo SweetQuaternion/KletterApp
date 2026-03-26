@@ -3,10 +3,9 @@ import "../../styles/Profil.css";
 import Header from "../Header";
 import defaultpic from "../../assets/default-pic.png";
 import { useState } from "react";
-import { keycloak } from "../../constants/keycloak.ts";
 import { useMutation } from "@tanstack/react-query";
 import { createUserSyncMutation } from "../../constants/queries.ts";
-import type { User } from "../../api/model/user.ts";
+import type { User } from "../../api/model";
 
 interface Props {
   user: User | null;
@@ -90,7 +89,7 @@ const Profil = ({ user }: Props) => {
               <button
                 onClick={() =>
                   mutate({
-                    keycloakId: keycloak.tokenParsed?.sub || "",
+                    keycloakId: user?.keycloakId || "",
                     name: username,
                     bildUrl,
                     bio,

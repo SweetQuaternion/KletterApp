@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -32,6 +33,7 @@ public class AscentController {
 
     @PostMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #ascent.userId == authentication.principal.subject")
     public Ascent addAscent(@RequestBody Ascent ascent) {
         ascentRepository.save(ascent);
         return ascent;
@@ -39,12 +41,14 @@ public class AscentController {
 
     @PatchMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #ascent.userId == authentication.principal.subject")
     public Ascent updateAscent(@RequestBody Ascent ascent) {
         ascentRepository.save(ascent);
         return ascent;
     }
 
     @DeleteMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #ascent.userId == authentication.principal.subject")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAscent(@RequestParam Integer id) {
         ascentRepository.deleteById(id);

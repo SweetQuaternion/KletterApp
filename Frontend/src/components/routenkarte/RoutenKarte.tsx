@@ -39,7 +39,9 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
       <Header user={user} />
       <HallenInfoBox selectedHalle={selectedHalle} />
       <Knopfsis scale={scale} setScale={setScale} />
-      {selectedRoute && <RoutenDetails selectedRoute={selectedRoute} />}
+      {selectedRoute && (
+        <RoutenDetails selectedRoute={selectedRoute} user={user} />
+      )}
       {showNeueRoute && selectedWand && (
         <NeueRoute
           selectedHalle={selectedHalle}

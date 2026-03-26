@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { convertSchwierigkeitToString } from "../../constants/conversions";
-import { isAuthenticated } from "../../constants/keycloak";
 import "../../styles/RoutenDetails.css";
-import type { Route } from "../../api/model/route";
+import type { AscentSicherung, AscentStyle, Route, User } from "../../api/model";
+import { useMutation } from "@tanstack/react-query";
+import { createAddAscentMutationOptions } from "../../constants/queries";
 
 interface Props {
   selectedRoute: Route;
+  user: User | null;
 }
 
-const RoutenDetails = ({ selectedRoute }: Props) => {
+const RoutenDetails = ({ selectedRoute, user }: Props) => {
   const [ascentToggled, setAscentToggled] = useState(false);
+  const { mutate, isSuccess, isError } = useMutation(
+    createAddAscentMutationOptions(),
+  );
 
   const getDateString = (date: string) => {
     const d = new Date(date);
@@ -18,8 +23,17 @@ const RoutenDetails = ({ selectedRoute }: Props) => {
 
   const handleAscent = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Ascent submitted");
-    // Handle ascent logic here
+    const input = new FormData(e.target as HTMLFormElement);
+    mutate(
+      {
+        userId: user?.keycloakId || "",
+        routenId: selectedRoute.id,
+        sicherung: input.get("sicherungsart") as AscentSicherung,
+        style: input.get("style") as AscentStyle,
+        datum: new Date().toISOString().split("T")[0],
+      },
+    );
+    setAscentToggled(false);
   };
 
   return (
@@ -49,9 +63,7 @@ const RoutenDetails = ({ selectedRoute }: Props) => {
         von {selectedRoute?.schrauber ? selectedRoute.schrauber : "irgendwem"}
       </p>
 
-      {/* Hier kommen noch Favorit, Projekt und Geschafft-Button hin, wenn angemeldet */}
-
-      {isAuthenticated() && (
+      {user && (
         <>
           <div className="routen-details-badges">
             <button className="favorit" title="Als Favorit markieren">
@@ -78,12 +90,13 @@ const RoutenDetails = ({ selectedRoute }: Props) => {
                 <div className="form-group">
                   <label htmlFor="sicherungsart">Sicherungsart</label>
                   <select name="sicherungsart" id="sicherungsart">
-                    <option value="toprope">Toprope</option>
                     <option value="vorstieg">Vorstieg</option>
+                    <option value="toprope">Toprope</option>
+                    <option value="solo">Solo</option>
                   </select>
                 </div>
                 <div className="form-group">
-                  <label htmlFor="Style">Style</label>
+                  <label htmlFor="style">Style</label>
                   <select name="style" id="style">
                     <option value="onsight">onsight</option>
                     <option value="flash">flash</option>
@@ -103,6 +116,8 @@ const RoutenDetails = ({ selectedRoute }: Props) => {
 
       {!ascentToggled && (
         <>
+          {isSuccess && <p className="small">Gespeichert!</p>}
+          {isError && <p className="small">Etwas ist schiefgelaufen...</p>}
           <b>Beschreibung</b>
           <p className="small">{selectedRoute.beschreibung || "keine"}</p>
 
