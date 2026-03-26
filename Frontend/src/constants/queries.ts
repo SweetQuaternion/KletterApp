@@ -1,9 +1,10 @@
 import { mutationOptions } from "@tanstack/react-query";
-import type { Ascent, Route, User } from "../api/model";
+import type { Ascent, Kommentar, Route, User } from "../api/model";
 import { keycloak } from "./keycloak";
 import { changeUser, syncUser } from "../api/user-controller/user-controller";
 import { addAscent } from "../api/ascent-controller/ascent-controller";
 import { addRoute } from "../api/routen-controller/routen-controller";
+import { addKommentar } from "../api/kommentar-controller/kommentar-controller";
 
 export async function fetchUser(keycloakId: string, name: string) {
   const response = await syncUser(
@@ -91,6 +92,26 @@ export function createAddAscentMutationOptions() {
       });
       if (response.status !== 201) {
         throw new Error("Failed to add ascent");
+      }
+    },
+  });
+}
+
+export function createAddKommentarMutationOptions() {
+  return mutationOptions({
+    mutationFn: async (data: Kommentar) => {
+      await keycloak.updateToken(30).catch((err) => {
+        console.error("Failed to refresh token", err);
+        throw new Error("Failed to refresh token");
+      });
+      const response = await addKommentar(data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${keycloak.token}`,
+        },
+      });
+      if (response.status !== 201) {
+        throw new Error("Failed to add kommentar");
       }
     },
   });

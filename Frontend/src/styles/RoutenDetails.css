@@ -119,3 +119,22 @@ b {
   width: 100%;
   aspect-ratio: 1/1;
 }
+
+.kommentar-name {
+  margin-top: 0.4em;
+  font-size: 0.9em;
+  font-weight: bold;
+  color: var(--ozeanblau);
+}
+
+.kommentar-text {
+  font-size: 0.9em;
+  color: gray;
+}
+
+.bearbeiten {
+  font-size: 0.8em;
+  color: var(--espresso);
+  margin-top: 0.2em;
+  cursor: pointer;
+}

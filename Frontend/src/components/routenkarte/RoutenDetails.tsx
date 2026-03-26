@@ -1,9 +1,17 @@
 import { useState } from "react";
 import { convertSchwierigkeitToString } from "../../constants/conversions";
 import "../../styles/RoutenDetails.css";
-import type { AscentSicherung, AscentStyle, Route, User } from "../../api/model";
+import type {
+  AscentSicherung,
+  AscentStyle,
+  Route,
+  User,
+} from "../../api/model";
 import { useMutation } from "@tanstack/react-query";
-import { createAddAscentMutationOptions } from "../../constants/queries";
+import {
+  createAddAscentMutationOptions,
+  createAddKommentarMutationOptions,
+} from "../../constants/queries";
 
 interface Props {
   selectedRoute: Route;
@@ -12,9 +20,17 @@ interface Props {
 
 const RoutenDetails = ({ selectedRoute, user }: Props) => {
   const [ascentToggled, setAscentToggled] = useState(false);
-  const { mutate, isSuccess, isError } = useMutation(
-    createAddAscentMutationOptions(),
-  );
+  const {
+    mutate: addAscent,
+    isSuccess: isAscentSuccess,
+    isError: isAscentError,
+  } = useMutation(createAddAscentMutationOptions());
+
+  const {
+    mutate: addKommentar,
+    isSuccess: isKommentarSuccess,
+    isError: isKommentarError,
+  } = useMutation(createAddKommentarMutationOptions());
 
   const getDateString = (date: string) => {
     const d = new Date(date);
@@ -24,16 +40,25 @@ const RoutenDetails = ({ selectedRoute, user }: Props) => {
   const handleAscent = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const input = new FormData(e.target as HTMLFormElement);
-    mutate(
-      {
-        userId: user?.keycloakId || "",
-        routenId: selectedRoute.id,
-        sicherung: input.get("sicherungsart") as AscentSicherung,
-        style: input.get("style") as AscentStyle,
-        datum: new Date().toISOString().split("T")[0],
-      },
-    );
+    addAscent({
+      userId: user?.keycloakId || "",
+      routenId: selectedRoute.id,
+      sicherung: input.get("sicherungsart") as AscentSicherung,
+      style: input.get("style") as AscentStyle,
+      datum: new Date().toISOString().split("T")[0],
+    });
     setAscentToggled(false);
+  };
+
+  const handleKommentarSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const input = new FormData(e.target as HTMLFormElement);
+    addKommentar({
+      user: user!,
+      route: selectedRoute,
+      datum: new Date().toISOString(),
+      text: input.get("text") as string,
+    });
   };
 
   return (
@@ -116,13 +141,47 @@ const RoutenDetails = ({ selectedRoute, user }: Props) => {
 
       {!ascentToggled && (
         <>
-          {isSuccess && <p className="small">Gespeichert!</p>}
-          {isError && <p className="small">Etwas ist schiefgelaufen...</p>}
+          {isAscentSuccess && <p className="small">Gespeichert!</p>}
+          {isAscentError && (
+            <p className="small">Etwas ist schiefgelaufen...</p>
+          )}
           <b>Beschreibung</b>
           <p className="small">{selectedRoute.beschreibung || "keine"}</p>
 
           <b>Kommentare</b>
-          <p className="small">keine</p>
+          {selectedRoute.kommentare && selectedRoute.kommentare.length > 0 ? (
+            selectedRoute.kommentare.map((kommentar) => (
+              <div key={kommentar.id} className="kommentar">
+                <p className="kommentar-name">{kommentar.user.name}</p>
+                <p className="kommentar-text">{kommentar.text}</p>
+                {/* {(isAdmin() ||
+                  user?.keycloakId === kommentar.user.keycloakId) && (
+                  <p className="bearbeiten">löschen</p>
+                )} */}
+              </div>
+            ))
+          ) : (
+            <p className="small">keine</p>
+          )}
+
+          {user && (
+            <>
+              <b>Schreib ein Kommentar!</b>
+              <form onSubmit={handleKommentarSubmit}>
+                <textarea
+                  name="text"
+                  id="text"
+                  placeholder="Deine eloquenten Gedanken..."
+                  rows={4}
+                />
+                <button type="submit">Absenden</button>
+              </form>
+              {isKommentarSuccess && <p className="small">Gespeichert!</p>}
+              {isKommentarError && (
+                <p className="small">Etwas ist schiefgelaufen...</p>
+              )}
+            </>
+          )}
         </>
       )}
     </div>

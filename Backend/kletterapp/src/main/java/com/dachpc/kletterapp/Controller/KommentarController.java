@@ -34,9 +34,9 @@ public class KommentarController {
     @GetMapping(produces = "application/json")
     public List<Kommentar> getKommentareByRouteID(@RequestParam(required = false) Integer routeId, @RequestParam(required = false) Integer userId) {
         if (routeId != null) {
-            return kommentarRepository.findByRoutenId(routeId);
+            return kommentarRepository.findByRoute_id(routeId);
         } else if (userId != null) {
-            return kommentarRepository.findByUserId(userId);
+            return kommentarRepository.findByUser_keycloakId(userId);
         } else {
             return kommentarRepository.findAll();
         }

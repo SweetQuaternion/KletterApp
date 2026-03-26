@@ -2,6 +2,7 @@ package com.dachpc.kletterapp.Entities;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,16 +14,18 @@ import jakarta.persistence.*;
 public class Kommentar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private int id;
 
-    @Column(name = "route_id")
+    @ManyToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(name = "route_id", referencedColumnName = "id")
     @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
-    private int routenId;
+    private Route route;
 
-    @Column(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "keycloak_id")
     @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
-    private String userId;
+    private User user;
 
     @Column(name = "datum")
     @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
@@ -35,23 +38,23 @@ public class Kommentar {
     protected Kommentar() {
     }
 
-    public Kommentar(int routenId, String userId, LocalDateTime datum, String text) {
-        this.routenId = routenId;
-        this.userId = userId;
+    public Kommentar(Route route, User user, LocalDateTime datum, String text) {
+        this.route = route;
+        this.user = user;
         this.datum = datum;
         this.text = text;
     }
 
     // Getters and setters
     public int getId() { return id; }
-    public int getRoutenId() { return routenId; }
-    public String getUserId() { return userId; }
+    public Route getRoute() { return route; }
+    public User getUser() { return user; }
     public LocalDateTime getDatum() { return datum; }
     public String getText() { return text; }
 
     public void setId(int id) { this.id = id; }
-    public void setRoutenId(int routenId) { this.routenId = routenId; }
-    public void setUserId(String userId) { this.userId = userId; }
+    public void setRoute(Route route) { this.route = route; }
+    public void setUser(User user) { this.user = user; }
     public void setDatum(LocalDateTime datum) { this.datum = datum; }
     public void setText(String text) { this.text = text; }
 }

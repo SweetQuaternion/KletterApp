@@ -4,6 +4,7 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
+import type { Kommentar } from './kommentar';
 import type { Wand } from './wand';
 
 export interface Route {
@@ -18,6 +19,7 @@ export interface Route {
   schraubdatum?: string;
   beschreibung?: string;
   wand: Wand;
+  kommentare?: Kommentar[];
   hallenId?: number;
   wandNr?: number;
   isActive?: boolean;

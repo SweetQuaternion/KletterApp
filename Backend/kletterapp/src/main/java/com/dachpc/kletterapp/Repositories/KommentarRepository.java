@@ -8,7 +8,7 @@ import com.dachpc.kletterapp.Entities.Kommentar;
 
 public interface KommentarRepository extends JpaRepository<Kommentar, Integer> {
 
-    List<Kommentar> findByUserId(int userId);
-    List<Kommentar> findByRoutenId(int routenId);
+    List<Kommentar> findByUser_keycloakId(int userId);
+    List<Kommentar> findByRoute_id(int routenId);
     void deleteById(int id);
 }

@@ -1,6 +1,7 @@
 package com.dachpc.kletterapp.Entities;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -56,6 +57,9 @@ public class Route {
     @Column (name = "beschreibung")
     private String beschreibung;
 
+    @OneToMany(mappedBy = "route")
+    private List<Kommentar> kommentare;
+
     protected Route() {}
 
     public Route(Wand wand, String name, String farbe, Float schwierigkeit, 
@@ -89,6 +93,7 @@ public class Route {
     public LocalDate getSchraubdatum() { return schraubdatum; }
     public Boolean isIs_active() { return is_active; }
     public String getBeschreibung() { return beschreibung; }
+    public List<Kommentar> getKommentare() { return kommentare; }
 
     public void setId(Integer id) { this.id = id; }
     public void setWand(Wand wand) { this.wand = wand; }
