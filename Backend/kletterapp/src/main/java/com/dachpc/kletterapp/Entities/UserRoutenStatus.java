@@ -4,8 +4,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter @Setter @NoArgsConstructor
 @Table(name = "user_routen_status", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "route_id"}))
 @JsonPropertyOrder({"userId", "routenId", "isFavorit", "isProjekt", "geschSchwierigkeit", "notiz"})
 public class UserRoutenStatus {
@@ -26,7 +30,6 @@ public class UserRoutenStatus {
     @Column(name = "notiz")
     private String notiz;
 
-    protected UserRoutenStatus() {}
 
     public UserRoutenStatus(String userId, int routenId, boolean isFavorit, boolean isProjekt, float geschSchwierigkeit, String notiz) {
         this.id = new UserRoutenStatusId(userId, routenId);
@@ -36,18 +39,4 @@ public class UserRoutenStatus {
         this.notiz = notiz;
     }
 
-    // Getters and setters
-    public String getUserId() { return id.getUserId(); }
-    public int getRoutenId() { return id.getRouteId(); }
-    public boolean isFavorit() { return isFavorit; }
-    public boolean isProjekt() { return isProjekt; }
-    public float getGeschSchwierigkeit() { return geschSchwierigkeit; }
-    public String getNotiz() { return notiz; }
-
-    public void setUserId(String userId) { this.id.setUserId(userId); }
-    public void setRoutenId(int routenId) { this.id.setRouteId(routenId); }
-    public void setFavorit(boolean favorit) { isFavorit = favorit; }
-    public void setProjekt(boolean projekt) { isProjekt = projekt; }
-    public void setGeschSchwierigkeit(float geschSchwierigkeit) { this.geschSchwierigkeit = geschSchwierigkeit; }
-    public void setNotiz(String notiz) { this.notiz = notiz; }
 }

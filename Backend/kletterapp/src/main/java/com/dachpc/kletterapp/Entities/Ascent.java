@@ -6,8 +6,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter @Setter @NoArgsConstructor
 @Table(name = "ascents")
 @JsonPropertyOrder({"id", "userId", "routenId", "datum", "style", "sicherungsart"})
 public class Ascent {
@@ -36,8 +40,6 @@ public class Ascent {
     @Column(name = "sicherung")
     private Sicherung sicherung;
 
-    protected Ascent() {
-    }
 
     public Ascent(String userId, int routenId, LocalDate datum, Style style, Sicherung sicherung) {
         this.userId = userId;
@@ -46,19 +48,4 @@ public class Ascent {
         this.style = style;
         this.sicherung = sicherung;
     }
-
-    // Getters and setters
-    public int getId() { return id; }
-    public String getUserId() { return userId; }
-    public int getRoutenId() { return routenId; }
-    public LocalDate getDatum() { return datum; }
-    public Style getStyle() { return style; }
-    public Sicherung getSicherung() { return sicherung; }
-
-    public void setId(int id) { this.id = id; }
-    public void setUserId(String userId) { this.userId = userId; }
-    public void setRoutenId(int routenId) { this.routenId = routenId; }
-    public void setDatum(LocalDate datum) { this.datum = datum; }
-    public void setStyle(Style style) { this.style = style; }
-    public void setSicherung(Sicherung sicherung) { this.sicherung = sicherung; }
 }

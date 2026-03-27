@@ -8,10 +8,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 // Tells Hibernate that this class should be tracked as a table
 @Entity
-// provides table name, if not provided, the table name would be the same as the class name
+@Getter @Setter @NoArgsConstructor
 @Table(name = "routen")
 @JsonPropertyOrder({"id", "name", "schwierigkeit", "farbe", "wand_id", "is_vorstieg", "is_toprope", "is_active", "schrauber", "schraubdatum", "beschreibung"})
 public class Route {
@@ -57,10 +60,8 @@ public class Route {
     @Column (name = "beschreibung")
     private String beschreibung;
 
-    @OneToMany(mappedBy = "route")
+    @OneToMany(mappedBy = "route", fetch = FetchType.EAGER)
     private List<Kommentar> kommentare;
-
-    protected Route() {}
 
     public Route(Wand wand, String name, String farbe, Float schwierigkeit, 
                 Boolean is_toprope, Boolean is_vorstieg, String schrauber, 
@@ -77,33 +78,4 @@ public class Route {
         this.beschreibung = beschreibung;
     }
 
-
-    // Getters and setters
-
-    public Integer getId() { return id; }
-    public Integer getHallenId() { return wand.getHallenId(); }
-    public Integer getWandNr() { return wand.getWandNr(); }
-    public Wand getWand() { return wand; }
-    public String getName() { return name; }
-    public String getFarbe() { return farbe; }
-    public Float getSchwierigkeit() { return schwierigkeit; }
-    public Boolean getIs_toprope() { return is_toprope; }
-    public Boolean getIs_vorstieg() { return is_vorstieg; }
-    public String getSchrauber() { return schrauber; }
-    public LocalDate getSchraubdatum() { return schraubdatum; }
-    public Boolean isIs_active() { return is_active; }
-    public String getBeschreibung() { return beschreibung; }
-    public List<Kommentar> getKommentare() { return kommentare; }
-
-    public void setId(Integer id) { this.id = id; }
-    public void setWand(Wand wand) { this.wand = wand; }
-    public void setName(String name) { this.name = name; }
-    public void setFarbe(String farbe) { this.farbe = farbe; }
-    public void setSchwierigkeit(Float schwierigkeit) { this.schwierigkeit = schwierigkeit; }
-    public void setIs_toprope(Boolean is_toprope) { this.is_toprope = is_toprope; }
-    public void setIs_vorstieg(Boolean is_vorstieg) { this.is_vorstieg = is_vorstieg; }
-    public void setSchrauber(String schrauber) { this.schrauber = schrauber; }
-    public void setSchraubdatum(LocalDate schraubdatum) { this.schraubdatum = schraubdatum; }
-    public void setIsActive(Boolean isActive) { this.is_active = isActive; }
-    public void setBeschreibung(String beschreibung) { this.beschreibung = beschreibung; }
 }

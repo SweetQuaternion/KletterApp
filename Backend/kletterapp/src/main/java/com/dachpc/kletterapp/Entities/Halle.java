@@ -4,8 +4,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter @Setter @NoArgsConstructor
 @Table(name = "hallen")
 @JsonPropertyOrder({"id", "name", "adresse"})
 public class Halle {
@@ -27,8 +31,6 @@ public class Halle {
     @Column(name = "betreiber")
     private String betreiber;
 
-    protected Halle() {
-    }
     
     public Halle(String name, String adresse, String betreiber) {
         this.name = name;
@@ -36,14 +38,4 @@ public class Halle {
         this.betreiber = betreiber;
     }
 
-    // Getters and setters
-    public int getId() { return id; }
-    public String getName() { return name; }
-    public String getAdresse() { return adresse; }
-    public String getBetreiber() { return betreiber; }
-
-    public void setId(int id) { this.id = id; }
-    public void setName(String name) { this.name = name; }
-    public void setAdresse(String adresse) { this.adresse = adresse; }
-    public void setBetreiber(String betreiber) { this.betreiber = betreiber; }
 }

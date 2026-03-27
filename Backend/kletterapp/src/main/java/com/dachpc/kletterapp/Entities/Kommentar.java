@@ -7,8 +7,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter @Setter @NoArgsConstructor
 @Table(name = "kommentare")
 @JsonPropertyOrder({"id", "routenId", "userId", "datum", "text"})
 public class Kommentar {
@@ -35,8 +39,6 @@ public class Kommentar {
     @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private String text;
 
-    protected Kommentar() {
-    }
 
     public Kommentar(Route route, User user, LocalDateTime datum, String text) {
         this.route = route;
@@ -45,16 +47,4 @@ public class Kommentar {
         this.text = text;
     }
 
-    // Getters and setters
-    public int getId() { return id; }
-    public Route getRoute() { return route; }
-    public User getUser() { return user; }
-    public LocalDateTime getDatum() { return datum; }
-    public String getText() { return text; }
-
-    public void setId(int id) { this.id = id; }
-    public void setRoute(Route route) { this.route = route; }
-    public void setUser(User user) { this.user = user; }
-    public void setDatum(LocalDateTime datum) { this.datum = datum; }
-    public void setText(String text) { this.text = text; }
 }

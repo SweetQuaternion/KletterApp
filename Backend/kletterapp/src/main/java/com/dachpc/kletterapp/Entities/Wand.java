@@ -6,8 +6,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter @Setter @NoArgsConstructor
 @Table(name = "wände")
 @JsonPropertyOrder({"id", "hallenId", "wandNr", "sektor", "startX", "startY", "endX", "endY", "position", "routen"})
 public class Wand {
@@ -41,7 +45,6 @@ public class Wand {
     @OneToMany(mappedBy = "wand") // fetch = FetchType.EAGER hat es irgendwie nicht getan
     private List<Route> routen;
 
-    protected Wand() {}
 
     public Wand(Integer hallenId, Integer wandNr, String sektor, Float startX, Float startY, Float endX, Float endY, String position) {
         this.id = new WandId(hallenId, wandNr);
@@ -53,24 +56,4 @@ public class Wand {
         this.position = position;
     }
 
-    // Getters and setters
-    public int getHallenId() { return id.getHallenId(); }
-    public int getWandNr() { return id.getWandNr(); }
-    public String getSektor() { return sektor; }
-    public Float getStartX() { return startX; }
-    public Float getStartY() { return startY; }
-    public Float getEndX() { return endX; }
-    public Float getEndY() { return endY; }
-    public String getPosition() { return position; }
-    public List<Route> getRouten() { return routen; }
-
-    public void setId(WandId id) { this.id = id; }
-    public void setHallenId(Integer hallenId) { this.id.setHallenId(hallenId); }
-    public void setWandNr(Integer wandNr) { this.id.setWandNr(wandNr); }
-    public void setSektor(String sektor) { this.sektor = sektor; }
-    public void setStartX(Float startX) { this.startX = startX; }
-    public void setStartY(Float startY) { this.startY = startY; }
-    public void setEndX(Float endX) { this.endX = endX; }
-    public void setEndY(Float endY) { this.endY = endY; }
-    public void setPosition(String position) { this.position = position; }
 }
