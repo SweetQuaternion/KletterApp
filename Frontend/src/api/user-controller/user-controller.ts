@@ -63,7 +63,7 @@ export type getUserResponseError = (getUserResponse400 | getUserResponse404 | ge
 
 export type getUserResponse = (getUserResponseSuccess | getUserResponseError)
 
-export const getGetUserUrl = (params: GetUserParams,) => {
+export const getGetUserUrl = (params?: GetUserParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -78,7 +78,7 @@ export const getGetUserUrl = (params: GetUserParams,) => {
   return stringifiedParams.length > 0 ? `/api/users?${stringifiedParams}` : `/api/users`
 }
 
-export const getUser = async (params: GetUserParams, options?: RequestInit): Promise<getUserResponse> => {
+export const getUser = async (params?: GetUserParams, options?: RequestInit): Promise<getUserResponse> => {
   
   const res = await fetch(getGetUserUrl(params),
   {      
@@ -106,7 +106,7 @@ export const getGetUserQueryKey = (params?: GetUserParams,) => {
     }
 
     
-export const getGetUserQueryOptions = <TData = Awaited<ReturnType<typeof getUser>>, TError = void>(params: GetUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>, fetch?: RequestInit}
+export const getGetUserQueryOptions = <TData = Awaited<ReturnType<typeof getUser>>, TError = void>(params?: GetUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -129,7 +129,7 @@ export type GetUserQueryError = void
 
 
 export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError = void>(
- params: GetUserParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>> & Pick<
+ params: undefined |  GetUserParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getUser>>,
           TError,
@@ -139,7 +139,7 @@ export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError =
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError = void>(
- params: GetUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>> & Pick<
+ params?: GetUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getUser>>,
           TError,
@@ -149,12 +149,12 @@ export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError =
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError = void>(
- params: GetUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>, fetch?: RequestInit}
+ params?: GetUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>, fetch?: RequestInit}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError = void>(
- params: GetUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>, fetch?: RequestInit}
+ params?: GetUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>, fetch?: RequestInit}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 

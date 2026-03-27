@@ -100,7 +100,7 @@ function SVGMap({
         >
           {wände.map((wand) => (
             <g
-              key={wand.wandNr}
+              key={wand.id.wandNr}
               onClick={(e) => {
                 e.stopPropagation();
                 handleWandClick(wand);

@@ -25,6 +25,7 @@ export * from './route';
 export * from './updateKommentarParams';
 export * from './user';
 export * from './userRoutenStatus';
+export * from './userRoutenStatusId';
 export * from './userSyncRequest';
 export * from './wand';
 export * from './wandId';

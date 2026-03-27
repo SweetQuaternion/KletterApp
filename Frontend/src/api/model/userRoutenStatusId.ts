@@ -5,7 +5,7 @@
  * OpenAPI spec version: v0
  */
 
-export type GetUserParams = {
-id?: string;
-username?: string;
-};
+export interface UserRoutenStatusId {
+  userId: string;
+  routeId: number;
+}

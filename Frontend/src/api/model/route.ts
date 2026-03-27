@@ -20,7 +20,4 @@ export interface Route {
   beschreibung?: string;
   wand: Wand;
   kommentare?: Kommentar[];
-  hallenId?: number;
-  wandNr?: number;
-  isActive?: boolean;
 }

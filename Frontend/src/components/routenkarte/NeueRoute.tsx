@@ -20,7 +20,7 @@ const NeueRoute = ({ selectedHalle, selectedWand }: Props) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {
-      wand: { hallenId: selectedHalle.id, wandNr: selectedWand.wandNr },
+      wand: selectedWand,
       name: formData.get("name") as string,
       farbe: formData.get("farbe") as string,
       schwierigkeit: convertSchwierigkeitToNumber(

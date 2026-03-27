@@ -12,6 +12,7 @@ import {
   createAddAscentMutationOptions,
   createAddKommentarMutationOptions,
 } from "../../constants/queries";
+import { Link } from "react-router";
 
 interface Props {
   selectedRoute: Route;
@@ -152,7 +153,12 @@ const RoutenDetails = ({ selectedRoute, user }: Props) => {
           {selectedRoute.kommentare && selectedRoute.kommentare.length > 0 ? (
             selectedRoute.kommentare.map((kommentar) => (
               <div key={kommentar.id} className="kommentar">
-                <p className="kommentar-name">{kommentar.user.name}</p>
+                <Link
+                  to={`/user/${kommentar.user.name}`}
+                  className="kommentar-user"
+                >
+                  <p className="kommentar-name">{kommentar.user.name}</p>
+                </Link>
                 <p className="kommentar-text">{kommentar.text}</p>
                 {/* {(isAdmin() ||
                   user?.keycloakId === kommentar.user.keycloakId) && (

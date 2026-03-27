@@ -56,4 +56,22 @@ public class Wand {
         this.position = position;
     }
 
+    public Wand(WandId id, String sektor, Float startX, Float startY, Float endX, Float endY, String position) {
+        this.id = id;
+        this.sektor = sektor;
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
+        this.position = position;
+    }
+
+    int getHallenId() {
+        return id.getHallenId();
+    }
+
+    int getWandNr() {
+        return id.getWandNr();
+    }
+
 }

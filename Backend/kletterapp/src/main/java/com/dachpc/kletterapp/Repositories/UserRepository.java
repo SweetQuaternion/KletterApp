@@ -8,6 +8,8 @@ import com.dachpc.kletterapp.Entities.User;
 
 public interface UserRepository extends JpaRepository<User, String> {
 
+    Optional<User> findByName(String username);
+
     Optional<User> findByKeycloakId(String keycloakId);
     // Optional<User> findByEmail(String email);
 

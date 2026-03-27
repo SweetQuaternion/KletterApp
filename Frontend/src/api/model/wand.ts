@@ -8,9 +8,7 @@ import type { Route } from './route';
 import type { WandId } from './wandId';
 
 export interface Wand {
-  id?: WandId;
-  hallenId?: number;
-  wandNr?: number;
+  id: WandId;
   sektor?: string;
   startX: number;
   startY: number;

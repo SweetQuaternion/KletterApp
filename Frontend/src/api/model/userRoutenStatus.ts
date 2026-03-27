@@ -4,12 +4,12 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
+import type { UserRoutenStatusId } from './userRoutenStatusId';
 
 export interface UserRoutenStatus {
-  userId?: string;
-  routenId?: number;
+  isFavorit?: boolean;
+  isProjekt?: boolean;
   geschSchwierigkeit?: number;
   notiz?: string;
-  favorit?: boolean;
-  projekt?: boolean;
+  id: UserRoutenStatusId;
 }

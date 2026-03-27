@@ -18,7 +18,7 @@ const WandInfoBox = ({
   return (
     <div className="wand-infobox">
       <div className="wand-infobox-header">
-        <h3>Wand {selectedWand?.wandNr}</h3>
+        <h3>Wand {selectedWand?.id.wandNr}</h3>
         <div
           className="position-tag"
           style={{

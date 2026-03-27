@@ -1,7 +1,11 @@
 import { mutationOptions } from "@tanstack/react-query";
 import type { Ascent, Kommentar, Route, User } from "../api/model";
 import { keycloak } from "./keycloak";
-import { changeUser, syncUser } from "../api/user-controller/user-controller";
+import {
+  changeUser,
+  getUser,
+  syncUser,
+} from "../api/user-controller/user-controller";
 import { addAscent } from "../api/ascent-controller/ascent-controller";
 import { addRoute } from "../api/routen-controller/routen-controller";
 import { addKommentar } from "../api/kommentar-controller/kommentar-controller";
@@ -20,6 +24,28 @@ export async function fetchUser(keycloakId: string, name: string) {
     },
   );
   return response.data as User;
+}
+
+export function createProfileQueryOptions(username: string) {
+  return {
+    queryKey: ["profile", username],
+    queryFn: async () => {
+      await keycloak.updateToken(30).catch((err) => {
+        console.error("Failed to refresh token", err);
+        throw new Error("Failed to refresh token");
+      });
+      const response = await getUser(
+        { username: username },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${keycloak.token}`,
+          },
+        },
+      );
+      return response.data as User;
+    },
+  };
 }
 
 export function createUserSyncMutation() {
@@ -64,7 +90,7 @@ export function createAddRouteMutationOptions() {
         console.error("Failed to refresh token", err);
         throw new Error("Failed to refresh token");
       });
-      const response = await addRoute(data.hallenId || 0, data, {
+      const response = await addRoute(data.wand.id.hallenId || 0, data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${keycloak.token}`,

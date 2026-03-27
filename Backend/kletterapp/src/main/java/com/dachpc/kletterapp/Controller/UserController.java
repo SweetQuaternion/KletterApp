@@ -32,8 +32,13 @@ public class UserController {
     // kann ungesichert bleiben, da wir nur die ID, Username und Profilbild abfragen und keine sensiblen Daten zurückgeben
     // User sollen einander sehen können
     @GetMapping(produces = "application/json")
-    public ResponseEntity<User> getUser(@RequestParam String id) {
-        User user = userRepository.findByKeycloakId(id).orElseThrow(() -> new EntityNotFoundException());
+    public ResponseEntity<User> getUser(@RequestParam(required = false) String id, @RequestParam(required = false) String username) {
+        User user = null;
+        if (id != null) {
+            user = userRepository.findByKeycloakId(id).orElseThrow(() -> new EntityNotFoundException());
+        } else if (username != null) {
+            user = userRepository.findByName(username).orElseThrow(() -> new EntityNotFoundException());
+        }
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
     

@@ -7,6 +7,7 @@ import { useState } from "react";
 import type { Halle, User } from "./api/model";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Userpage from "./components/profil/Userpage";
 
 interface Props {
   user: User | null;
@@ -40,6 +41,7 @@ function App({ user }: Props) {
             )
           }
         />
+        <Route path="/user/:username" element={<Userpage user={user} />} />
       </Routes>
     </BrowserRouter>
   );
