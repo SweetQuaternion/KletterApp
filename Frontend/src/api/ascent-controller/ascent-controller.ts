@@ -62,7 +62,7 @@ export type findAscentsByUserIdResponseError = (findAscentsByUserIdResponse400 |
 
 export type findAscentsByUserIdResponse = (findAscentsByUserIdResponseSuccess | findAscentsByUserIdResponseError)
 
-export const getFindAscentsByUserIdUrl = (params?: FindAscentsByUserIdParams,) => {
+export const getFindAscentsByUserIdUrl = (params: FindAscentsByUserIdParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -77,7 +77,7 @@ export const getFindAscentsByUserIdUrl = (params?: FindAscentsByUserIdParams,) =
   return stringifiedParams.length > 0 ? `/api/ascents?${stringifiedParams}` : `/api/ascents`
 }
 
-export const findAscentsByUserId = async (params?: FindAscentsByUserIdParams, options?: RequestInit): Promise<findAscentsByUserIdResponse> => {
+export const findAscentsByUserId = async (params: FindAscentsByUserIdParams, options?: RequestInit): Promise<findAscentsByUserIdResponse> => {
   
   const res = await fetch(getFindAscentsByUserIdUrl(params),
   {      
@@ -105,7 +105,7 @@ export const getFindAscentsByUserIdQueryKey = (params?: FindAscentsByUserIdParam
     }
 
     
-export const getFindAscentsByUserIdQueryOptions = <TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(params?: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>>, fetch?: RequestInit}
+export const getFindAscentsByUserIdQueryOptions = <TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(params: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -128,7 +128,7 @@ export type FindAscentsByUserIdQueryError = void
 
 
 export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(
- params: undefined |  FindAscentsByUserIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>> & Pick<
+ params: FindAscentsByUserIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof findAscentsByUserId>>,
           TError,
@@ -138,7 +138,7 @@ export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAsc
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(
- params?: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>> & Pick<
+ params: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof findAscentsByUserId>>,
           TError,
@@ -148,12 +148,12 @@ export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAsc
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(
- params?: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>>, fetch?: RequestInit}
+ params: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>>, fetch?: RequestInit}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(
- params?: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>>, fetch?: RequestInit}
+ params: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>>, fetch?: RequestInit}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 

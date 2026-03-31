@@ -25,6 +25,7 @@ import type {
 
 import type {
   DeleteUserRoutenStatusParams,
+  GetUserRoutenStatusParams,
   UserRoutenStatus
 } from '../model';
 
@@ -32,46 +33,53 @@ import type {
 
 
 
-export type getUserRoutenStatusListResponse200 = {
-  data: UserRoutenStatus[]
+export type getUserRoutenStatusResponse200 = {
+  data: UserRoutenStatus
   status: 200
 }
 
-export type getUserRoutenStatusListResponse400 = {
+export type getUserRoutenStatusResponse400 = {
   data: void
   status: 400
 }
 
-export type getUserRoutenStatusListResponse404 = {
+export type getUserRoutenStatusResponse404 = {
   data: void
   status: 404
 }
 
-export type getUserRoutenStatusListResponse500 = {
+export type getUserRoutenStatusResponse500 = {
   data: void
   status: 500
 }
 
-export type getUserRoutenStatusListResponseSuccess = (getUserRoutenStatusListResponse200) & {
+export type getUserRoutenStatusResponseSuccess = (getUserRoutenStatusResponse200) & {
   headers: Headers;
 };
-export type getUserRoutenStatusListResponseError = (getUserRoutenStatusListResponse400 | getUserRoutenStatusListResponse404 | getUserRoutenStatusListResponse500) & {
+export type getUserRoutenStatusResponseError = (getUserRoutenStatusResponse400 | getUserRoutenStatusResponse404 | getUserRoutenStatusResponse500) & {
   headers: Headers;
 };
 
-export type getUserRoutenStatusListResponse = (getUserRoutenStatusListResponseSuccess | getUserRoutenStatusListResponseError)
+export type getUserRoutenStatusResponse = (getUserRoutenStatusResponseSuccess | getUserRoutenStatusResponseError)
 
-export const getGetUserRoutenStatusListUrl = () => {
+export const getGetUserRoutenStatusUrl = (params: GetUserRoutenStatusParams,) => {
+  const normalizedParams = new URLSearchParams();
 
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
 
-  
+  const stringifiedParams = normalizedParams.toString();
 
-  return `/api/userroutenstatus`
+  return stringifiedParams.length > 0 ? `/api/userroutenstatus?${stringifiedParams}` : `/api/userroutenstatus`
 }
 
-export const getUserRoutenStatusList = async ( options?: RequestInit): Promise<getUserRoutenStatusListResponse> => {
+export const getUserRoutenStatus = async (params: GetUserRoutenStatusParams, options?: RequestInit): Promise<getUserRoutenStatusResponse> => {
   
-  const res = await fetch(getGetUserRoutenStatusListUrl(),
+  const res = await fetch(getGetUserRoutenStatusUrl(params),
   {      
     ...options,
     method: 'GET'
@@ -82,74 +90,74 @@ export const getUserRoutenStatusList = async ( options?: RequestInit): Promise<g
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
   
-  const data: getUserRoutenStatusListResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getUserRoutenStatusListResponse
+  const data: getUserRoutenStatusResponse['data'] = body ? JSON.parse(body) : {}
+  return { data, status: res.status, headers: res.headers } as getUserRoutenStatusResponse
 }
   
 
 
 
 
-export const getGetUserRoutenStatusListQueryKey = () => {
+export const getGetUserRoutenStatusQueryKey = (params?: GetUserRoutenStatusParams,) => {
     return [
-    `/api/userroutenstatus`
+    `/api/userroutenstatus`, ...(params ? [params] : [])
     ] as const;
     }
 
     
-export const getGetUserRoutenStatusListQueryOptions = <TData = Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError = void>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError, TData>>, fetch?: RequestInit}
+export const getGetUserRoutenStatusQueryOptions = <TData = Awaited<ReturnType<typeof getUserRoutenStatus>>, TError = void>(params: GetUserRoutenStatusParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatus>>, TError, TData>>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetUserRoutenStatusListQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetUserRoutenStatusQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserRoutenStatusList>>> = ({ signal }) => getUserRoutenStatusList({ signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserRoutenStatus>>> = ({ signal }) => getUserRoutenStatus(params, { signal, ...fetchOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatus>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetUserRoutenStatusListQueryResult = NonNullable<Awaited<ReturnType<typeof getUserRoutenStatusList>>>
-export type GetUserRoutenStatusListQueryError = void
+export type GetUserRoutenStatusQueryResult = NonNullable<Awaited<ReturnType<typeof getUserRoutenStatus>>>
+export type GetUserRoutenStatusQueryError = void
 
 
-export function useGetUserRoutenStatusList<TData = Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError = void>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError, TData>> & Pick<
+export function useGetUserRoutenStatus<TData = Awaited<ReturnType<typeof getUserRoutenStatus>>, TError = void>(
+ params: GetUserRoutenStatusParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatus>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getUserRoutenStatusList>>,
+          Awaited<ReturnType<typeof getUserRoutenStatus>>,
           TError,
-          Awaited<ReturnType<typeof getUserRoutenStatusList>>
+          Awaited<ReturnType<typeof getUserRoutenStatus>>
         > , 'initialData'
       >, fetch?: RequestInit}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetUserRoutenStatusList<TData = Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError = void>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError, TData>> & Pick<
+export function useGetUserRoutenStatus<TData = Awaited<ReturnType<typeof getUserRoutenStatus>>, TError = void>(
+ params: GetUserRoutenStatusParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatus>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getUserRoutenStatusList>>,
+          Awaited<ReturnType<typeof getUserRoutenStatus>>,
           TError,
-          Awaited<ReturnType<typeof getUserRoutenStatusList>>
+          Awaited<ReturnType<typeof getUserRoutenStatus>>
         > , 'initialData'
       >, fetch?: RequestInit}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetUserRoutenStatusList<TData = Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError = void>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError, TData>>, fetch?: RequestInit}
+export function useGetUserRoutenStatus<TData = Awaited<ReturnType<typeof getUserRoutenStatus>>, TError = void>(
+ params: GetUserRoutenStatusParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatus>>, TError, TData>>, fetch?: RequestInit}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetUserRoutenStatusList<TData = Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError = void>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatusList>>, TError, TData>>, fetch?: RequestInit}
+export function useGetUserRoutenStatus<TData = Awaited<ReturnType<typeof getUserRoutenStatus>>, TError = void>(
+ params: GetUserRoutenStatusParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatus>>, TError, TData>>, fetch?: RequestInit}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetUserRoutenStatusListQueryOptions(options)
+  const queryOptions = getGetUserRoutenStatusQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

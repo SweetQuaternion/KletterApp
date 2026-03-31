@@ -1,14 +1,35 @@
-import { mutationOptions } from "@tanstack/react-query";
-import type { Ascent, Kommentar, Route, User } from "../api/model";
+import { mutationOptions, QueryClient } from "@tanstack/react-query";
+import type {
+  Ascent,
+  Kommentar,
+  Route,
+  User,
+  UserRoutenStatus,
+} from "../api/model";
 import { keycloak } from "./keycloak";
 import {
   changeUser,
   getUser,
   syncUser,
 } from "../api/user-controller/user-controller";
-import { addAscent } from "../api/ascent-controller/ascent-controller";
+import {
+  addAscent,
+  findAscentsByUserId,
+} from "../api/ascent-controller/ascent-controller";
 import { addRoute } from "../api/routen-controller/routen-controller";
 import { addKommentar } from "../api/kommentar-controller/kommentar-controller";
+import {
+  getUserRoutenStatus,
+  updateUserRoutenStatus,
+} from "../api/user-routen-status-controller/user-routen-status-controller";
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export async function fetchUser(keycloakId: string, name: string) {
   const response = await syncUser(
@@ -46,6 +67,92 @@ export function createProfileQueryOptions(username: string) {
       return response.data as User;
     },
   };
+}
+
+export function createAscentQueryOptions(routenId: number, user: User | null) {
+  return {
+    queryKey: ["ascents", routenId, user?.keycloakId],
+    queryFn: async () => {
+      await keycloak.updateToken(30).catch((err) => {
+        console.error("Failed to refresh token", err);
+        throw new Error("Failed to refresh token");
+      });
+      if (!user) {
+        return null;
+      }
+      const response = await findAscentsByUserId(
+        { routenId, userId: user.keycloakId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${keycloak.token}`,
+          },
+        },
+      );
+      if (!response || response.status !== 200) {
+        throw new Error("Something went wrong here...");
+      }
+      return response.data as Ascent[];
+    },
+  };
+}
+
+export function createUserRoutenStatusQueryOptions(
+  routenId: number,
+  user: User | null,
+) {
+  return {
+    queryKey: ["userRoutenStatus", routenId, user?.keycloakId],
+    queryFn: async () => {
+      await keycloak.updateToken(30).catch((err) => {
+        console.error("Failed to refresh token", err);
+        throw new Error("Failed to refresh token");
+      });
+      if (!user) {
+        return null;
+      }
+      const response = await getUserRoutenStatus(
+        { routenId, userId: user.keycloakId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${keycloak.token}`,
+          },
+        },
+      );
+      if (!response || response.status !== 200) {
+        throw new Error("Something went wrong here...");
+      }
+      console.log(response.data);
+      return response.data as UserRoutenStatus;
+    },
+    staleTime: 24 * 60 * 60 * 1000, // 24 hours
+  };
+}
+
+export function createUserRoutenStatusMutationOptions() {
+  return mutationOptions({
+    mutationFn: async (data: UserRoutenStatus) => {
+      await keycloak.updateToken(30).catch((err) => {
+        console.error("Failed to refresh token", err);
+        throw new Error("Failed to refresh token");
+      });
+      const response = await updateUserRoutenStatus(data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${keycloak.token}`,
+        },
+      });
+      if (!response || response.status !== 200) {
+        throw new Error("Something went wrong here...");
+      }
+    },
+    onSuccess: async (_, variables) => {
+      await queryClient.invalidateQueries({
+        queryKey: ["userRoutenStatus", variables.routenId, variables.userId],
+      });
+    },
+  });
 }
 
 export function createUserSyncMutation() {

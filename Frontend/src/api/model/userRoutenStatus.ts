@@ -7,9 +7,11 @@
 import type { UserRoutenStatusId } from './userRoutenStatusId';
 
 export interface UserRoutenStatus {
+  userId?: string;
+  routenId?: number;
   isFavorit?: boolean;
   isProjekt?: boolean;
   geschSchwierigkeit?: number;
   notiz?: string;
-  id: UserRoutenStatusId;
+  id?: UserRoutenStatusId;
 }

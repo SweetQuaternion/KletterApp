@@ -19,6 +19,8 @@ export * from './findAscentsByUserIdParams';
 export * from './findHalleParams';
 export * from './getKommentareByRouteIDParams';
 export * from './getUserParams';
+export * from './getUserRoutenStatusListParams';
+export * from './getUserRoutenStatusParams';
 export * from './halle';
 export * from './kommentar';
 export * from './route';

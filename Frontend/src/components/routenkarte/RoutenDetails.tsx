@@ -7,10 +7,13 @@ import type {
   Route,
   User,
 } from "../../api/model";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   createAddAscentMutationOptions,
   createAddKommentarMutationOptions,
+  createAscentQueryOptions,
+  createUserRoutenStatusMutationOptions,
+  createUserRoutenStatusQueryOptions,
 } from "../../constants/queries";
 import { Link } from "react-router";
 
@@ -21,6 +24,21 @@ interface Props {
 
 const RoutenDetails = ({ selectedRoute, user }: Props) => {
   const [ascentToggled, setAscentToggled] = useState(false);
+
+  const { data: userRoutenStatus } = useQuery(
+    createUserRoutenStatusQueryOptions(selectedRoute.id, user),
+  );
+
+  const { data: ascents } = useQuery(
+    createAscentQueryOptions(selectedRoute.id, user),
+  );
+
+  const {
+    mutate: updateStatus,
+    isSuccess: isStatusSuccess,
+    isError: isStatusError,
+  } = useMutation(createUserRoutenStatusMutationOptions());
+
   const {
     mutate: addAscent,
     isSuccess: isAscentSuccess,
@@ -71,16 +89,22 @@ const RoutenDetails = ({ selectedRoute, user }: Props) => {
           {convertSchwierigkeitToString(selectedRoute.schwierigkeit || 0)}
         </div>
       </div>
-      <div
-        className="tag-colour"
-        style={{
-          background: `var(--${selectedRoute.farbe})`,
-          color: `${selectedRoute.farbe === "schwarz" ? "white" : "black"}`,
-          border: `${selectedRoute.farbe === "weiß" ? "1px solid grey" : "none"}`,
-        }}
-      >
-        {selectedRoute.farbe}
+      <div className="flex-row small-gap">
+        <div
+          className="tag-colour"
+          style={{
+            background: `var(--${selectedRoute.farbe})`,
+            color: `${selectedRoute.farbe === "schwarz" ? "white" : "black"}`,
+            border: `${selectedRoute.farbe === "weiß" ? "1px solid grey" : "none"}`,
+          }}
+        >
+          {selectedRoute.farbe}
+        </div>
+        {ascents?.length !== 0 && (
+          <img src="/tick.svg" alt="geschafft" className="geschafft-haken" />
+        )}
       </div>
+
       <p className="small">
         geschraubt{" "}
         {selectedRoute.schraubdatum
@@ -92,12 +116,30 @@ const RoutenDetails = ({ selectedRoute, user }: Props) => {
       {user && (
         <>
           <div className="routen-details-badges">
-            <button className="favorit" title="Als Favorit markieren">
+            <button
+              className={`favorit ${userRoutenStatus?.isFavorit ? "active" : ""}`}
+              title="Als Favorit markieren"
+              onClick={() =>
+                updateStatus({
+                  ...userRoutenStatus,
+                  isFavorit: !userRoutenStatus?.isFavorit,
+                })
+              }
+            >
               <div className="icon-wrapper">
                 <img src="/favorite.svg" />
               </div>
             </button>
-            <button className="projekt" title="Als Projekt markieren">
+            <button
+              className={`projekt ${userRoutenStatus?.isProjekt ? "active" : ""}`}
+              title="Als Projekt markieren"
+              onClick={() =>
+                updateStatus({
+                  ...userRoutenStatus,
+                  isProjekt: !userRoutenStatus?.isProjekt,
+                })
+              }
+            >
               <div className="icon-wrapper">
                 <img src="/projekt.svg" />
               </div>
@@ -182,8 +224,10 @@ const RoutenDetails = ({ selectedRoute, user }: Props) => {
                 />
                 <button type="submit">Absenden</button>
               </form>
-              {isKommentarSuccess && <p className="small">Gespeichert!</p>}
-              {isKommentarError && (
+              {(isKommentarSuccess || isStatusSuccess) && (
+                <p className="small">Gespeichert!</p>
+              )}
+              {(isKommentarError || isStatusError) && (
                 <p className="small">Etwas ist schiefgelaufen...</p>
               )}
             </>

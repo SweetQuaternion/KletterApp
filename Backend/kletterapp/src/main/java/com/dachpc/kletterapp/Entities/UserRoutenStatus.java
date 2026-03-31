@@ -2,7 +2,7 @@ package com.dachpc.kletterapp.Entities;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+// import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ import lombok.Setter;
 public class UserRoutenStatus {
 
     @EmbeddedId
-    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
+    // @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private UserRoutenStatusId id;
 
     @Column(name = "isfavorit")
@@ -37,6 +37,20 @@ public class UserRoutenStatus {
         this.isProjekt = isProjekt;
         this.geschSchwierigkeit = geschSchwierigkeit;
         this.notiz = notiz;
+    }
+
+    public UserRoutenStatus(String userId, int routenId) {
+        this.id = new UserRoutenStatusId(userId, routenId);
+        this.isFavorit = false;
+        this.isProjekt = false;
+    }
+
+    public String getUserId() {
+        return id.getUserId();
+    }
+
+    public int getRoutenId() {
+        return id.getRouteId();
     }
 
 }

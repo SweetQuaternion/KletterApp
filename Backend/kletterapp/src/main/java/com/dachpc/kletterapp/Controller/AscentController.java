@@ -27,7 +27,7 @@ public class AscentController {
     private AscentRepository ascentRepository;
 
     @GetMapping(produces = "application/json")
-    public List<Ascent> findAscentsByUserId(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer routenId) {
+    public List<Ascent> findAscentsByUserId(@RequestParam String userId, @RequestParam(required = false) Integer routenId) {
         return ascentRepository.search(userId, routenId);
     }
 

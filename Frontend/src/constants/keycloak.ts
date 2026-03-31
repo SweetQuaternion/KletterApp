@@ -17,3 +17,16 @@ export const register = () =>
   keycloak.register({
     redirectUri: window.location.origin + "/willkommen",
   });
+
+export async function getAccessToken(): Promise<string | undefined> {
+  if (!keycloak.authenticated) {
+    return undefined;
+  }
+  try {
+    await keycloak.updateToken(30);
+    return keycloak.token;
+  } catch {
+    await keycloak.login();
+    return undefined;
+  }
+}

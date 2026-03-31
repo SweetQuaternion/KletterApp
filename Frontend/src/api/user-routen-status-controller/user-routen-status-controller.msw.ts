@@ -21,20 +21,20 @@ import type {
 } from '../model';
 
 
-export const getGetUserRoutenStatusListResponseMock = (): UserRoutenStatus[] => (Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({isFavorit: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), isProjekt: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), geschSchwierigkeit: faker.helpers.arrayElement([faker.number.float({fractionDigits: 2}), undefined]), notiz: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), id: {userId: faker.string.alpha({length: {min: 10, max: 20}}), routeId: faker.number.int()}})))
+export const getGetUserRoutenStatusResponseMock = (overrideResponse: Partial<Extract<UserRoutenStatus, object>> = {}): UserRoutenStatus => ({userId: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), routenId: faker.helpers.arrayElement([faker.number.int(), undefined]), isFavorit: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), isProjekt: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), geschSchwierigkeit: faker.helpers.arrayElement([faker.number.float({fractionDigits: 2}), undefined]), notiz: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), id: faker.helpers.arrayElement([{userId: faker.string.alpha({length: {min: 10, max: 20}}), routeId: faker.number.int()}, undefined]), ...overrideResponse})
 
-export const getCreateUserRoutenStatusResponseMock = (overrideResponse: Partial<Extract<UserRoutenStatus, object>> = {}): UserRoutenStatus => ({isFavorit: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), isProjekt: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), geschSchwierigkeit: faker.helpers.arrayElement([faker.number.float({fractionDigits: 2}), undefined]), notiz: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), id: {userId: faker.string.alpha({length: {min: 10, max: 20}}), routeId: faker.number.int()}, ...overrideResponse})
+export const getCreateUserRoutenStatusResponseMock = (overrideResponse: Partial<Extract<UserRoutenStatus, object>> = {}): UserRoutenStatus => ({userId: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), routenId: faker.helpers.arrayElement([faker.number.int(), undefined]), isFavorit: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), isProjekt: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), geschSchwierigkeit: faker.helpers.arrayElement([faker.number.float({fractionDigits: 2}), undefined]), notiz: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), id: faker.helpers.arrayElement([{userId: faker.string.alpha({length: {min: 10, max: 20}}), routeId: faker.number.int()}, undefined]), ...overrideResponse})
 
-export const getUpdateUserRoutenStatusResponseMock = (overrideResponse: Partial<Extract<UserRoutenStatus, object>> = {}): UserRoutenStatus => ({isFavorit: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), isProjekt: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), geschSchwierigkeit: faker.helpers.arrayElement([faker.number.float({fractionDigits: 2}), undefined]), notiz: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), id: {userId: faker.string.alpha({length: {min: 10, max: 20}}), routeId: faker.number.int()}, ...overrideResponse})
+export const getUpdateUserRoutenStatusResponseMock = (overrideResponse: Partial<Extract<UserRoutenStatus, object>> = {}): UserRoutenStatus => ({userId: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), routenId: faker.helpers.arrayElement([faker.number.int(), undefined]), isFavorit: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), isProjekt: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), geschSchwierigkeit: faker.helpers.arrayElement([faker.number.float({fractionDigits: 2}), undefined]), notiz: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), id: faker.helpers.arrayElement([{userId: faker.string.alpha({length: {min: 10, max: 20}}), routeId: faker.number.int()}, undefined]), ...overrideResponse})
 
 
-export const getGetUserRoutenStatusListMockHandler = (overrideResponse?: UserRoutenStatus[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<UserRoutenStatus[]> | UserRoutenStatus[]), options?: RequestHandlerOptions) => {
+export const getGetUserRoutenStatusMockHandler = (overrideResponse?: UserRoutenStatus | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<UserRoutenStatus> | UserRoutenStatus), options?: RequestHandlerOptions) => {
   return http.get('*/api/userroutenstatus', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
   
   
     return HttpResponse.json(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetUserRoutenStatusListResponseMock(),
+    : getGetUserRoutenStatusResponseMock(),
       { status: 200
       })
   }, options)
@@ -74,7 +74,7 @@ export const getUpdateUserRoutenStatusMockHandler = (overrideResponse?: UserRout
   }, options)
 }
 export const getUserRoutenStatusControllerMock = () => [
-  getGetUserRoutenStatusListMockHandler(),
+  getGetUserRoutenStatusMockHandler(),
   getCreateUserRoutenStatusMockHandler(),
   getDeleteUserRoutenStatusMockHandler(),
   getUpdateUserRoutenStatusMockHandler()

@@ -16,6 +16,6 @@ public interface AscentRepository extends JpaRepository<Ascent, Integer> {
         """,
         nativeQuery = true
     )
-    List<Ascent> search(Integer userId, Integer routenId);
+    List<Ascent> search(String userId, Integer routenId);
     void deleteById(int id);
 }

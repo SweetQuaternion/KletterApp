@@ -44,6 +44,11 @@
   width: fit-content;
 }
 
+img.geschafft-haken {
+  width: 1.5em;
+  height: 1.5em;
+}
+
 .routen-details b {
   margin-top: 1em;
 }
@@ -85,7 +90,7 @@ b {
   box-shadow: 0px 0px 10px 2px var(--goldgelb);
 }
 
-.favorit .marked {
+.favorit.active {
   box-shadow: 0px 0px 10px 5px var(--goldgelb);
 }
 
@@ -102,7 +107,7 @@ b {
   box-shadow: 0px 0px 10px 2px var(--pfirsichorange);
 }
 
-.projekt .marked {
+.projekt.active {
   box-shadow: 0px 0px 10px 5px var(--pfirsichorange);
 }
 

@@ -3,17 +3,9 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { keycloak } from "./constants/keycloak.ts";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { fetchUser } from "./constants/queries.ts";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { fetchUser, queryClient } from "./constants/queries.ts";
 import type { User } from "./api/model";
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
-});
 
 keycloak
   .init({

@@ -28,6 +28,7 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
   return (
     <>
       <SVGMap
+        user={user}
         scale={scale}
         setScale={setScale}
         wände={data?.data || []}
