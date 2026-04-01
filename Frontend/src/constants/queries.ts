@@ -6,7 +6,7 @@ import type {
   User,
   UserRoutenStatus,
 } from "../api/model";
-import { keycloak } from "./keycloak";
+import { keycloak, KEYCLOAK_URL } from "./keycloak";
 import {
   changeUser,
   getUser,
@@ -17,11 +17,17 @@ import {
   findAscentsByUserId,
 } from "../api/ascent-controller/ascent-controller";
 import { addRoute } from "../api/routen-controller/routen-controller";
-import { addKommentar } from "../api/kommentar-controller/kommentar-controller";
+import {
+  addKommentar,
+  getKommentareByRouteID,
+} from "../api/kommentar-controller/kommentar-controller";
 import {
   getUserRoutenStatus,
   updateUserRoutenStatus,
 } from "../api/user-routen-status-controller/user-routen-status-controller";
+import { customFetch } from "./fetcher";
+
+const ONE_DAY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,40 +38,13 @@ export const queryClient = new QueryClient({
 });
 
 export async function fetchUser(keycloakId: string, name: string) {
-  const response = await syncUser(
-    {
-      keycloakId,
-      name,
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${keycloak.token}`,
-      },
-    },
-  );
-  return response.data as User;
+  return (await syncUser({ keycloakId, name })) as User;
 }
 
 export function createProfileQueryOptions(username: string) {
   return {
     queryKey: ["profile", username],
-    queryFn: async () => {
-      await keycloak.updateToken(30).catch((err) => {
-        console.error("Failed to refresh token", err);
-        throw new Error("Failed to refresh token");
-      });
-      const response = await getUser(
-        { username: username },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${keycloak.token}`,
-          },
-        },
-      );
-      return response.data as User;
-    },
+    queryFn: () => getUser({ username }) as Promise<User>,
   };
 }
 
@@ -73,27 +52,16 @@ export function createAscentQueryOptions(routenId: number, user: User | null) {
   return {
     queryKey: ["ascents", routenId, user?.keycloakId],
     queryFn: async () => {
-      await keycloak.updateToken(30).catch((err) => {
-        console.error("Failed to refresh token", err);
-        throw new Error("Failed to refresh token");
-      });
       if (!user) {
         return null;
       }
-      const response = await findAscentsByUserId(
-        { routenId, userId: user.keycloakId },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${keycloak.token}`,
-          },
-        },
-      );
-      if (!response || response.status !== 200) {
-        throw new Error("Something went wrong here...");
-      }
-      return response.data as Ascent[];
+      const response = await findAscentsByUserId({
+        routenId,
+        userId: user.keycloakId,
+      });
+      return response as Ascent[];
     },
+    staleTime: ONE_DAY,
   };
 }
 
@@ -104,49 +72,31 @@ export function createUserRoutenStatusQueryOptions(
   return {
     queryKey: ["userRoutenStatus", routenId, user?.keycloakId],
     queryFn: async () => {
-      await keycloak.updateToken(30).catch((err) => {
-        console.error("Failed to refresh token", err);
-        throw new Error("Failed to refresh token");
-      });
       if (!user) {
         return null;
       }
-      const response = await getUserRoutenStatus(
-        { routenId, userId: user.keycloakId },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${keycloak.token}`,
-          },
-        },
-      );
-      if (!response || response.status !== 200) {
-        throw new Error("Something went wrong here...");
-      }
-      console.log(response.data);
-      return response.data as UserRoutenStatus;
+      const response = await getUserRoutenStatus({
+        routenId,
+        userId: user.keycloakId,
+      });
+      return response as UserRoutenStatus;
     },
-    staleTime: 24 * 60 * 60 * 1000, // 24 hours
+    staleTime: ONE_DAY,
+  };
+}
+
+export function createKommentarQueryOptions(routeId: number) {
+  return {
+    queryKey: ["kommentare", routeId],
+    queryFn: async () =>
+      getKommentareByRouteID({ routeId }) as Promise<Kommentar[]>,
+    staleTime: ONE_DAY,
   };
 }
 
 export function createUserRoutenStatusMutationOptions() {
   return mutationOptions({
-    mutationFn: async (data: UserRoutenStatus) => {
-      await keycloak.updateToken(30).catch((err) => {
-        console.error("Failed to refresh token", err);
-        throw new Error("Failed to refresh token");
-      });
-      const response = await updateUserRoutenStatus(data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${keycloak.token}`,
-        },
-      });
-      if (!response || response.status !== 200) {
-        throw new Error("Something went wrong here...");
-      }
-    },
+    mutationFn: (data: UserRoutenStatus) => updateUserRoutenStatus(data),
     onSuccess: async (_, variables) => {
       await queryClient.invalidateQueries({
         queryKey: ["userRoutenStatus", variables.routenId, variables.userId],
@@ -158,34 +108,19 @@ export function createUserRoutenStatusMutationOptions() {
 export function createUserSyncMutation() {
   return mutationOptions({
     mutationFn: async (data: User) => {
-      const response = await fetch(
-        `${keycloak.authServerUrl}/realms/${keycloak.realm}/account`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${keycloak.token}`,
-          },
-          body: JSON.stringify({
-            username: data.name,
-            email: keycloak.tokenParsed?.email,
-            firstName: keycloak.tokenParsed?.given_name,
-            lastName: keycloak.tokenParsed?.family_name,
-          }),
-        },
-      );
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-
-      console.log(data);
-
-      changeUser(data, {
+      await customFetch(`${KEYCLOAK_URL}/realms/${keycloak.realm}/account`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${keycloak.token}`,
         },
+        body: JSON.stringify({
+          username: data.name,
+          email: keycloak.tokenParsed?.email,
+          firstName: keycloak.tokenParsed?.given_name,
+          lastName: keycloak.tokenParsed?.family_name,
+        }),
       });
+      changeUser(data);
     },
   });
 }
@@ -197,13 +132,8 @@ export function createAddRouteMutationOptions() {
         console.error("Failed to refresh token", err);
         throw new Error("Failed to refresh token");
       });
-      const response = await addRoute(data.wand.id.hallenId || 0, data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${keycloak.token}`,
-        },
-      });
-      if (response.status !== 201) {
+      const response = await addRoute(data.wand.id.hallenId || 0, data);
+      if (response) {
         throw new Error("Failed to add route");
       }
     },
@@ -212,40 +142,17 @@ export function createAddRouteMutationOptions() {
 
 export function createAddAscentMutationOptions() {
   return mutationOptions({
-    mutationFn: async (data: Ascent) => {
-      await keycloak.updateToken(30).catch((err) => {
-        console.error("Failed to refresh token", err);
-        throw new Error("Failed to refresh token");
+    mutationFn: (data: Ascent) => addAscent(data),
+    onSuccess: async (_, variables) => {
+      await queryClient.invalidateQueries({
+        queryKey: ["ascents", variables.routenId, variables.userId],
       });
-      const response = await addAscent(data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${keycloak.token}`,
-        },
-      });
-      if (response.status !== 201) {
-        throw new Error("Failed to add ascent");
-      }
     },
   });
 }
 
 export function createAddKommentarMutationOptions() {
   return mutationOptions({
-    mutationFn: async (data: Kommentar) => {
-      await keycloak.updateToken(30).catch((err) => {
-        console.error("Failed to refresh token", err);
-        throw new Error("Failed to refresh token");
-      });
-      const response = await addKommentar(data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${keycloak.token}`,
-        },
-      });
-      if (response.status !== 201) {
-        throw new Error("Failed to add kommentar");
-      }
-    },
+    mutationFn: (data: Kommentar) => addKommentar(data),
   });
 }

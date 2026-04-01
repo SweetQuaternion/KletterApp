@@ -28,38 +28,12 @@ import type {
   Wand
 } from '../model';
 
+import { customFetch } from '../../constants/fetcher';
 
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
-export type getWaendeByHallenIdResponse200 = {
-  data: Wand[]
-  status: 200
-}
-
-export type getWaendeByHallenIdResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getWaendeByHallenIdResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getWaendeByHallenIdResponse500 = {
-  data: void
-  status: 500
-}
-
-export type getWaendeByHallenIdResponseSuccess = (getWaendeByHallenIdResponse200) & {
-  headers: Headers;
-};
-export type getWaendeByHallenIdResponseError = (getWaendeByHallenIdResponse400 | getWaendeByHallenIdResponse404 | getWaendeByHallenIdResponse500) & {
-  headers: Headers;
-};
-
-export type getWaendeByHallenIdResponse = (getWaendeByHallenIdResponseSuccess | getWaendeByHallenIdResponseError)
 
 export const getGetWaendeByHallenIdUrl = (hallenId: number,) => {
 
@@ -69,22 +43,16 @@ export const getGetWaendeByHallenIdUrl = (hallenId: number,) => {
   return `/api/hallen/${hallenId}/waende`
 }
 
-export const getWaendeByHallenId = async (hallenId: number, options?: RequestInit): Promise<getWaendeByHallenIdResponse> => {
+export const getWaendeByHallenId = async (hallenId: number, options?: RequestInit): Promise<Wand[]> => {
   
-  const res = await fetch(getGetWaendeByHallenIdUrl(hallenId),
+  return customFetch<Wand[]>(getGetWaendeByHallenIdUrl(hallenId),
   {      
     ...options,
     method: 'GET'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getWaendeByHallenIdResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getWaendeByHallenIdResponse
-}
+);}
   
 
 
@@ -97,16 +65,16 @@ export const getGetWaendeByHallenIdQueryKey = (hallenId: number,) => {
     }
 
     
-export const getGetWaendeByHallenIdQueryOptions = <TData = Awaited<ReturnType<typeof getWaendeByHallenId>>, TError = void>(hallenId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWaendeByHallenId>>, TError, TData>>, fetch?: RequestInit}
+export const getGetWaendeByHallenIdQueryOptions = <TData = Awaited<ReturnType<typeof getWaendeByHallenId>>, TError = void>(hallenId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWaendeByHallenId>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetWaendeByHallenIdQueryKey(hallenId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWaendeByHallenId>>> = ({ signal }) => getWaendeByHallenId(hallenId, { signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWaendeByHallenId>>> = ({ signal }) => getWaendeByHallenId(hallenId, { signal, ...requestOptions });
 
       
 
@@ -126,7 +94,7 @@ export function useGetWaendeByHallenId<TData = Awaited<ReturnType<typeof getWaen
           TError,
           Awaited<ReturnType<typeof getWaendeByHallenId>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetWaendeByHallenId<TData = Awaited<ReturnType<typeof getWaendeByHallenId>>, TError = void>(
@@ -136,16 +104,16 @@ export function useGetWaendeByHallenId<TData = Awaited<ReturnType<typeof getWaen
           TError,
           Awaited<ReturnType<typeof getWaendeByHallenId>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetWaendeByHallenId<TData = Awaited<ReturnType<typeof getWaendeByHallenId>>, TError = void>(
- hallenId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWaendeByHallenId>>, TError, TData>>, fetch?: RequestInit}
+ hallenId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWaendeByHallenId>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetWaendeByHallenId<TData = Awaited<ReturnType<typeof getWaendeByHallenId>>, TError = void>(
- hallenId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWaendeByHallenId>>, TError, TData>>, fetch?: RequestInit}
+ hallenId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWaendeByHallenId>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -159,35 +127,6 @@ export function useGetWaendeByHallenId<TData = Awaited<ReturnType<typeof getWaen
 
 
 
-export type addWandResponse201 = {
-  data: Wand
-  status: 201
-}
-
-export type addWandResponse400 = {
-  data: void
-  status: 400
-}
-
-export type addWandResponse404 = {
-  data: void
-  status: 404
-}
-
-export type addWandResponse500 = {
-  data: void
-  status: 500
-}
-
-export type addWandResponseSuccess = (addWandResponse201) & {
-  headers: Headers;
-};
-export type addWandResponseError = (addWandResponse400 | addWandResponse404 | addWandResponse500) & {
-  headers: Headers;
-};
-
-export type addWandResponse = (addWandResponseSuccess | addWandResponseError)
-
 export const getAddWandUrl = (hallenId: number,) => {
 
 
@@ -197,9 +136,9 @@ export const getAddWandUrl = (hallenId: number,) => {
 }
 
 export const addWand = async (hallenId: number,
-    wand: Wand, options?: RequestInit): Promise<addWandResponse> => {
+    wand: Wand, options?: RequestInit): Promise<Wand> => {
   
-  const res = await fetch(getAddWandUrl(hallenId),
+  return customFetch<Wand>(getAddWandUrl(hallenId),
   {      
     ...options,
     method: 'POST',
@@ -207,27 +146,21 @@ export const addWand = async (hallenId: number,
     body: JSON.stringify(
       wand,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: addWandResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as addWandResponse
-}
+);}
   
 
 
 
 export const getAddWandMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addWand>>, TError,{hallenId: number;data: Wand}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addWand>>, TError,{hallenId: number;data: Wand}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof addWand>>, TError,{hallenId: number;data: Wand}, TContext> => {
 
 const mutationKey = ['addWand'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -235,7 +168,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addWand>>, {hallenId: number;data: Wand}> = (props) => {
           const {hallenId,data} = props ?? {};
 
-          return  addWand(hallenId,data,fetchOptions)
+          return  addWand(hallenId,data,requestOptions)
         }
 
 
@@ -250,7 +183,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
     export type AddWandMutationError = void
 
     export const useAddWand = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addWand>>, TError,{hallenId: number;data: Wand}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addWand>>, TError,{hallenId: number;data: Wand}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof addWand>>,
         TError,
@@ -259,36 +192,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       > => {
       return useMutation(getAddWandMutationOptions(options), queryClient);
     }
-    export type deleteWandResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteWandResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteWandResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteWandResponse500 = {
-  data: void
-  status: 500
-}
-
-export type deleteWandResponseSuccess = (deleteWandResponse204) & {
-  headers: Headers;
-};
-export type deleteWandResponseError = (deleteWandResponse400 | deleteWandResponse404 | deleteWandResponse500) & {
-  headers: Headers;
-};
-
-export type deleteWandResponse = (deleteWandResponseSuccess | deleteWandResponseError)
-
-export const getDeleteWandUrl = (hallenId: number,
+    export const getDeleteWandUrl = (hallenId: number,
     params: DeleteWandParams,) => {
   const normalizedParams = new URLSearchParams();
 
@@ -305,36 +209,30 @@ export const getDeleteWandUrl = (hallenId: number,
 }
 
 export const deleteWand = async (hallenId: number,
-    params: DeleteWandParams, options?: RequestInit): Promise<deleteWandResponse> => {
+    params: DeleteWandParams, options?: RequestInit): Promise<void> => {
   
-  const res = await fetch(getDeleteWandUrl(hallenId,params),
+  return customFetch<void>(getDeleteWandUrl(hallenId,params),
   {      
     ...options,
     method: 'DELETE'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: deleteWandResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as deleteWandResponse
-}
+);}
   
 
 
 
 export const getDeleteWandMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteWand>>, TError,{hallenId: number;params: DeleteWandParams}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteWand>>, TError,{hallenId: number;params: DeleteWandParams}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteWand>>, TError,{hallenId: number;params: DeleteWandParams}, TContext> => {
 
 const mutationKey = ['deleteWand'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -342,7 +240,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteWand>>, {hallenId: number;params: DeleteWandParams}> = (props) => {
           const {hallenId,params} = props ?? {};
 
-          return  deleteWand(hallenId,params,fetchOptions)
+          return  deleteWand(hallenId,params,requestOptions)
         }
 
 
@@ -357,7 +255,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
     export type DeleteWandMutationError = void
 
     export const useDeleteWand = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteWand>>, TError,{hallenId: number;params: DeleteWandParams}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteWand>>, TError,{hallenId: number;params: DeleteWandParams}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteWand>>,
         TError,
@@ -366,36 +264,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       > => {
       return useMutation(getDeleteWandMutationOptions(options), queryClient);
     }
-    export type updateWandResponse200 = {
-  data: Wand
-  status: 200
-}
-
-export type updateWandResponse400 = {
-  data: void
-  status: 400
-}
-
-export type updateWandResponse404 = {
-  data: void
-  status: 404
-}
-
-export type updateWandResponse500 = {
-  data: void
-  status: 500
-}
-
-export type updateWandResponseSuccess = (updateWandResponse200) & {
-  headers: Headers;
-};
-export type updateWandResponseError = (updateWandResponse400 | updateWandResponse404 | updateWandResponse500) & {
-  headers: Headers;
-};
-
-export type updateWandResponse = (updateWandResponseSuccess | updateWandResponseError)
-
-export const getUpdateWandUrl = (hallenId: number,) => {
+    export const getUpdateWandUrl = (hallenId: number,) => {
 
 
   
@@ -404,9 +273,9 @@ export const getUpdateWandUrl = (hallenId: number,) => {
 }
 
 export const updateWand = async (hallenId: number,
-    wand: Wand, options?: RequestInit): Promise<updateWandResponse> => {
+    wand: Wand, options?: RequestInit): Promise<Wand> => {
   
-  const res = await fetch(getUpdateWandUrl(hallenId),
+  return customFetch<Wand>(getUpdateWandUrl(hallenId),
   {      
     ...options,
     method: 'PATCH',
@@ -414,27 +283,21 @@ export const updateWand = async (hallenId: number,
     body: JSON.stringify(
       wand,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: updateWandResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as updateWandResponse
-}
+);}
   
 
 
 
 export const getUpdateWandMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateWand>>, TError,{hallenId: number;data: Wand}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateWand>>, TError,{hallenId: number;data: Wand}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof updateWand>>, TError,{hallenId: number;data: Wand}, TContext> => {
 
 const mutationKey = ['updateWand'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -442,7 +305,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateWand>>, {hallenId: number;data: Wand}> = (props) => {
           const {hallenId,data} = props ?? {};
 
-          return  updateWand(hallenId,data,fetchOptions)
+          return  updateWand(hallenId,data,requestOptions)
         }
 
 
@@ -457,7 +320,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
     export type UpdateWandMutationError = void
 
     export const useUpdateWand = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateWand>>, TError,{hallenId: number;data: Wand}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateWand>>, TError,{hallenId: number;data: Wand}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateWand>>,
         TError,

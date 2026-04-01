@@ -30,38 +30,12 @@ import type {
   UpdateKommentarParams
 } from '../model';
 
+import { customFetch } from '../../constants/fetcher';
 
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
-export type getKommentareByRouteIDResponse200 = {
-  data: Kommentar[]
-  status: 200
-}
-
-export type getKommentareByRouteIDResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getKommentareByRouteIDResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getKommentareByRouteIDResponse500 = {
-  data: void
-  status: 500
-}
-
-export type getKommentareByRouteIDResponseSuccess = (getKommentareByRouteIDResponse200) & {
-  headers: Headers;
-};
-export type getKommentareByRouteIDResponseError = (getKommentareByRouteIDResponse400 | getKommentareByRouteIDResponse404 | getKommentareByRouteIDResponse500) & {
-  headers: Headers;
-};
-
-export type getKommentareByRouteIDResponse = (getKommentareByRouteIDResponseSuccess | getKommentareByRouteIDResponseError)
 
 export const getGetKommentareByRouteIDUrl = (params?: GetKommentareByRouteIDParams,) => {
   const normalizedParams = new URLSearchParams();
@@ -78,22 +52,16 @@ export const getGetKommentareByRouteIDUrl = (params?: GetKommentareByRouteIDPara
   return stringifiedParams.length > 0 ? `/api/kommentare?${stringifiedParams}` : `/api/kommentare`
 }
 
-export const getKommentareByRouteID = async (params?: GetKommentareByRouteIDParams, options?: RequestInit): Promise<getKommentareByRouteIDResponse> => {
+export const getKommentareByRouteID = async (params?: GetKommentareByRouteIDParams, options?: RequestInit): Promise<Kommentar[]> => {
   
-  const res = await fetch(getGetKommentareByRouteIDUrl(params),
+  return customFetch<Kommentar[]>(getGetKommentareByRouteIDUrl(params),
   {      
     ...options,
     method: 'GET'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getKommentareByRouteIDResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getKommentareByRouteIDResponse
-}
+);}
   
 
 
@@ -106,16 +74,16 @@ export const getGetKommentareByRouteIDQueryKey = (params?: GetKommentareByRouteI
     }
 
     
-export const getGetKommentareByRouteIDQueryOptions = <TData = Awaited<ReturnType<typeof getKommentareByRouteID>>, TError = void>(params?: GetKommentareByRouteIDParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>>, fetch?: RequestInit}
+export const getGetKommentareByRouteIDQueryOptions = <TData = Awaited<ReturnType<typeof getKommentareByRouteID>>, TError = void>(params?: GetKommentareByRouteIDParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetKommentareByRouteIDQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getKommentareByRouteID>>> = ({ signal }) => getKommentareByRouteID(params, { signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getKommentareByRouteID>>> = ({ signal }) => getKommentareByRouteID(params, { signal, ...requestOptions });
 
       
 
@@ -135,7 +103,7 @@ export function useGetKommentareByRouteID<TData = Awaited<ReturnType<typeof getK
           TError,
           Awaited<ReturnType<typeof getKommentareByRouteID>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetKommentareByRouteID<TData = Awaited<ReturnType<typeof getKommentareByRouteID>>, TError = void>(
@@ -145,16 +113,16 @@ export function useGetKommentareByRouteID<TData = Awaited<ReturnType<typeof getK
           TError,
           Awaited<ReturnType<typeof getKommentareByRouteID>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetKommentareByRouteID<TData = Awaited<ReturnType<typeof getKommentareByRouteID>>, TError = void>(
- params?: GetKommentareByRouteIDParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>>, fetch?: RequestInit}
+ params?: GetKommentareByRouteIDParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetKommentareByRouteID<TData = Awaited<ReturnType<typeof getKommentareByRouteID>>, TError = void>(
- params?: GetKommentareByRouteIDParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>>, fetch?: RequestInit}
+ params?: GetKommentareByRouteIDParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -168,35 +136,6 @@ export function useGetKommentareByRouteID<TData = Awaited<ReturnType<typeof getK
 
 
 
-export type addKommentarResponse201 = {
-  data: Kommentar
-  status: 201
-}
-
-export type addKommentarResponse400 = {
-  data: void
-  status: 400
-}
-
-export type addKommentarResponse404 = {
-  data: void
-  status: 404
-}
-
-export type addKommentarResponse500 = {
-  data: void
-  status: 500
-}
-
-export type addKommentarResponseSuccess = (addKommentarResponse201) & {
-  headers: Headers;
-};
-export type addKommentarResponseError = (addKommentarResponse400 | addKommentarResponse404 | addKommentarResponse500) & {
-  headers: Headers;
-};
-
-export type addKommentarResponse = (addKommentarResponseSuccess | addKommentarResponseError)
-
 export const getAddKommentarUrl = () => {
 
 
@@ -205,9 +144,9 @@ export const getAddKommentarUrl = () => {
   return `/api/kommentare`
 }
 
-export const addKommentar = async (kommentar: Kommentar, options?: RequestInit): Promise<addKommentarResponse> => {
+export const addKommentar = async (kommentar: Kommentar, options?: RequestInit): Promise<Kommentar> => {
   
-  const res = await fetch(getAddKommentarUrl(),
+  return customFetch<Kommentar>(getAddKommentarUrl(),
   {      
     ...options,
     method: 'POST',
@@ -215,27 +154,21 @@ export const addKommentar = async (kommentar: Kommentar, options?: RequestInit):
     body: JSON.stringify(
       kommentar,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: addKommentarResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as addKommentarResponse
-}
+);}
   
 
 
 
 export const getAddKommentarMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addKommentar>>, TError,{data: Kommentar}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addKommentar>>, TError,{data: Kommentar}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof addKommentar>>, TError,{data: Kommentar}, TContext> => {
 
 const mutationKey = ['addKommentar'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -243,7 +176,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addKommentar>>, {data: Kommentar}> = (props) => {
           const {data} = props ?? {};
 
-          return  addKommentar(data,fetchOptions)
+          return  addKommentar(data,requestOptions)
         }
 
 
@@ -258,7 +191,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
     export type AddKommentarMutationError = void
 
     export const useAddKommentar = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addKommentar>>, TError,{data: Kommentar}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addKommentar>>, TError,{data: Kommentar}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof addKommentar>>,
         TError,
@@ -267,36 +200,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       > => {
       return useMutation(getAddKommentarMutationOptions(options), queryClient);
     }
-    export type deleteKommentarResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteKommentarResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteKommentarResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteKommentarResponse500 = {
-  data: void
-  status: 500
-}
-
-export type deleteKommentarResponseSuccess = (deleteKommentarResponse204) & {
-  headers: Headers;
-};
-export type deleteKommentarResponseError = (deleteKommentarResponse400 | deleteKommentarResponse404 | deleteKommentarResponse500) & {
-  headers: Headers;
-};
-
-export type deleteKommentarResponse = (deleteKommentarResponseSuccess | deleteKommentarResponseError)
-
-export const getDeleteKommentarUrl = (params: DeleteKommentarParams,) => {
+    export const getDeleteKommentarUrl = (params: DeleteKommentarParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -311,36 +215,30 @@ export const getDeleteKommentarUrl = (params: DeleteKommentarParams,) => {
   return stringifiedParams.length > 0 ? `/api/kommentare?${stringifiedParams}` : `/api/kommentare`
 }
 
-export const deleteKommentar = async (params: DeleteKommentarParams, options?: RequestInit): Promise<deleteKommentarResponse> => {
+export const deleteKommentar = async (params: DeleteKommentarParams, options?: RequestInit): Promise<void> => {
   
-  const res = await fetch(getDeleteKommentarUrl(params),
+  return customFetch<void>(getDeleteKommentarUrl(params),
   {      
     ...options,
     method: 'DELETE'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: deleteKommentarResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as deleteKommentarResponse
-}
+);}
   
 
 
 
 export const getDeleteKommentarMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteKommentar>>, TError,{params: DeleteKommentarParams}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteKommentar>>, TError,{params: DeleteKommentarParams}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteKommentar>>, TError,{params: DeleteKommentarParams}, TContext> => {
 
 const mutationKey = ['deleteKommentar'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -348,7 +246,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteKommentar>>, {params: DeleteKommentarParams}> = (props) => {
           const {params} = props ?? {};
 
-          return  deleteKommentar(params,fetchOptions)
+          return  deleteKommentar(params,requestOptions)
         }
 
 
@@ -363,7 +261,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
     export type DeleteKommentarMutationError = void
 
     export const useDeleteKommentar = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteKommentar>>, TError,{params: DeleteKommentarParams}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteKommentar>>, TError,{params: DeleteKommentarParams}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteKommentar>>,
         TError,
@@ -372,36 +270,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       > => {
       return useMutation(getDeleteKommentarMutationOptions(options), queryClient);
     }
-    export type updateKommentarResponse200 = {
-  data: Kommentar
-  status: 200
-}
-
-export type updateKommentarResponse400 = {
-  data: void
-  status: 400
-}
-
-export type updateKommentarResponse404 = {
-  data: void
-  status: 404
-}
-
-export type updateKommentarResponse500 = {
-  data: void
-  status: 500
-}
-
-export type updateKommentarResponseSuccess = (updateKommentarResponse200) & {
-  headers: Headers;
-};
-export type updateKommentarResponseError = (updateKommentarResponse400 | updateKommentarResponse404 | updateKommentarResponse500) & {
-  headers: Headers;
-};
-
-export type updateKommentarResponse = (updateKommentarResponseSuccess | updateKommentarResponseError)
-
-export const getUpdateKommentarUrl = (params: UpdateKommentarParams,) => {
+    export const getUpdateKommentarUrl = (params: UpdateKommentarParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -416,36 +285,30 @@ export const getUpdateKommentarUrl = (params: UpdateKommentarParams,) => {
   return stringifiedParams.length > 0 ? `/api/kommentare?${stringifiedParams}` : `/api/kommentare`
 }
 
-export const updateKommentar = async (params: UpdateKommentarParams, options?: RequestInit): Promise<updateKommentarResponse> => {
+export const updateKommentar = async (params: UpdateKommentarParams, options?: RequestInit): Promise<Kommentar> => {
   
-  const res = await fetch(getUpdateKommentarUrl(params),
+  return customFetch<Kommentar>(getUpdateKommentarUrl(params),
   {      
     ...options,
     method: 'PATCH'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: updateKommentarResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as updateKommentarResponse
-}
+);}
   
 
 
 
 export const getUpdateKommentarMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateKommentar>>, TError,{params: UpdateKommentarParams}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateKommentar>>, TError,{params: UpdateKommentarParams}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof updateKommentar>>, TError,{params: UpdateKommentarParams}, TContext> => {
 
 const mutationKey = ['updateKommentar'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -453,7 +316,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateKommentar>>, {params: UpdateKommentarParams}> = (props) => {
           const {params} = props ?? {};
 
-          return  updateKommentar(params,fetchOptions)
+          return  updateKommentar(params,requestOptions)
         }
 
 
@@ -468,7 +331,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
     export type UpdateKommentarMutationError = void
 
     export const useUpdateKommentar = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateKommentar>>, TError,{params: UpdateKommentarParams}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateKommentar>>, TError,{params: UpdateKommentarParams}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateKommentar>>,
         TError,

@@ -29,38 +29,12 @@ import type {
   FindAscentsByUserIdParams
 } from '../model';
 
+import { customFetch } from '../../constants/fetcher';
 
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
-export type findAscentsByUserIdResponse200 = {
-  data: Ascent[]
-  status: 200
-}
-
-export type findAscentsByUserIdResponse400 = {
-  data: void
-  status: 400
-}
-
-export type findAscentsByUserIdResponse404 = {
-  data: void
-  status: 404
-}
-
-export type findAscentsByUserIdResponse500 = {
-  data: void
-  status: 500
-}
-
-export type findAscentsByUserIdResponseSuccess = (findAscentsByUserIdResponse200) & {
-  headers: Headers;
-};
-export type findAscentsByUserIdResponseError = (findAscentsByUserIdResponse400 | findAscentsByUserIdResponse404 | findAscentsByUserIdResponse500) & {
-  headers: Headers;
-};
-
-export type findAscentsByUserIdResponse = (findAscentsByUserIdResponseSuccess | findAscentsByUserIdResponseError)
 
 export const getFindAscentsByUserIdUrl = (params: FindAscentsByUserIdParams,) => {
   const normalizedParams = new URLSearchParams();
@@ -77,22 +51,16 @@ export const getFindAscentsByUserIdUrl = (params: FindAscentsByUserIdParams,) =>
   return stringifiedParams.length > 0 ? `/api/ascents?${stringifiedParams}` : `/api/ascents`
 }
 
-export const findAscentsByUserId = async (params: FindAscentsByUserIdParams, options?: RequestInit): Promise<findAscentsByUserIdResponse> => {
+export const findAscentsByUserId = async (params: FindAscentsByUserIdParams, options?: RequestInit): Promise<Ascent[]> => {
   
-  const res = await fetch(getFindAscentsByUserIdUrl(params),
+  return customFetch<Ascent[]>(getFindAscentsByUserIdUrl(params),
   {      
     ...options,
     method: 'GET'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: findAscentsByUserIdResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as findAscentsByUserIdResponse
-}
+);}
   
 
 
@@ -105,16 +73,16 @@ export const getFindAscentsByUserIdQueryKey = (params?: FindAscentsByUserIdParam
     }
 
     
-export const getFindAscentsByUserIdQueryOptions = <TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(params: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>>, fetch?: RequestInit}
+export const getFindAscentsByUserIdQueryOptions = <TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(params: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getFindAscentsByUserIdQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof findAscentsByUserId>>> = ({ signal }) => findAscentsByUserId(params, { signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof findAscentsByUserId>>> = ({ signal }) => findAscentsByUserId(params, { signal, ...requestOptions });
 
       
 
@@ -134,7 +102,7 @@ export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAsc
           TError,
           Awaited<ReturnType<typeof findAscentsByUserId>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(
@@ -144,16 +112,16 @@ export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAsc
           TError,
           Awaited<ReturnType<typeof findAscentsByUserId>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(
- params: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>>, fetch?: RequestInit}
+ params: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAscentsByUserId>>, TError = void>(
- params: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>>, fetch?: RequestInit}
+ params: FindAscentsByUserIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAscentsByUserId>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -167,35 +135,6 @@ export function useFindAscentsByUserId<TData = Awaited<ReturnType<typeof findAsc
 
 
 
-export type addAscentResponse201 = {
-  data: Ascent
-  status: 201
-}
-
-export type addAscentResponse400 = {
-  data: void
-  status: 400
-}
-
-export type addAscentResponse404 = {
-  data: void
-  status: 404
-}
-
-export type addAscentResponse500 = {
-  data: void
-  status: 500
-}
-
-export type addAscentResponseSuccess = (addAscentResponse201) & {
-  headers: Headers;
-};
-export type addAscentResponseError = (addAscentResponse400 | addAscentResponse404 | addAscentResponse500) & {
-  headers: Headers;
-};
-
-export type addAscentResponse = (addAscentResponseSuccess | addAscentResponseError)
-
 export const getAddAscentUrl = () => {
 
 
@@ -204,9 +143,9 @@ export const getAddAscentUrl = () => {
   return `/api/ascents`
 }
 
-export const addAscent = async (ascent: Ascent, options?: RequestInit): Promise<addAscentResponse> => {
+export const addAscent = async (ascent: Ascent, options?: RequestInit): Promise<Ascent> => {
   
-  const res = await fetch(getAddAscentUrl(),
+  return customFetch<Ascent>(getAddAscentUrl(),
   {      
     ...options,
     method: 'POST',
@@ -214,27 +153,21 @@ export const addAscent = async (ascent: Ascent, options?: RequestInit): Promise<
     body: JSON.stringify(
       ascent,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: addAscentResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as addAscentResponse
-}
+);}
   
 
 
 
 export const getAddAscentMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addAscent>>, TError,{data: Ascent}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addAscent>>, TError,{data: Ascent}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof addAscent>>, TError,{data: Ascent}, TContext> => {
 
 const mutationKey = ['addAscent'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -242,7 +175,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addAscent>>, {data: Ascent}> = (props) => {
           const {data} = props ?? {};
 
-          return  addAscent(data,fetchOptions)
+          return  addAscent(data,requestOptions)
         }
 
 
@@ -257,7 +190,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
     export type AddAscentMutationError = void
 
     export const useAddAscent = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addAscent>>, TError,{data: Ascent}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addAscent>>, TError,{data: Ascent}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof addAscent>>,
         TError,
@@ -266,36 +199,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       > => {
       return useMutation(getAddAscentMutationOptions(options), queryClient);
     }
-    export type deleteAscentResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteAscentResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteAscentResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteAscentResponse500 = {
-  data: void
-  status: 500
-}
-
-export type deleteAscentResponseSuccess = (deleteAscentResponse204) & {
-  headers: Headers;
-};
-export type deleteAscentResponseError = (deleteAscentResponse400 | deleteAscentResponse404 | deleteAscentResponse500) & {
-  headers: Headers;
-};
-
-export type deleteAscentResponse = (deleteAscentResponseSuccess | deleteAscentResponseError)
-
-export const getDeleteAscentUrl = (params: DeleteAscentParams,) => {
+    export const getDeleteAscentUrl = (params: DeleteAscentParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -310,36 +214,30 @@ export const getDeleteAscentUrl = (params: DeleteAscentParams,) => {
   return stringifiedParams.length > 0 ? `/api/ascents?${stringifiedParams}` : `/api/ascents`
 }
 
-export const deleteAscent = async (params: DeleteAscentParams, options?: RequestInit): Promise<deleteAscentResponse> => {
+export const deleteAscent = async (params: DeleteAscentParams, options?: RequestInit): Promise<void> => {
   
-  const res = await fetch(getDeleteAscentUrl(params),
+  return customFetch<void>(getDeleteAscentUrl(params),
   {      
     ...options,
     method: 'DELETE'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: deleteAscentResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as deleteAscentResponse
-}
+);}
   
 
 
 
 export const getDeleteAscentMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAscent>>, TError,{params: DeleteAscentParams}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAscent>>, TError,{params: DeleteAscentParams}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteAscent>>, TError,{params: DeleteAscentParams}, TContext> => {
 
 const mutationKey = ['deleteAscent'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -347,7 +245,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAscent>>, {params: DeleteAscentParams}> = (props) => {
           const {params} = props ?? {};
 
-          return  deleteAscent(params,fetchOptions)
+          return  deleteAscent(params,requestOptions)
         }
 
 
@@ -362,7 +260,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
     export type DeleteAscentMutationError = void
 
     export const useDeleteAscent = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAscent>>, TError,{params: DeleteAscentParams}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAscent>>, TError,{params: DeleteAscentParams}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteAscent>>,
         TError,
@@ -371,36 +269,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       > => {
       return useMutation(getDeleteAscentMutationOptions(options), queryClient);
     }
-    export type updateAscentResponse200 = {
-  data: Ascent
-  status: 200
-}
-
-export type updateAscentResponse400 = {
-  data: void
-  status: 400
-}
-
-export type updateAscentResponse404 = {
-  data: void
-  status: 404
-}
-
-export type updateAscentResponse500 = {
-  data: void
-  status: 500
-}
-
-export type updateAscentResponseSuccess = (updateAscentResponse200) & {
-  headers: Headers;
-};
-export type updateAscentResponseError = (updateAscentResponse400 | updateAscentResponse404 | updateAscentResponse500) & {
-  headers: Headers;
-};
-
-export type updateAscentResponse = (updateAscentResponseSuccess | updateAscentResponseError)
-
-export const getUpdateAscentUrl = () => {
+    export const getUpdateAscentUrl = () => {
 
 
   
@@ -408,9 +277,9 @@ export const getUpdateAscentUrl = () => {
   return `/api/ascents`
 }
 
-export const updateAscent = async (ascent: Ascent, options?: RequestInit): Promise<updateAscentResponse> => {
+export const updateAscent = async (ascent: Ascent, options?: RequestInit): Promise<Ascent> => {
   
-  const res = await fetch(getUpdateAscentUrl(),
+  return customFetch<Ascent>(getUpdateAscentUrl(),
   {      
     ...options,
     method: 'PATCH',
@@ -418,27 +287,21 @@ export const updateAscent = async (ascent: Ascent, options?: RequestInit): Promi
     body: JSON.stringify(
       ascent,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: updateAscentResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as updateAscentResponse
-}
+);}
   
 
 
 
 export const getUpdateAscentMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAscent>>, TError,{data: Ascent}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAscent>>, TError,{data: Ascent}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof updateAscent>>, TError,{data: Ascent}, TContext> => {
 
 const mutationKey = ['updateAscent'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -446,7 +309,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAscent>>, {data: Ascent}> = (props) => {
           const {data} = props ?? {};
 
-          return  updateAscent(data,fetchOptions)
+          return  updateAscent(data,requestOptions)
         }
 
 
@@ -461,7 +324,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
     export type UpdateAscentMutationError = void
 
     export const useUpdateAscent = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAscent>>, TError,{data: Ascent}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAscent>>, TError,{data: Ascent}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateAscent>>,
         TError,

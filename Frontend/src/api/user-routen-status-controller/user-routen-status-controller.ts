@@ -29,38 +29,12 @@ import type {
   UserRoutenStatus
 } from '../model';
 
+import { customFetch } from '../../constants/fetcher';
 
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
-export type getUserRoutenStatusResponse200 = {
-  data: UserRoutenStatus
-  status: 200
-}
-
-export type getUserRoutenStatusResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getUserRoutenStatusResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getUserRoutenStatusResponse500 = {
-  data: void
-  status: 500
-}
-
-export type getUserRoutenStatusResponseSuccess = (getUserRoutenStatusResponse200) & {
-  headers: Headers;
-};
-export type getUserRoutenStatusResponseError = (getUserRoutenStatusResponse400 | getUserRoutenStatusResponse404 | getUserRoutenStatusResponse500) & {
-  headers: Headers;
-};
-
-export type getUserRoutenStatusResponse = (getUserRoutenStatusResponseSuccess | getUserRoutenStatusResponseError)
 
 export const getGetUserRoutenStatusUrl = (params: GetUserRoutenStatusParams,) => {
   const normalizedParams = new URLSearchParams();
@@ -77,22 +51,16 @@ export const getGetUserRoutenStatusUrl = (params: GetUserRoutenStatusParams,) =>
   return stringifiedParams.length > 0 ? `/api/userroutenstatus?${stringifiedParams}` : `/api/userroutenstatus`
 }
 
-export const getUserRoutenStatus = async (params: GetUserRoutenStatusParams, options?: RequestInit): Promise<getUserRoutenStatusResponse> => {
+export const getUserRoutenStatus = async (params: GetUserRoutenStatusParams, options?: RequestInit): Promise<UserRoutenStatus> => {
   
-  const res = await fetch(getGetUserRoutenStatusUrl(params),
+  return customFetch<UserRoutenStatus>(getGetUserRoutenStatusUrl(params),
   {      
     ...options,
     method: 'GET'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getUserRoutenStatusResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getUserRoutenStatusResponse
-}
+);}
   
 
 
@@ -105,16 +73,16 @@ export const getGetUserRoutenStatusQueryKey = (params?: GetUserRoutenStatusParam
     }
 
     
-export const getGetUserRoutenStatusQueryOptions = <TData = Awaited<ReturnType<typeof getUserRoutenStatus>>, TError = void>(params: GetUserRoutenStatusParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatus>>, TError, TData>>, fetch?: RequestInit}
+export const getGetUserRoutenStatusQueryOptions = <TData = Awaited<ReturnType<typeof getUserRoutenStatus>>, TError = void>(params: GetUserRoutenStatusParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatus>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetUserRoutenStatusQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserRoutenStatus>>> = ({ signal }) => getUserRoutenStatus(params, { signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserRoutenStatus>>> = ({ signal }) => getUserRoutenStatus(params, { signal, ...requestOptions });
 
       
 
@@ -134,7 +102,7 @@ export function useGetUserRoutenStatus<TData = Awaited<ReturnType<typeof getUser
           TError,
           Awaited<ReturnType<typeof getUserRoutenStatus>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetUserRoutenStatus<TData = Awaited<ReturnType<typeof getUserRoutenStatus>>, TError = void>(
@@ -144,16 +112,16 @@ export function useGetUserRoutenStatus<TData = Awaited<ReturnType<typeof getUser
           TError,
           Awaited<ReturnType<typeof getUserRoutenStatus>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetUserRoutenStatus<TData = Awaited<ReturnType<typeof getUserRoutenStatus>>, TError = void>(
- params: GetUserRoutenStatusParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatus>>, TError, TData>>, fetch?: RequestInit}
+ params: GetUserRoutenStatusParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatus>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetUserRoutenStatus<TData = Awaited<ReturnType<typeof getUserRoutenStatus>>, TError = void>(
- params: GetUserRoutenStatusParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatus>>, TError, TData>>, fetch?: RequestInit}
+ params: GetUserRoutenStatusParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserRoutenStatus>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -167,35 +135,6 @@ export function useGetUserRoutenStatus<TData = Awaited<ReturnType<typeof getUser
 
 
 
-export type createUserRoutenStatusResponse201 = {
-  data: UserRoutenStatus
-  status: 201
-}
-
-export type createUserRoutenStatusResponse400 = {
-  data: void
-  status: 400
-}
-
-export type createUserRoutenStatusResponse404 = {
-  data: void
-  status: 404
-}
-
-export type createUserRoutenStatusResponse500 = {
-  data: void
-  status: 500
-}
-
-export type createUserRoutenStatusResponseSuccess = (createUserRoutenStatusResponse201) & {
-  headers: Headers;
-};
-export type createUserRoutenStatusResponseError = (createUserRoutenStatusResponse400 | createUserRoutenStatusResponse404 | createUserRoutenStatusResponse500) & {
-  headers: Headers;
-};
-
-export type createUserRoutenStatusResponse = (createUserRoutenStatusResponseSuccess | createUserRoutenStatusResponseError)
-
 export const getCreateUserRoutenStatusUrl = () => {
 
 
@@ -204,9 +143,9 @@ export const getCreateUserRoutenStatusUrl = () => {
   return `/api/userroutenstatus`
 }
 
-export const createUserRoutenStatus = async (userRoutenStatus: UserRoutenStatus, options?: RequestInit): Promise<createUserRoutenStatusResponse> => {
+export const createUserRoutenStatus = async (userRoutenStatus: UserRoutenStatus, options?: RequestInit): Promise<UserRoutenStatus> => {
   
-  const res = await fetch(getCreateUserRoutenStatusUrl(),
+  return customFetch<UserRoutenStatus>(getCreateUserRoutenStatusUrl(),
   {      
     ...options,
     method: 'POST',
@@ -214,27 +153,21 @@ export const createUserRoutenStatus = async (userRoutenStatus: UserRoutenStatus,
     body: JSON.stringify(
       userRoutenStatus,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: createUserRoutenStatusResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as createUserRoutenStatusResponse
-}
+);}
   
 
 
 
 export const getCreateUserRoutenStatusMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createUserRoutenStatus>>, TError,{data: UserRoutenStatus}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createUserRoutenStatus>>, TError,{data: UserRoutenStatus}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof createUserRoutenStatus>>, TError,{data: UserRoutenStatus}, TContext> => {
 
 const mutationKey = ['createUserRoutenStatus'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -242,7 +175,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof createUserRoutenStatus>>, {data: UserRoutenStatus}> = (props) => {
           const {data} = props ?? {};
 
-          return  createUserRoutenStatus(data,fetchOptions)
+          return  createUserRoutenStatus(data,requestOptions)
         }
 
 
@@ -257,7 +190,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
     export type CreateUserRoutenStatusMutationError = void
 
     export const useCreateUserRoutenStatus = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createUserRoutenStatus>>, TError,{data: UserRoutenStatus}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createUserRoutenStatus>>, TError,{data: UserRoutenStatus}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createUserRoutenStatus>>,
         TError,
@@ -266,36 +199,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       > => {
       return useMutation(getCreateUserRoutenStatusMutationOptions(options), queryClient);
     }
-    export type deleteUserRoutenStatusResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteUserRoutenStatusResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteUserRoutenStatusResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteUserRoutenStatusResponse500 = {
-  data: void
-  status: 500
-}
-
-export type deleteUserRoutenStatusResponseSuccess = (deleteUserRoutenStatusResponse204) & {
-  headers: Headers;
-};
-export type deleteUserRoutenStatusResponseError = (deleteUserRoutenStatusResponse400 | deleteUserRoutenStatusResponse404 | deleteUserRoutenStatusResponse500) & {
-  headers: Headers;
-};
-
-export type deleteUserRoutenStatusResponse = (deleteUserRoutenStatusResponseSuccess | deleteUserRoutenStatusResponseError)
-
-export const getDeleteUserRoutenStatusUrl = (params?: DeleteUserRoutenStatusParams,) => {
+    export const getDeleteUserRoutenStatusUrl = (params?: DeleteUserRoutenStatusParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -310,36 +214,30 @@ export const getDeleteUserRoutenStatusUrl = (params?: DeleteUserRoutenStatusPara
   return stringifiedParams.length > 0 ? `/api/userroutenstatus?${stringifiedParams}` : `/api/userroutenstatus`
 }
 
-export const deleteUserRoutenStatus = async (params?: DeleteUserRoutenStatusParams, options?: RequestInit): Promise<deleteUserRoutenStatusResponse> => {
+export const deleteUserRoutenStatus = async (params?: DeleteUserRoutenStatusParams, options?: RequestInit): Promise<void> => {
   
-  const res = await fetch(getDeleteUserRoutenStatusUrl(params),
+  return customFetch<void>(getDeleteUserRoutenStatusUrl(params),
   {      
     ...options,
     method: 'DELETE'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: deleteUserRoutenStatusResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as deleteUserRoutenStatusResponse
-}
+);}
   
 
 
 
 export const getDeleteUserRoutenStatusMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUserRoutenStatus>>, TError,{params?: DeleteUserRoutenStatusParams}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUserRoutenStatus>>, TError,{params?: DeleteUserRoutenStatusParams}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteUserRoutenStatus>>, TError,{params?: DeleteUserRoutenStatusParams}, TContext> => {
 
 const mutationKey = ['deleteUserRoutenStatus'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -347,7 +245,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteUserRoutenStatus>>, {params?: DeleteUserRoutenStatusParams}> = (props) => {
           const {params} = props ?? {};
 
-          return  deleteUserRoutenStatus(params,fetchOptions)
+          return  deleteUserRoutenStatus(params,requestOptions)
         }
 
 
@@ -362,7 +260,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
     export type DeleteUserRoutenStatusMutationError = void
 
     export const useDeleteUserRoutenStatus = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUserRoutenStatus>>, TError,{params?: DeleteUserRoutenStatusParams}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUserRoutenStatus>>, TError,{params?: DeleteUserRoutenStatusParams}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteUserRoutenStatus>>,
         TError,
@@ -371,36 +269,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       > => {
       return useMutation(getDeleteUserRoutenStatusMutationOptions(options), queryClient);
     }
-    export type updateUserRoutenStatusResponse200 = {
-  data: UserRoutenStatus
-  status: 200
-}
-
-export type updateUserRoutenStatusResponse400 = {
-  data: void
-  status: 400
-}
-
-export type updateUserRoutenStatusResponse404 = {
-  data: void
-  status: 404
-}
-
-export type updateUserRoutenStatusResponse500 = {
-  data: void
-  status: 500
-}
-
-export type updateUserRoutenStatusResponseSuccess = (updateUserRoutenStatusResponse200) & {
-  headers: Headers;
-};
-export type updateUserRoutenStatusResponseError = (updateUserRoutenStatusResponse400 | updateUserRoutenStatusResponse404 | updateUserRoutenStatusResponse500) & {
-  headers: Headers;
-};
-
-export type updateUserRoutenStatusResponse = (updateUserRoutenStatusResponseSuccess | updateUserRoutenStatusResponseError)
-
-export const getUpdateUserRoutenStatusUrl = () => {
+    export const getUpdateUserRoutenStatusUrl = () => {
 
 
   
@@ -408,9 +277,9 @@ export const getUpdateUserRoutenStatusUrl = () => {
   return `/api/userroutenstatus`
 }
 
-export const updateUserRoutenStatus = async (userRoutenStatus: UserRoutenStatus, options?: RequestInit): Promise<updateUserRoutenStatusResponse> => {
+export const updateUserRoutenStatus = async (userRoutenStatus: UserRoutenStatus, options?: RequestInit): Promise<UserRoutenStatus> => {
   
-  const res = await fetch(getUpdateUserRoutenStatusUrl(),
+  return customFetch<UserRoutenStatus>(getUpdateUserRoutenStatusUrl(),
   {      
     ...options,
     method: 'PATCH',
@@ -418,27 +287,21 @@ export const updateUserRoutenStatus = async (userRoutenStatus: UserRoutenStatus,
     body: JSON.stringify(
       userRoutenStatus,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: updateUserRoutenStatusResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as updateUserRoutenStatusResponse
-}
+);}
   
 
 
 
 export const getUpdateUserRoutenStatusMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateUserRoutenStatus>>, TError,{data: UserRoutenStatus}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateUserRoutenStatus>>, TError,{data: UserRoutenStatus}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof updateUserRoutenStatus>>, TError,{data: UserRoutenStatus}, TContext> => {
 
 const mutationKey = ['updateUserRoutenStatus'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -446,7 +309,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateUserRoutenStatus>>, {data: UserRoutenStatus}> = (props) => {
           const {data} = props ?? {};
 
-          return  updateUserRoutenStatus(data,fetchOptions)
+          return  updateUserRoutenStatus(data,requestOptions)
         }
 
 
@@ -461,7 +324,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
     export type UpdateUserRoutenStatusMutationError = void
 
     export const useUpdateUserRoutenStatus = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateUserRoutenStatus>>, TError,{data: UserRoutenStatus}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateUserRoutenStatus>>, TError,{data: UserRoutenStatus}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateUserRoutenStatus>>,
         TError,

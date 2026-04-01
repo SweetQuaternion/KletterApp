@@ -39,16 +39,17 @@ function HallenSuchmaske({ setSelectedHalle }: Props) {
         <button type="submit">Suchen</button>
       </form>
       <div className="ergebnis-container">
-        {data?.data?.map((ergebnis, index) => (
+        {data?.map((ergebnis, index) => (
           <HallenErgebnisFeld
             key={index}
             ergebnis={ergebnis}
             setSelectedHalle={setSelectedHalle}
           />
         ))}
-        {data && data.data?.length === 0 && (
-          <p className="sans-serif small">Keine Halle gefunden...</p>
-        )}
+        {!data ||
+          (data.length === 0 && (
+            <p className="sans-serif small">Keine Halle gefunden...</p>
+          ))}
         {error !== null && (
           <p className="sans-serif small">Ein Fehler ist aufgetreten</p>
         )}

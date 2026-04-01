@@ -30,38 +30,12 @@ import type {
   UserSyncRequest
 } from '../model';
 
+import { customFetch } from '../../constants/fetcher';
 
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
-export type getUserResponse200 = {
-  data: User
-  status: 200
-}
-
-export type getUserResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getUserResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getUserResponse500 = {
-  data: void
-  status: 500
-}
-
-export type getUserResponseSuccess = (getUserResponse200) & {
-  headers: Headers;
-};
-export type getUserResponseError = (getUserResponse400 | getUserResponse404 | getUserResponse500) & {
-  headers: Headers;
-};
-
-export type getUserResponse = (getUserResponseSuccess | getUserResponseError)
 
 export const getGetUserUrl = (params?: GetUserParams,) => {
   const normalizedParams = new URLSearchParams();
@@ -78,22 +52,16 @@ export const getGetUserUrl = (params?: GetUserParams,) => {
   return stringifiedParams.length > 0 ? `/api/users?${stringifiedParams}` : `/api/users`
 }
 
-export const getUser = async (params?: GetUserParams, options?: RequestInit): Promise<getUserResponse> => {
+export const getUser = async (params?: GetUserParams, options?: RequestInit): Promise<User> => {
   
-  const res = await fetch(getGetUserUrl(params),
+  return customFetch<User>(getGetUserUrl(params),
   {      
     ...options,
     method: 'GET'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: getUserResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getUserResponse
-}
+);}
   
 
 
@@ -106,16 +74,16 @@ export const getGetUserQueryKey = (params?: GetUserParams,) => {
     }
 
     
-export const getGetUserQueryOptions = <TData = Awaited<ReturnType<typeof getUser>>, TError = void>(params?: GetUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>, fetch?: RequestInit}
+export const getGetUserQueryOptions = <TData = Awaited<ReturnType<typeof getUser>>, TError = void>(params?: GetUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetUserQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUser>>> = ({ signal }) => getUser(params, { signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUser>>> = ({ signal }) => getUser(params, { signal, ...requestOptions });
 
       
 
@@ -135,7 +103,7 @@ export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError =
           TError,
           Awaited<ReturnType<typeof getUser>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError = void>(
@@ -145,16 +113,16 @@ export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError =
           TError,
           Awaited<ReturnType<typeof getUser>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError = void>(
- params?: GetUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>, fetch?: RequestInit}
+ params?: GetUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError = void>(
- params?: GetUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>, fetch?: RequestInit}
+ params?: GetUserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -168,35 +136,6 @@ export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError =
 
 
 
-export type syncUserResponse200 = {
-  data: User
-  status: 200
-}
-
-export type syncUserResponse400 = {
-  data: void
-  status: 400
-}
-
-export type syncUserResponse404 = {
-  data: void
-  status: 404
-}
-
-export type syncUserResponse500 = {
-  data: void
-  status: 500
-}
-
-export type syncUserResponseSuccess = (syncUserResponse200) & {
-  headers: Headers;
-};
-export type syncUserResponseError = (syncUserResponse400 | syncUserResponse404 | syncUserResponse500) & {
-  headers: Headers;
-};
-
-export type syncUserResponse = (syncUserResponseSuccess | syncUserResponseError)
-
 export const getSyncUserUrl = () => {
 
 
@@ -205,9 +144,9 @@ export const getSyncUserUrl = () => {
   return `/api/users`
 }
 
-export const syncUser = async (userSyncRequest: UserSyncRequest, options?: RequestInit): Promise<syncUserResponse> => {
+export const syncUser = async (userSyncRequest: UserSyncRequest, options?: RequestInit): Promise<User> => {
   
-  const res = await fetch(getSyncUserUrl(),
+  return customFetch<User>(getSyncUserUrl(),
   {      
     ...options,
     method: 'POST',
@@ -215,27 +154,21 @@ export const syncUser = async (userSyncRequest: UserSyncRequest, options?: Reque
     body: JSON.stringify(
       userSyncRequest,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: syncUserResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as syncUserResponse
-}
+);}
   
 
 
 
 export const getSyncUserMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof syncUser>>, TError,{data: UserSyncRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof syncUser>>, TError,{data: UserSyncRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof syncUser>>, TError,{data: UserSyncRequest}, TContext> => {
 
 const mutationKey = ['syncUser'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -243,7 +176,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof syncUser>>, {data: UserSyncRequest}> = (props) => {
           const {data} = props ?? {};
 
-          return  syncUser(data,fetchOptions)
+          return  syncUser(data,requestOptions)
         }
 
 
@@ -258,7 +191,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
     export type SyncUserMutationError = void
 
     export const useSyncUser = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof syncUser>>, TError,{data: UserSyncRequest}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof syncUser>>, TError,{data: UserSyncRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof syncUser>>,
         TError,
@@ -267,36 +200,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       > => {
       return useMutation(getSyncUserMutationOptions(options), queryClient);
     }
-    export type deleteUserResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteUserResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteUserResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteUserResponse500 = {
-  data: void
-  status: 500
-}
-
-export type deleteUserResponseSuccess = (deleteUserResponse204) & {
-  headers: Headers;
-};
-export type deleteUserResponseError = (deleteUserResponse400 | deleteUserResponse404 | deleteUserResponse500) & {
-  headers: Headers;
-};
-
-export type deleteUserResponse = (deleteUserResponseSuccess | deleteUserResponseError)
-
-export const getDeleteUserUrl = (params: DeleteUserParams,) => {
+    export const getDeleteUserUrl = (params: DeleteUserParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -311,36 +215,30 @@ export const getDeleteUserUrl = (params: DeleteUserParams,) => {
   return stringifiedParams.length > 0 ? `/api/users?${stringifiedParams}` : `/api/users`
 }
 
-export const deleteUser = async (params: DeleteUserParams, options?: RequestInit): Promise<deleteUserResponse> => {
+export const deleteUser = async (params: DeleteUserParams, options?: RequestInit): Promise<void> => {
   
-  const res = await fetch(getDeleteUserUrl(params),
+  return customFetch<void>(getDeleteUserUrl(params),
   {      
     ...options,
     method: 'DELETE'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: deleteUserResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as deleteUserResponse
-}
+);}
   
 
 
 
 export const getDeleteUserMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError,{params: DeleteUserParams}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError,{params: DeleteUserParams}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError,{params: DeleteUserParams}, TContext> => {
 
 const mutationKey = ['deleteUser'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -348,7 +246,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteUser>>, {params: DeleteUserParams}> = (props) => {
           const {params} = props ?? {};
 
-          return  deleteUser(params,fetchOptions)
+          return  deleteUser(params,requestOptions)
         }
 
 
@@ -363,7 +261,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
     export type DeleteUserMutationError = void
 
     export const useDeleteUser = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError,{params: DeleteUserParams}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError,{params: DeleteUserParams}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteUser>>,
         TError,
@@ -372,36 +270,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       > => {
       return useMutation(getDeleteUserMutationOptions(options), queryClient);
     }
-    export type changeUserResponse200 = {
-  data: User
-  status: 200
-}
-
-export type changeUserResponse400 = {
-  data: void
-  status: 400
-}
-
-export type changeUserResponse404 = {
-  data: void
-  status: 404
-}
-
-export type changeUserResponse500 = {
-  data: void
-  status: 500
-}
-
-export type changeUserResponseSuccess = (changeUserResponse200) & {
-  headers: Headers;
-};
-export type changeUserResponseError = (changeUserResponse400 | changeUserResponse404 | changeUserResponse500) & {
-  headers: Headers;
-};
-
-export type changeUserResponse = (changeUserResponseSuccess | changeUserResponseError)
-
-export const getChangeUserUrl = () => {
+    export const getChangeUserUrl = () => {
 
 
   
@@ -409,9 +278,9 @@ export const getChangeUserUrl = () => {
   return `/api/users`
 }
 
-export const changeUser = async (user: User, options?: RequestInit): Promise<changeUserResponse> => {
+export const changeUser = async (user: User, options?: RequestInit): Promise<User> => {
   
-  const res = await fetch(getChangeUserUrl(),
+  return customFetch<User>(getChangeUserUrl(),
   {      
     ...options,
     method: 'PATCH',
@@ -419,27 +288,21 @@ export const changeUser = async (user: User, options?: RequestInit): Promise<cha
     body: JSON.stringify(
       user,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: changeUserResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as changeUserResponse
-}
+);}
   
 
 
 
 export const getChangeUserMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changeUser>>, TError,{data: User}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changeUser>>, TError,{data: User}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof changeUser>>, TError,{data: User}, TContext> => {
 
 const mutationKey = ['changeUser'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -447,7 +310,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof changeUser>>, {data: User}> = (props) => {
           const {data} = props ?? {};
 
-          return  changeUser(data,fetchOptions)
+          return  changeUser(data,requestOptions)
         }
 
 
@@ -462,7 +325,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
     export type ChangeUserMutationError = void
 
     export const useChangeUser = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changeUser>>, TError,{data: User}, TContext>, fetch?: RequestInit}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changeUser>>, TError,{data: User}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof changeUser>>,
         TError,

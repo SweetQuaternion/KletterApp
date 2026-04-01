@@ -1,7 +1,9 @@
 import Keycloak from "keycloak-js";
 
+export const KEYCLOAK_URL = "http://localhost:8180";
+
 export const keycloak = new Keycloak({
-  url: "http://localhost:8180",
+  url: KEYCLOAK_URL,
   realm: "KletterApp",
   clientId: "kletterapp-frontend",
 });

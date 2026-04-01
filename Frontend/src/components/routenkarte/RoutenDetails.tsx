@@ -12,6 +12,7 @@ import {
   createAddAscentMutationOptions,
   createAddKommentarMutationOptions,
   createAscentQueryOptions,
+  createKommentarQueryOptions,
   createUserRoutenStatusMutationOptions,
   createUserRoutenStatusQueryOptions,
 } from "../../constants/queries";
@@ -31,6 +32,10 @@ const RoutenDetails = ({ selectedRoute, user }: Props) => {
 
   const { data: ascents } = useQuery(
     createAscentQueryOptions(selectedRoute.id, user),
+  );
+
+  const { data: kommentare } = useQuery(
+    createKommentarQueryOptions(selectedRoute.id),
   );
 
   const {
@@ -192,8 +197,8 @@ const RoutenDetails = ({ selectedRoute, user }: Props) => {
           <p className="small">{selectedRoute.beschreibung || "keine"}</p>
 
           <b>Kommentare</b>
-          {selectedRoute.kommentare && selectedRoute.kommentare.length > 0 ? (
-            selectedRoute.kommentare.map((kommentar) => (
+          {kommentare && kommentare.length > 0 ? (
+            kommentare.map((kommentar) => (
               <div key={kommentar.id} className="kommentar">
                 <Link
                   to={`/user/${kommentar.user.name}`}
