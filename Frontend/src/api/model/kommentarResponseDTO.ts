@@ -4,13 +4,11 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
-import type { Route } from './route';
-import type { User } from './user';
 
-export interface Kommentar {
-  id?: number;
+export interface KommentarResponseDTO {
+  id: number;
+  routenId: number;
+  username: string;
   datum: string;
   text: string;
-  route: Route;
-  user: User;
 }

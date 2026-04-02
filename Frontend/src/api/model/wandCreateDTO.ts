@@ -4,16 +4,13 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
-import type { Route } from './route';
-import type { WandId } from './wandId';
 
-export interface Wand {
-  id: WandId;
-  sektor?: string;
+export interface WandCreateDTO {
+  hallenId: number;
+  name?: string;
   startX: number;
   startY: number;
   endX: number;
   endY: number;
   position?: string;
-  routen?: Route[];
 }

@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dachpc.kletterapp.Entities.Kommentar;
-import com.dachpc.kletterapp.Repositories.KommentarRepository;
-
-import jakarta.persistence.EntityNotFoundException;
+import com.dachpc.kletterapp.Dtos.KommentarCreateDTO;
+import com.dachpc.kletterapp.Dtos.KommentarResponseDTO;
+import com.dachpc.kletterapp.Services.KommentarService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,43 +25,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class KommentarController {
 
     @Autowired
-    private KommentarRepository kommentarRepository;
+    private KommentarService kommentarService;
 
     
-    // per Konvention hier eher requestparams nutzen, statt eine Baumstruktur
-    // beide GetMappings müssen daher in eine Methode, nicht in zwei
     @GetMapping(produces = "application/json")
-    public List<Kommentar> getKommentareByRouteID(@RequestParam(required = false) Integer routeId, @RequestParam(required = false) Integer userId) {
-        if (routeId != null) {
-            return kommentarRepository.findByRoute_id(routeId);
-        } else if (userId != null) {
-            return kommentarRepository.findByUser_keycloakId(userId);
-        } else {
-            return kommentarRepository.findAll();
-        }
+    public List<KommentarResponseDTO> getKommentareByRouteID(@RequestParam Integer routeId) {
+        return kommentarService.findKommentarByRouteId(routeId);
     }
 
     @PostMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public Kommentar addKommentar(@RequestBody Kommentar kommentar) {
-        kommentarRepository.save(kommentar);
+    public KommentarResponseDTO addKommentar(@RequestBody KommentarCreateDTO dto) {
+        KommentarResponseDTO kommentar = kommentarService.addKommentar(dto);
         return kommentar;
     }
 
     @PatchMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Kommentar updateKommentar(@RequestParam int id, @RequestParam String newText) {
-        Kommentar prevKommentar = kommentarRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-        prevKommentar.setText(newText);
-        kommentarRepository.save(prevKommentar);
-        return prevKommentar;
+    public KommentarResponseDTO updateKommentar(@RequestParam int id, @RequestParam String newText) {
+        return kommentarService.updateKommentar(id, newText);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteKommentar(@RequestParam int id) {
-        Kommentar kommentar = kommentarRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-        kommentarRepository.delete(kommentar);;
+        kommentarService.deleteKommentar(id);
     }
 
 }

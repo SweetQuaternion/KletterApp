@@ -43,10 +43,10 @@ public class Route {
     private Float schwierigkeit;
 
     @Column (name = "is_toprope")
-    private Boolean is_toprope;
+    private Boolean isToprope;
 
     @Column (name = "is_vorstieg")
-    private Boolean is_vorstieg;
+    private Boolean isVorstieg;
 
     @Column (name = "schrauber")
     private String schrauber;
@@ -55,7 +55,7 @@ public class Route {
     private LocalDate schraubdatum;
 
     @Column (name = "is_active")
-    private Boolean is_active;
+    private Boolean isActive;
 
     @Column (name = "beschreibung")
     private String beschreibung;
@@ -64,17 +64,17 @@ public class Route {
     // private List<Kommentar> kommentare;
 
     public Route(Wand wand, String name, String farbe, Float schwierigkeit, 
-                Boolean is_toprope, Boolean is_vorstieg, String schrauber, 
-                LocalDate schraubdatum, Boolean is_active, String beschreibung) {
+                Boolean isToprope, Boolean isVorstieg, String schrauber, 
+                LocalDate schraubdatum, Boolean isActive, String beschreibung) {
         this.wand = wand;
         this.name = name;
         this.farbe = farbe;
         this.schwierigkeit = schwierigkeit;
-        this.is_toprope = is_toprope;
-        this.is_vorstieg = is_vorstieg;
+        this.isToprope = isToprope;
+        this.isVorstieg = isVorstieg;
         this.schrauber = schrauber;
         this.schraubdatum = schraubdatum;
-        this.is_active = is_active;
+        this.isActive = isActive;
         this.beschreibung = beschreibung;
     }
 

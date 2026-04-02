@@ -1,4 +1,9 @@
-import { type Route, type Halle, type User, type Wand } from "../../api/model";
+import {
+  type Halle,
+  type RouteResponseDTO,
+  type User,
+  type WandResponseDTO,
+} from "../../api/model";
 import Header from "./../Header";
 import "../../styles/RoutenKarte.css";
 import HallenInfoBox from "./HallenInfoBox";
@@ -17,8 +22,12 @@ interface Props {
 
 const RoutenKarte = ({ selectedHalle, user }: Props) => {
   const [scale, setScale] = useState(1);
-  const [selectedWand, setSelectedWand] = useState<Wand | null>(null);
-  const [selectedRoute, setSelectedRoute] = useState<Route | null>(null);
+  const [selectedWand, setSelectedWand] = useState<WandResponseDTO | null>(
+    null,
+  );
+  const [selectedRoute, setSelectedRoute] = useState<RouteResponseDTO | null>(
+    null,
+  );
   const [showNeueRoute, setShowNeueRoute] = useState(false);
 
   const { data } = useQuery(

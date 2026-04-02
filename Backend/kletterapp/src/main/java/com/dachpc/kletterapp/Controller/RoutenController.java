@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dachpc.kletterapp.Entities.Route;
-import com.dachpc.kletterapp.Repositories.RoutenRepository;
-
-import jakarta.persistence.EntityNotFoundException;
+import com.dachpc.kletterapp.Dtos.RouteCreateDTO;
+import com.dachpc.kletterapp.Dtos.RouteResponseDTO;
+import com.dachpc.kletterapp.Services.RoutenService;
 
  
 @RestController
@@ -27,35 +26,32 @@ import jakarta.persistence.EntityNotFoundException;
 public class RoutenController {
 
     @Autowired
-    private RoutenRepository routenRepository;
+    private RoutenService routenService;
 
     @GetMapping(produces = "application/json")
-    public List<Route> getRoutenByHallenId(@PathVariable int hallenId) {
-        return routenRepository.findByWand_Id_HallenId(hallenId);
+    public List<RouteResponseDTO> getRoutenByHallenId(@PathVariable int hallenId) {
+        return routenService.getRoutenByHallenId(hallenId);
     }    
 
     @PostMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Route addRoute(@PathVariable int hallenId, @RequestBody Route route) {
-        routenRepository.save(route);
-        return route;
+    public RouteResponseDTO addRoute(@PathVariable int hallenId, @RequestBody RouteCreateDTO dto) {
+        return routenService.addRoute(dto);
     }
 
     @PatchMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public Route updateRoute(@PathVariable int hallenId, @RequestBody Route route) {
-        routenRepository.save(route);
-        return route;
+    public RouteResponseDTO updateRoute(@PathVariable int hallenId, @RequestBody RouteCreateDTO dto, @RequestParam int id) {
+        return routenService.updateRoute(id, dto);
     }
 
     @DeleteMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRoute(@PathVariable int hallenId, @RequestParam Integer id) {
-        Route route = routenRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-        routenRepository.delete(route);
+        routenService.deleteRoute(id);
     }
 
 }

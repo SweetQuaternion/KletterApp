@@ -1,9 +1,9 @@
-import type { Route } from "../../api/model/route";
+import type { RouteResponseDTO } from "../../api/model";
 import { convertSchwierigkeitToString } from "../../constants/conversions";
 
 interface Props {
-  route: Route;
-  setSelectedRoute: (route: Route | null) => void;
+  route: RouteResponseDTO;
+  setSelectedRoute: (route: RouteResponseDTO | null) => void;
   setShowNeueRoute: (show: boolean) => void;
 }
 

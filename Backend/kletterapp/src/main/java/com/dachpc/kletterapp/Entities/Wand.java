@@ -20,24 +20,24 @@ public class Wand {
     @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private WandId id;
 
-    @Column(name = "sektor")
-    private String sektor;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "start_x")
     @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
-    private Float startX;
+    private float startX;
 
     @Column(name = "start_y")
     @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
-    private Float startY;
+    private float startY;
 
     @Column(name = "end_x")
     @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
-    private Float endX;
+    private float endX;
 
     @Column(name = "end_y")
     @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
-    private Float endY;
+    private float endY;
 
     @Column(name = "position")
     private String position;
@@ -46,9 +46,8 @@ public class Wand {
     private List<Route> routen;
 
 
-    public Wand(Integer hallenId, Integer wandNr, String sektor, Float startX, Float startY, Float endX, Float endY, String position) {
+    public Wand(Integer hallenId, Integer wandNr, Float startX, Float startY, Float endX, Float endY, String position) {
         this.id = new WandId(hallenId, wandNr);
-        this.sektor = sektor;
         this.startX = startX;
         this.startY = startY;
         this.endX = endX;
@@ -56,9 +55,8 @@ public class Wand {
         this.position = position;
     }
 
-    public Wand(WandId id, String sektor, Float startX, Float startY, Float endX, Float endY, String position) {
+    public Wand(WandId id, Float startX, Float startY, Float endX, Float endY, String position) {
         this.id = id;
-        this.sektor = sektor;
         this.startX = startX;
         this.startY = startY;
         this.endX = endX;

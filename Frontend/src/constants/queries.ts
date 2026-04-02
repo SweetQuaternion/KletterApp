@@ -1,8 +1,9 @@
 import { mutationOptions, QueryClient } from "@tanstack/react-query";
 import type {
   Ascent,
-  Kommentar,
-  Route,
+  KommentarCreateDTO,
+  KommentarResponseDTO,
+  RouteCreateDTO,
   User,
   UserRoutenStatus,
 } from "../api/model";
@@ -89,7 +90,7 @@ export function createKommentarQueryOptions(routeId: number) {
   return {
     queryKey: ["kommentare", routeId],
     queryFn: async () =>
-      getKommentareByRouteID({ routeId }) as Promise<Kommentar[]>,
+      getKommentareByRouteID({ routeId }) as Promise<KommentarResponseDTO[]>,
     staleTime: ONE_DAY,
   };
 }
@@ -127,13 +128,13 @@ export function createUserSyncMutation() {
 
 export function createAddRouteMutationOptions() {
   return mutationOptions({
-    mutationFn: async (data: Route) => {
+    mutationFn: async (data: RouteCreateDTO) => {
       await keycloak.updateToken(30).catch((err) => {
         console.error("Failed to refresh token", err);
         throw new Error("Failed to refresh token");
       });
-      const response = await addRoute(data.wand.id.hallenId || 0, data);
-      if (response) {
+      const response = await addRoute(data.hallenId || 0, data);
+      if (!response) {
         throw new Error("Failed to add route");
       }
     },
@@ -153,6 +154,6 @@ export function createAddAscentMutationOptions() {
 
 export function createAddKommentarMutationOptions() {
   return mutationOptions({
-    mutationFn: (data: Kommentar) => addKommentar(data),
+    mutationFn: (data: KommentarCreateDTO) => addKommentar(data),
   });
 }

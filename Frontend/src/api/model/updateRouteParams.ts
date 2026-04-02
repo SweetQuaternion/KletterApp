@@ -5,6 +5,6 @@
  * OpenAPI spec version: v0
  */
 
-export type DeleteWandParams = {
-wandNr: number;
+export type UpdateRouteParams = {
+id: number;
 };

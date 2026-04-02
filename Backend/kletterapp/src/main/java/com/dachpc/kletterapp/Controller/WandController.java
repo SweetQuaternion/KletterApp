@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dachpc.kletterapp.Entities.Wand;
-import com.dachpc.kletterapp.Entities.WandId;
-import com.dachpc.kletterapp.Repositories.WandRepository;
-
-import jakarta.persistence.EntityNotFoundException;
+import com.dachpc.kletterapp.Dtos.WandCreateDTO;
+import com.dachpc.kletterapp.Dtos.WandResponseDTO;
+import com.dachpc.kletterapp.Services.WandService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,36 +27,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class WandController {
 
     @Autowired
-    private WandRepository wandRepository;
+    private WandService wandService; 
 
     @GetMapping(produces = "application/json")
-    public List<Wand> getWaendeByHallenId(@PathVariable int hallenId) {
-        // return wandRepository.findByIdHallenId(hallenId);
-        return wandRepository.findByHallenIdWithRouten(hallenId);
+    public List<WandResponseDTO> getWaendeByHallenId(@PathVariable int hallenId) {
+        return wandService.getWändeByHallenId(hallenId);
     }
 
     @PostMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Wand addWand(@PathVariable int hallenId, @RequestBody Wand wand) {
-        wandRepository.save(wand);
-        return wand;
+    public WandResponseDTO addWand(@PathVariable int hallenId, @RequestBody WandCreateDTO dto) {
+        return wandService.addWand(dto);
     }
 
     @PatchMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public Wand updateWand(@PathVariable int hallenId, @RequestBody Wand wand) {
-        wandRepository.save(wand);
-        return wand;
+    public WandResponseDTO updateWand(@PathVariable int hallenId, @RequestParam int wandNr, @RequestBody WandCreateDTO dto) {
+        return wandService.updateWand(hallenId, wandNr, dto);
     }
 
     @DeleteMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteWand(@PathVariable int hallenId, @RequestParam WandId id) {
-        Wand wand = wandRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-        wandRepository.delete(wand);
+    public void deleteWand(@PathVariable int hallenId, @RequestParam int wandNr) {
+        wandService.deleteWand(hallenId, wandNr);
     }
     
 }

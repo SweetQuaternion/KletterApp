@@ -1,15 +1,15 @@
 import { useRef, useState } from "react";
-import type { Route, Wand } from "../../api/model";
 import WandInfoBox from "./WandInfoBox";
 import { isAdmin } from "../../constants/keycloak";
+import type { RouteResponseDTO, WandResponseDTO } from "../../api/model";
 
 interface Props {
   scale: number;
   setScale: (scale: number) => void;
-  wände: Wand[];
-  selectedWand: Wand | null;
-  setSelectedWand: (wand: Wand | null) => void;
-  setSelectedRoute: (route: Route | null) => void;
+  wände: WandResponseDTO[];
+  selectedWand: WandResponseDTO | null;
+  setSelectedWand: (wand: WandResponseDTO | null) => void;
+  setSelectedRoute: (route: RouteResponseDTO | null) => void;
   setShowNeueRoute: (show: boolean) => void;
 }
 
@@ -57,7 +57,7 @@ function SVGMap({
   // ja das Verhalten hier ist super unintuitiv, aber es funktioniert wegen des
   // Closure-Problems trotzdem. selectedWand ist immer ein Render hinterher und
   // deswegen funktioniert der Vergleich. Man sollte hier wohl useRef nehmen.
-  const handleWandClick = (wand: Wand | null) => {
+  const handleWandClick = (wand: WandResponseDTO | null) => {
     // console.log("Wand " + wand?.wandNr + " clicked");
     setSelectedWand(wand);
     if (selectedWand !== wand) {
@@ -100,7 +100,7 @@ function SVGMap({
         >
           {wände.map((wand) => (
             <g
-              key={wand.id.wandNr}
+              key={wand.wandNr}
               onClick={(e) => {
                 e.stopPropagation();
                 handleWandClick(wand);

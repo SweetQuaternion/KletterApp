@@ -5,7 +5,8 @@
  * OpenAPI spec version: v0
  */
 
-export interface WandId {
-  hallenId: number;
-  wandNr: number;
+export interface KommentarCreateDTO {
+  routenId: number;
+  userId: string;
+  text: string;
 }

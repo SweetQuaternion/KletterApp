@@ -10,7 +10,6 @@ create type position_enum as enum ('indoor', 'outdoor');
 CREATE TABLE wände(
     hallen_id INT NOT NULL,
     wand_nr INT NOT NULL,
-    sektor text,
     start_x FLOAT not null,
     start_y FLOAT not null,
     end_x FLOAT not null,

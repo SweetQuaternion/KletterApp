@@ -6,6 +6,5 @@
  */
 
 export type GetKommentareByRouteIDParams = {
-routeId?: number;
-userId?: number;
+routeId: number;
 };

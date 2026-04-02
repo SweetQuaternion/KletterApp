@@ -1,11 +1,11 @@
-import type { Route, Wand } from "../../api/model";
 import RoutenErgebnisFeld from "./RoutenErgebnisFeld";
 import { isAdmin } from "../../constants/keycloak.ts";
+import type { RouteResponseDTO, WandResponseDTO } from "../../api/model";
 
 interface Props {
-  selectedWand: Wand;
-  routen: Route[];
-  setSelectedRoute: (route: Route | null) => void;
+  selectedWand: WandResponseDTO;
+  routen: RouteResponseDTO[];
+  setSelectedRoute: (route: RouteResponseDTO | null) => void;
   setShowNeueRoute: (show: boolean) => void;
 }
 
@@ -18,7 +18,7 @@ const WandInfoBox = ({
   return (
     <div className="wand-infobox">
       <div className="wand-infobox-header">
-        <h3>Wand {selectedWand?.id.wandNr}</h3>
+        <h3>Wand {selectedWand?.wandNr}</h3>
         <div
           className="position-tag"
           style={{

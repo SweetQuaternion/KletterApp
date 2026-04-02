@@ -4,7 +4,7 @@ import "../../styles/RoutenDetails.css";
 import type {
   AscentSicherung,
   AscentStyle,
-  Route,
+  RouteResponseDTO,
   User,
 } from "../../api/model";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -19,7 +19,7 @@ import {
 import { Link } from "react-router";
 
 interface Props {
-  selectedRoute: Route;
+  selectedRoute: RouteResponseDTO;
   user: User | null;
 }
 
@@ -78,9 +78,8 @@ const RoutenDetails = ({ selectedRoute, user }: Props) => {
     e.preventDefault();
     const input = new FormData(e.target as HTMLFormElement);
     addKommentar({
-      user: user!,
-      route: selectedRoute,
-      datum: new Date().toISOString(),
+      userId: user?.keycloakId || "",
+      routenId: selectedRoute.id,
       text: input.get("text") as string,
     });
   };
@@ -201,10 +200,10 @@ const RoutenDetails = ({ selectedRoute, user }: Props) => {
             kommentare.map((kommentar) => (
               <div key={kommentar.id} className="kommentar">
                 <Link
-                  to={`/user/${kommentar.user.name}`}
+                  to={`/user/${kommentar.username}`}
                   className="kommentar-user"
                 >
-                  <p className="kommentar-name">{kommentar.user.name}</p>
+                  <p className="kommentar-name">{kommentar.username}</p>
                 </Link>
                 <p className="kommentar-text">{kommentar.text}</p>
                 {/* {(isAdmin() ||

@@ -25,7 +25,9 @@ import type {
 
 import type {
   DeleteRouteParams,
-  Route
+  RouteCreateDTO,
+  RouteResponseDTO,
+  UpdateRouteParams
 } from '../model';
 
 import { customFetch } from '../../constants/fetcher';
@@ -43,9 +45,9 @@ export const getGetRoutenByHallenIdUrl = (hallenId: number,) => {
   return `/api/hallen/${hallenId}/routen`
 }
 
-export const getRoutenByHallenId = async (hallenId: number, options?: RequestInit): Promise<Route[]> => {
+export const getRoutenByHallenId = async (hallenId: number, options?: RequestInit): Promise<RouteResponseDTO[]> => {
   
-  return customFetch<Route[]>(getGetRoutenByHallenIdUrl(hallenId),
+  return customFetch<RouteResponseDTO[]>(getGetRoutenByHallenIdUrl(hallenId),
   {      
     ...options,
     method: 'GET'
@@ -136,15 +138,15 @@ export const getAddRouteUrl = (hallenId: number,) => {
 }
 
 export const addRoute = async (hallenId: number,
-    route: Route, options?: RequestInit): Promise<Route> => {
+    routeCreateDTO: RouteCreateDTO, options?: RequestInit): Promise<RouteResponseDTO> => {
   
-  return customFetch<Route>(getAddRouteUrl(hallenId),
+  return customFetch<RouteResponseDTO>(getAddRouteUrl(hallenId),
   {      
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      route,)
+      routeCreateDTO,)
   }
 );}
   
@@ -152,8 +154,8 @@ export const addRoute = async (hallenId: number,
 
 
 export const getAddRouteMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addRoute>>, TError,{hallenId: number;data: Route}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof addRoute>>, TError,{hallenId: number;data: Route}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addRoute>>, TError,{hallenId: number;data: RouteCreateDTO}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof addRoute>>, TError,{hallenId: number;data: RouteCreateDTO}, TContext> => {
 
 const mutationKey = ['addRoute'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -165,7 +167,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addRoute>>, {hallenId: number;data: Route}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addRoute>>, {hallenId: number;data: RouteCreateDTO}> = (props) => {
           const {hallenId,data} = props ?? {};
 
           return  addRoute(hallenId,data,requestOptions)
@@ -179,15 +181,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type AddRouteMutationResult = NonNullable<Awaited<ReturnType<typeof addRoute>>>
-    export type AddRouteMutationBody = Route
+    export type AddRouteMutationBody = RouteCreateDTO
     export type AddRouteMutationError = void
 
     export const useAddRoute = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addRoute>>, TError,{hallenId: number;data: Route}, TContext>, request?: SecondParameter<typeof customFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addRoute>>, TError,{hallenId: number;data: RouteCreateDTO}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof addRoute>>,
         TError,
-        {hallenId: number;data: Route},
+        {hallenId: number;data: RouteCreateDTO},
         TContext
       > => {
       return useMutation(getAddRouteMutationOptions(options), queryClient);
@@ -264,24 +266,33 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
       return useMutation(getDeleteRouteMutationOptions(options), queryClient);
     }
-    export const getUpdateRouteUrl = (hallenId: number,) => {
+    export const getUpdateRouteUrl = (hallenId: number,
+    params: UpdateRouteParams,) => {
+  const normalizedParams = new URLSearchParams();
 
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
 
-  
+  const stringifiedParams = normalizedParams.toString();
 
-  return `/api/hallen/${hallenId}/routen`
+  return stringifiedParams.length > 0 ? `/api/hallen/${hallenId}/routen?${stringifiedParams}` : `/api/hallen/${hallenId}/routen`
 }
 
 export const updateRoute = async (hallenId: number,
-    route: Route, options?: RequestInit): Promise<Route> => {
+    routeCreateDTO: RouteCreateDTO,
+    params: UpdateRouteParams, options?: RequestInit): Promise<RouteResponseDTO> => {
   
-  return customFetch<Route>(getUpdateRouteUrl(hallenId),
+  return customFetch<RouteResponseDTO>(getUpdateRouteUrl(hallenId,params),
   {      
     ...options,
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      route,)
+      routeCreateDTO,)
   }
 );}
   
@@ -289,8 +300,8 @@ export const updateRoute = async (hallenId: number,
 
 
 export const getUpdateRouteMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateRoute>>, TError,{hallenId: number;data: Route}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof updateRoute>>, TError,{hallenId: number;data: Route}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateRoute>>, TError,{hallenId: number;data: RouteCreateDTO;params: UpdateRouteParams}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateRoute>>, TError,{hallenId: number;data: RouteCreateDTO;params: UpdateRouteParams}, TContext> => {
 
 const mutationKey = ['updateRoute'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -302,10 +313,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateRoute>>, {hallenId: number;data: Route}> = (props) => {
-          const {hallenId,data} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateRoute>>, {hallenId: number;data: RouteCreateDTO;params: UpdateRouteParams}> = (props) => {
+          const {hallenId,data,params} = props ?? {};
 
-          return  updateRoute(hallenId,data,requestOptions)
+          return  updateRoute(hallenId,data,params,requestOptions)
         }
 
 
@@ -316,15 +327,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type UpdateRouteMutationResult = NonNullable<Awaited<ReturnType<typeof updateRoute>>>
-    export type UpdateRouteMutationBody = Route
+    export type UpdateRouteMutationBody = RouteCreateDTO
     export type UpdateRouteMutationError = void
 
     export const useUpdateRoute = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateRoute>>, TError,{hallenId: number;data: Route}, TContext>, request?: SecondParameter<typeof customFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateRoute>>, TError,{hallenId: number;data: RouteCreateDTO;params: UpdateRouteParams}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateRoute>>,
         TError,
-        {hallenId: number;data: Route},
+        {hallenId: number;data: RouteCreateDTO;params: UpdateRouteParams},
         TContext
       > => {
       return useMutation(getUpdateRouteMutationOptions(options), queryClient);
