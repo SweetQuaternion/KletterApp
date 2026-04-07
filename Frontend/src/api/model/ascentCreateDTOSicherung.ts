@@ -5,10 +5,10 @@
  * OpenAPI spec version: v0
  */
 
-export type AscentSicherung = typeof AscentSicherung[keyof typeof AscentSicherung];
+export type AscentCreateDTOSicherung = typeof AscentCreateDTOSicherung[keyof typeof AscentCreateDTOSicherung];
 
 
-export const AscentSicherung = {
+export const AscentCreateDTOSicherung = {
   vorstieg: 'vorstieg',
   toprope: 'toprope',
   solo: 'solo',

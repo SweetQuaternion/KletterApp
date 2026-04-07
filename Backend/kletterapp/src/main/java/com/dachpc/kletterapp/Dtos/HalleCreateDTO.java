@@ -9,18 +9,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class KommentarCreateDTO {
+public class HalleCreateDTO {
+
+    @NotNull
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+    private String name;
+
+    @NotNull
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+    private String adresse;
+
+    private String betreiber;
     
-    @NotNull
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    private int routenId;
-
-    @NotNull
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    private String userId;
-
-    @NotNull
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    private String text;
-
 }

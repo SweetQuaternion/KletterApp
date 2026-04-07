@@ -15,43 +15,42 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dachpc.kletterapp.Entities.Ascent;
-import com.dachpc.kletterapp.Repositories.AscentRepository;
+import com.dachpc.kletterapp.Dtos.AscentCreateDTO;
+import com.dachpc.kletterapp.Dtos.AscentResponseDTO;
+import com.dachpc.kletterapp.Services.AscentService;
 
 
 @RestController
 @RequestMapping("/api/ascents")
 public class AscentController {
-    
+
     @Autowired
-    private AscentRepository ascentRepository;
+    public AscentService ascentService;
 
     @GetMapping(produces = "application/json")
-    public List<Ascent> findAscentsByUserId(@RequestParam String userId, @RequestParam(required = false) Integer routenId) {
-        return ascentRepository.search(userId, routenId);
+    public List<AscentResponseDTO> findAscents(@RequestParam String userId, @RequestParam(required = false) Integer routenId) {
+        return ascentService.findAscents(userId, routenId);
     }
 
     @PostMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ROLE_ADMIN') or #ascent.userId == authentication.principal.subject")
-    public Ascent addAscent(@RequestBody Ascent ascent) {
-        ascentRepository.save(ascent);
-        return ascent;
+    public AscentResponseDTO addAscent(@RequestBody AscentCreateDTO dto) {
+        return ascentService.addAscent(dto);
     }
 
     @PatchMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_ADMIN') or #ascent.userId == authentication.principal.subject")
-    public Ascent updateAscent(@RequestBody Ascent ascent) {
-        ascentRepository.save(ascent);
-        return ascent;
+    public AscentResponseDTO updateAscent(@RequestParam int id, @RequestBody AscentCreateDTO dto) {
+        return ascentService.updateAscent(id, dto);
     }
 
     @DeleteMapping
     @PreAuthorize("hasRole('ROLE_ADMIN') or #ascent.userId == authentication.principal.subject")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAscent(@RequestParam Integer id) {
-        ascentRepository.deleteById(id);
+        ascentService.deleteAscent(id);
     }
     
 }

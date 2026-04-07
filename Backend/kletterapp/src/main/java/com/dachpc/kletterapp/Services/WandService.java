@@ -10,12 +10,14 @@ import com.dachpc.kletterapp.Entities.Wand;
 import com.dachpc.kletterapp.Entities.WandId;
 import com.dachpc.kletterapp.Mappers.WandMapper;
 import com.dachpc.kletterapp.Repositories.WandRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class WandService {
 
     @Autowired
@@ -26,13 +28,19 @@ public class WandService {
 
     public WandResponseDTO addWand(WandCreateDTO dto) {
         Wand wand = wandMapper.toEntity(dto);
+        // geht das hier noch besser?
+        int nextWandNr = wandRepository.findByIdHallenId(dto.getHallenId()).stream()
+            .map(existingWand -> existingWand.getId().getWandNr())
+            .max(Integer::compareTo)
+            .orElse(0) + 1;
+        wand.setId(new WandId(dto.getHallenId(), nextWandNr));
         Wand added = wandRepository.save(wand);
         return wandMapper.toResponseDTO(added);
     }
 
     public List<WandResponseDTO> getWändeByHallenId(int hallenId) {
         List<Wand> wände = wandRepository.findByHallenIdWithRouten(hallenId);
-        return wände.stream().map(w -> wandMapper.toResponseDTO(w)).toList();
+        return wände.stream().map(wandMapper::toResponseDTO).toList();
     }
 
     public WandResponseDTO updateWand(int hallenId, int wandNr, WandCreateDTO dto) {

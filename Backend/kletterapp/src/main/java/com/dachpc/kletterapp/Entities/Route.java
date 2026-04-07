@@ -8,13 +8,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-// Tells Hibernate that this class should be tracked as a table
 @Entity
-@Getter @Setter @NoArgsConstructor
+@Data @NoArgsConstructor @AllArgsConstructor
 @Table(name = "routen")
 @JsonPropertyOrder({"id", "name", "schwierigkeit", "farbe", "wand_id", "is_vorstieg", "is_toprope", "is_active", "schrauber", "schraubdatum", "beschreibung"})
 public class Route {

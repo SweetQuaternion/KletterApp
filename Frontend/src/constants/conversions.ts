@@ -1,5 +1,8 @@
-export const convertSchwierigkeitToString = (schwierigkeit: number): string => {
+export const convertSchwierigkeitToString = (
+  schwierigkeit: number | undefined,
+): string => {
   if (schwierigkeit === 0) return "";
+  if (schwierigkeit === undefined) return "?";
   if (schwierigkeit % 1 === 0) return schwierigkeit.toString();
   let base = Math.floor(schwierigkeit);
   const modifier = schwierigkeit % 1 < 0.5 ? "+" : "-";
@@ -7,7 +10,10 @@ export const convertSchwierigkeitToString = (schwierigkeit: number): string => {
   return `${base}${modifier}`;
 };
 
-export const convertSchwierigkeitToNumber = (schwierigkeit: string): number => {
+export const convertSchwierigkeitToNumber = (
+  schwierigkeit: string,
+): number | null => {
+  if (schwierigkeit === "") return null;
   const match = schwierigkeit.match(/^(\d+)([+-]?)$/);
   if (!match) throw new Error("Ungültiges Format");
   const base = parseInt(match[1], 10);

@@ -26,7 +26,9 @@ import type {
 import type {
   DeleteHalleParams,
   FindHalleParams,
-  Halle
+  HalleCreateDTO,
+  HalleResponseDTO,
+  UpdateHalleParams
 } from '../model';
 
 import { customFetch } from '../../constants/fetcher';
@@ -51,9 +53,9 @@ export const getFindHalleUrl = (params?: FindHalleParams,) => {
   return stringifiedParams.length > 0 ? `/api/hallen?${stringifiedParams}` : `/api/hallen`
 }
 
-export const findHalle = async (params?: FindHalleParams, options?: RequestInit): Promise<Halle[]> => {
+export const findHalle = async (params?: FindHalleParams, options?: RequestInit): Promise<HalleResponseDTO[]> => {
   
-  return customFetch<Halle[]>(getFindHalleUrl(params),
+  return customFetch<HalleResponseDTO[]>(getFindHalleUrl(params),
   {      
     ...options,
     method: 'GET'
@@ -143,15 +145,15 @@ export const getAddHalleUrl = () => {
   return `/api/hallen`
 }
 
-export const addHalle = async (halle: Halle, options?: RequestInit): Promise<Halle> => {
+export const addHalle = async (halleCreateDTO: HalleCreateDTO, options?: RequestInit): Promise<HalleResponseDTO> => {
   
-  return customFetch<Halle>(getAddHalleUrl(),
+  return customFetch<HalleResponseDTO>(getAddHalleUrl(),
   {      
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      halle,)
+      halleCreateDTO,)
   }
 );}
   
@@ -159,8 +161,8 @@ export const addHalle = async (halle: Halle, options?: RequestInit): Promise<Hal
 
 
 export const getAddHalleMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addHalle>>, TError,{data: Halle}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof addHalle>>, TError,{data: Halle}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addHalle>>, TError,{data: HalleCreateDTO}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof addHalle>>, TError,{data: HalleCreateDTO}, TContext> => {
 
 const mutationKey = ['addHalle'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -172,7 +174,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addHalle>>, {data: Halle}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addHalle>>, {data: HalleCreateDTO}> = (props) => {
           const {data} = props ?? {};
 
           return  addHalle(data,requestOptions)
@@ -186,15 +188,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type AddHalleMutationResult = NonNullable<Awaited<ReturnType<typeof addHalle>>>
-    export type AddHalleMutationBody = Halle
+    export type AddHalleMutationBody = HalleCreateDTO
     export type AddHalleMutationError = void
 
     export const useAddHalle = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addHalle>>, TError,{data: Halle}, TContext>, request?: SecondParameter<typeof customFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addHalle>>, TError,{data: HalleCreateDTO}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof addHalle>>,
         TError,
-        {data: Halle},
+        {data: HalleCreateDTO},
         TContext
       > => {
       return useMutation(getAddHalleMutationOptions(options), queryClient);
@@ -269,23 +271,31 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
       return useMutation(getDeleteHalleMutationOptions(options), queryClient);
     }
-    export const getUpdateHalleUrl = () => {
+    export const getUpdateHalleUrl = (params: UpdateHalleParams,) => {
+  const normalizedParams = new URLSearchParams();
 
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
 
-  
+  const stringifiedParams = normalizedParams.toString();
 
-  return `/api/hallen`
+  return stringifiedParams.length > 0 ? `/api/hallen?${stringifiedParams}` : `/api/hallen`
 }
 
-export const updateHalle = async (halle: Halle, options?: RequestInit): Promise<Halle> => {
+export const updateHalle = async (halleCreateDTO: HalleCreateDTO,
+    params: UpdateHalleParams, options?: RequestInit): Promise<HalleResponseDTO> => {
   
-  return customFetch<Halle>(getUpdateHalleUrl(),
+  return customFetch<HalleResponseDTO>(getUpdateHalleUrl(params),
   {      
     ...options,
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      halle,)
+      halleCreateDTO,)
   }
 );}
   
@@ -293,8 +303,8 @@ export const updateHalle = async (halle: Halle, options?: RequestInit): Promise<
 
 
 export const getUpdateHalleMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHalle>>, TError,{data: Halle}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof updateHalle>>, TError,{data: Halle}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHalle>>, TError,{data: HalleCreateDTO;params: UpdateHalleParams}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateHalle>>, TError,{data: HalleCreateDTO;params: UpdateHalleParams}, TContext> => {
 
 const mutationKey = ['updateHalle'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -306,10 +316,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateHalle>>, {data: Halle}> = (props) => {
-          const {data} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateHalle>>, {data: HalleCreateDTO;params: UpdateHalleParams}> = (props) => {
+          const {data,params} = props ?? {};
 
-          return  updateHalle(data,requestOptions)
+          return  updateHalle(data,params,requestOptions)
         }
 
 
@@ -320,15 +330,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type UpdateHalleMutationResult = NonNullable<Awaited<ReturnType<typeof updateHalle>>>
-    export type UpdateHalleMutationBody = Halle
+    export type UpdateHalleMutationBody = HalleCreateDTO
     export type UpdateHalleMutationError = void
 
     export const useUpdateHalle = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHalle>>, TError,{data: Halle}, TContext>, request?: SecondParameter<typeof customFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHalle>>, TError,{data: HalleCreateDTO;params: UpdateHalleParams}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateHalle>>,
         TError,
-        {data: Halle},
+        {data: HalleCreateDTO;params: UpdateHalleParams},
         TContext
       > => {
       return useMutation(getUpdateHalleMutationOptions(options), queryClient);

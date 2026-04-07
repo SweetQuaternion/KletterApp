@@ -1,5 +1,5 @@
 import {
-  type Halle,
+  type HalleResponseDTO,
   type RouteResponseDTO,
   type User,
   type WandResponseDTO,
@@ -16,7 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getGetWaendeByHallenIdQueryOptions } from "../../api/wand-controller/wand-controller";
 
 interface Props {
-  selectedHalle: Halle;
+  selectedHalle: HalleResponseDTO;
   user: User | null;
 }
 

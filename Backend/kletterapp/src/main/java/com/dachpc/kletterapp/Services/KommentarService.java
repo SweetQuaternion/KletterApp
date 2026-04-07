@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dachpc.kletterapp.Dtos.KommentarCreateDTO;
 import com.dachpc.kletterapp.Dtos.KommentarResponseDTO;
@@ -16,6 +17,7 @@ import com.dachpc.kletterapp.Repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
+@Transactional // Stellt sicher, dass die Hibernate-Session wärend der ganzen Methode offen bleibt, damit die Lazy-Loaded-Properties der Entities geladen werden können
 public class KommentarService {
 
     @Autowired
@@ -42,7 +44,7 @@ public class KommentarService {
 
     public List<KommentarResponseDTO> findKommentarByRouteId(int routeId) {
         List<Kommentar> kommentare = kommentarRepository.findByRoute_id(routeId);
-        return kommentare.stream().map(k -> kommentarMapper.toResponseDTO(k)).toList();
+        return kommentare.stream().map(kommentarMapper::toResponseDTO).toList();
     }
 
     public KommentarResponseDTO updateKommentar(int id, String newText) {

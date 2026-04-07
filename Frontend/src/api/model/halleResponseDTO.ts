@@ -5,7 +5,7 @@
  * OpenAPI spec version: v0
  */
 
-export interface Halle {
+export interface HalleResponseDTO {
   id: number;
   name: string;
   adresse: string;

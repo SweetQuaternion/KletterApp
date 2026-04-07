@@ -1,6 +1,7 @@
 import { mutationOptions, QueryClient } from "@tanstack/react-query";
 import type {
-  Ascent,
+  AscentCreateDTO,
+  AscentResponseDTO,
   KommentarCreateDTO,
   KommentarResponseDTO,
   RouteCreateDTO,
@@ -15,7 +16,7 @@ import {
 } from "../api/user-controller/user-controller";
 import {
   addAscent,
-  findAscentsByUserId,
+  findAscents,
 } from "../api/ascent-controller/ascent-controller";
 import { addRoute } from "../api/routen-controller/routen-controller";
 import {
@@ -56,11 +57,11 @@ export function createAscentQueryOptions(routenId: number, user: User | null) {
       if (!user) {
         return null;
       }
-      const response = await findAscentsByUserId({
+      const response = await findAscents({
         routenId,
         userId: user.keycloakId,
       });
-      return response as Ascent[];
+      return response as AscentResponseDTO[];
     },
     staleTime: ONE_DAY,
   };
@@ -143,7 +144,7 @@ export function createAddRouteMutationOptions() {
 
 export function createAddAscentMutationOptions() {
   return mutationOptions({
-    mutationFn: (data: Ascent) => addAscent(data),
+    mutationFn: (data: AscentCreateDTO) => addAscent(data),
     onSuccess: async (_, variables) => {
       await queryClient.invalidateQueries({
         queryKey: ["ascents", variables.routenId, variables.userId],

@@ -1,38 +1,36 @@
 package com.dachpc.kletterapp.Dtos;
 
+import java.time.LocalDate;
+
+import com.dachpc.kletterapp.Entities.Sicherung;
+import com.dachpc.kletterapp.Entities.Style;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-public class WandCreateDTO {
-    
-    @NotNull
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    private int hallenId;
+public class AscentResponseDTO {
 
-    private String name;
-    
     @NotNull
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    private float startX;
-    
-    @NotNull
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    private float startY;
-    
-    @NotNull
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    private float endX;
-    
-    @NotNull
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    private float endY;
-    
-    private String position;
+    private int id;
 
+    @NotNull
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+    private String userId;
+
+    @NotNull
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+    private int routenId;
+
+    @NotNull
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+    private LocalDate datum;
+
+    private Style style;
+    private Sicherung sicherung;
+    
 }

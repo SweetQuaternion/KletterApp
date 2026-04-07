@@ -2,8 +2,8 @@ import { useState } from "react";
 import { convertSchwierigkeitToString } from "../../constants/conversions";
 import "../../styles/RoutenDetails.css";
 import type {
-  AscentSicherung,
-  AscentStyle,
+  AscentResponseDTOSicherung,
+  AscentResponseDTOStyle,
   RouteResponseDTO,
   User,
 } from "../../api/model";
@@ -67,8 +67,8 @@ const RoutenDetails = ({ selectedRoute, user }: Props) => {
     addAscent({
       userId: user?.keycloakId || "",
       routenId: selectedRoute.id,
-      sicherung: input.get("sicherungsart") as AscentSicherung,
-      style: input.get("style") as AscentStyle,
+      sicherung: input.get("sicherungsart") as AscentResponseDTOSicherung,
+      style: input.get("style") as AscentResponseDTOStyle,
       datum: new Date().toISOString().split("T")[0],
     });
     setAscentToggled(false);
@@ -90,20 +90,24 @@ const RoutenDetails = ({ selectedRoute, user }: Props) => {
         <h2>{selectedRoute?.name || "Route"}</h2>
 
         <div className="routen-details-schwierigkeit">
-          {convertSchwierigkeitToString(selectedRoute.schwierigkeit || 0)}
+          {convertSchwierigkeitToString(
+            selectedRoute.schwierigkeit || undefined,
+          )}
         </div>
       </div>
       <div className="flex-row small-gap">
-        <div
-          className="tag-colour"
-          style={{
-            background: `var(--${selectedRoute.farbe})`,
-            color: `${selectedRoute.farbe === "schwarz" ? "white" : "black"}`,
-            border: `${selectedRoute.farbe === "weiß" ? "1px solid grey" : "none"}`,
-          }}
-        >
-          {selectedRoute.farbe}
-        </div>
+        {selectedRoute.farbe && (
+          <div
+            className="tag-colour"
+            style={{
+              background: `var(--${selectedRoute.farbe})`,
+              color: `${selectedRoute.farbe === "schwarz" ? "white" : "black"}`,
+              border: `${selectedRoute.farbe === "weiß" ? "1px solid grey" : "none"}`,
+            }}
+          >
+            {selectedRoute.farbe}
+          </div>
+        )}
         {ascents?.length !== 0 && (
           <img src="/tick.svg" alt="geschafft" className="geschafft-haken" />
         )}

@@ -1,11 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Halle, RouteCreateDTO, WandResponseDTO } from "../../api/model";
+import type {
+  HalleResponseDTO,
+  RouteCreateDTO,
+  WandResponseDTO,
+} from "../../api/model";
 import { convertSchwierigkeitToNumber } from "../../constants/conversions";
 import "../../styles/RoutenKarte.css";
 import { createAddRouteMutationOptions } from "../../constants/queries";
 
 interface Props {
-  selectedHalle: Halle;
+  selectedHalle: HalleResponseDTO;
   selectedWand: WandResponseDTO;
   setShowNeueRoute: (show: boolean) => void;
 }
@@ -27,11 +31,10 @@ const NeueRoute = ({ selectedHalle, selectedWand }: Props) => {
       schwierigkeit: convertSchwierigkeitToNumber(
         formData.get("schwierigkeit") as string,
       ),
-      is_toprope: formData.get("is_toprope") === "on",
-      is_vorstieg: formData.get("is_vorstieg") === "on",
+      isToprope: formData.get("is_toprope") === "on",
+      isVorstieg: formData.get("is_vorstieg") === "on",
       schrauber: formData.get("schrauber") as string,
       schraubdatum: formData.get("schraubdatum") as string,
-      is_active: true,
       beschreibung: formData.get("beschreibung") as string,
     } as RouteCreateDTO;
     console.log("Submitting new route:", data);

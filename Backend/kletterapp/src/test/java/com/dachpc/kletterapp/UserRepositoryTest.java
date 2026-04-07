@@ -1,75 +1,76 @@
 package com.dachpc.kletterapp;
 
-// import java.util.Optional;
+import java.util.Optional;
 
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-// import static org.assertj.core.api.Assertions.assertThat;
-// import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThat;
 
-// import com.dachpc.kletterapp.Entities.User;
-// import com.dachpc.kletterapp.Repositories.UserRepository;
+import com.dachpc.kletterapp.Entities.User;
+import com.dachpc.kletterapp.Repositories.UserRepository;
+import com.dachpc.kletterapp.Security.UserSyncRequest;
+import com.dachpc.kletterapp.Services.UserService;
 
 
 public class UserRepositoryTest extends AbstractIntegrationTest {
 
-    // @Test
-    // void testContainer() {
-    //     assertThat(postgresqlContainer.isRunning()).isTrue();
-    // }
+    @Test
+    void testContainer() {
+        assertThat(postgresqlContainer.isRunning()).isTrue();
+    }
 
-    // @Autowired
-    // private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    // @BeforeEach
-    // void setUp() {
-        // userRepository.deleteAll();
-        // userRepository.save( new User( "Max Mustermann", "max.mustermann@example.com", "password123" ));
-        // userRepository.save( new User( "Erika Musterfrau", "erika.musterfrau@example.com", "password456" ));
-    // }
+    @Autowired
+    private UserService userService;
 
-    // @Test
-    // void testFindByEmail() {
-    //     Optional<User> result1 = userRepository.findByEmail("max.mustermann@example.com");
-    //     assertThat(result1).isPresent();
-    //     assertThat(result1.get().getName()).isEqualTo("Max Mustermann");
-    // }
+    @BeforeEach
+    void setUp() {
+        userRepository.deleteAll();
+        userService.syncUser(new UserSyncRequest("keycloakId1", "PremiumUser"));
+        userService.syncUser(new UserSyncRequest("keycloakId2", "CoolerAdmin"));
+    }
 
-    // @Test
-    // void testFindByEmailNotFound() {
-    //     Optional<User> result = userRepository.findByEmail("bla@bla.com");
-    //     assertThat(result).isNotPresent();
-    // }
+    @Test
+    void testFindByName() {
+        Optional<User> result1 = userRepository.findByName("PremiumUser");
+        assertThat(result1).isPresent();
+        assertThat(result1.get().getName()).isEqualTo("PremiumUser");
+        assertThat(result1.get().getKeycloakId()).isEqualTo("keycloakId1");
+    }
 
-    // @Test
-    // void testSaveUser() {
-    //     User user = new User("Mona", "mona@example.com", "hashedpassword");
-    //     User saved = userRepository.save(user);
-    //     assertThat(saved.getId()).isPositive();
-    //     assertThat(saved.getName()).isEqualTo("Mona");
-    //     assertThat(saved.getRole()).isEqualTo("user");
-    // }
+    @Test
+    void testFindByNameNotFound() {
+        Optional<User> result = userRepository.findByName("NonExistentUser");
+        assertThat(result).isNotPresent();
+    }
 
-    // @Test
-    // void testFindById() {
-    //     User saved = userRepository.save(new User("Mona", "mona@example.com", "hashedpassword"));
-    //     Optional<User> result = userRepository.findById(saved.getId());
-    //     assertThat(result).isPresent();
-    //     assertThat(result.get().getEmail()).isEqualTo("mona@example.com");
-    // }
+    @Test
+    void testSaveUser() {
+        User user = userService.syncUser(new UserSyncRequest("keycloakId3", "Mona"));
+        User saved = userRepository.save(user);
+        assertThat(saved.getKeycloakId()).isEqualTo("keycloakId3");
+        assertThat(saved.getName()).isEqualTo("Mona");
+        assertThat(saved.getBildUrl()).isNull();
+        assertThat(saved.getBio()).isEqualTo("");
+    }
 
-    // @Test
-    // void testDeleteById() {
-    //     User saved = userRepository.save(new User("Mona", "mona@example.com", "hashedpassword"));
-    //     userRepository.deleteById(saved.getId());
-    //     assertThat(userRepository.findById(saved.getId())).isEmpty();
-    // }
+    @Test
+    void testFindById() {
+        User saved = userService.syncUser(new UserSyncRequest("keycloakId3", "Mona"));
+        User result = userService.findUser(saved.getKeycloakId(), null);
+        assertThat(result).isNotNull();
+        assertThat(result.getName()).isEqualTo("Mona");
+    }
 
-    // @Test
-    // void testDuplicateEmail() {
-    //     assertThatThrownBy(() -> userRepository.save(new User("Max-neu", "max.mustermann@example.com", "hash1")))
-    //             .isInstanceOf(Exception.class);
-    // }
+    @Test
+    void testDeleteById() {
+        User saved = userService.syncUser(new UserSyncRequest("keycloakId3", "Mona"));
+        userRepository.deleteById(saved.getKeycloakId());
+        assertThat(userRepository.findById(saved.getKeycloakId())).isEmpty();
+    }
+
 }

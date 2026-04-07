@@ -1,7 +1,7 @@
-import type { Halle } from "../../api/model/halle";
+import type { HalleResponseDTO } from "../../api/model";
 
 interface Props {
-  selectedHalle: Halle;
+  selectedHalle: HalleResponseDTO;
 }
 
 const HallenInfoBox = ({ selectedHalle }: Props) => {

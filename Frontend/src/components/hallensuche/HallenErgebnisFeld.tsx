@@ -1,14 +1,14 @@
 import { Link } from "react-router";
 import "../../styles/HallenFinder.css";
-import type { Halle } from "../../api/model/halle";
+import type { HalleResponseDTO } from "../../api/model";
 
 interface Props {
-  ergebnis: Halle;
-  setSelectedHalle: (id: Halle) => void;
+  ergebnis: HalleResponseDTO;
+  setSelectedHalle: (id: HalleResponseDTO) => void;
 }
 
 function HallenErgebnisFeld({ ergebnis, setSelectedHalle }: Props) {
-  const handleHallenSelection = (ergebnis: Halle) => {
+  const handleHallenSelection = (ergebnis: HalleResponseDTO) => {
     localStorage.setItem("Halle", JSON.stringify(ergebnis));
     setSelectedHalle(ergebnis);
   };

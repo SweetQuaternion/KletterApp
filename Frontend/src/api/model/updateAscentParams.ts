@@ -5,7 +5,6 @@
  * OpenAPI spec version: v0
  */
 
-export type FindAscentsByUserIdParams = {
-userId: string;
-routenId?: number;
+export type UpdateAscentParams = {
+id: number;
 };

@@ -13,10 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dachpc.kletterapp.Entities.Halle;
-import com.dachpc.kletterapp.Repositories.HallenRepository;
-
-import jakarta.persistence.EntityNotFoundException;
+import com.dachpc.kletterapp.Dtos.HalleCreateDTO;
+import com.dachpc.kletterapp.Dtos.HalleResponseDTO;
+import com.dachpc.kletterapp.Services.HalleService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,37 +26,34 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class HallenController {
 
     @Autowired
-    private HallenRepository hallenRepository;
+    private HalleService halleService;
     
     @GetMapping(produces = "application/json")
-    public List<Halle> findHalle(@RequestParam(required = false) String name) {
+    public List<HalleResponseDTO> findHalle(@RequestParam(required = false) String name) {
         if (name == null || name.isEmpty()) {
-            return hallenRepository.findAll();
+            return halleService.findAll();
         }
-        return hallenRepository.search(name);
+        return halleService.findHalle(name);
     }
 
     @PostMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Halle addHalle(@RequestBody Halle halle) {
-        hallenRepository.save(halle);
-        return halle;
+    public HalleResponseDTO addHalle(@RequestBody HalleCreateDTO dto) {
+        return halleService.addHalle(dto);
     }
     
     @PatchMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public Halle updateHalle(@RequestBody Halle halle) {
-        hallenRepository.save(halle);
-        return halle;
+    public HalleResponseDTO updateHalle(@RequestParam int id, @RequestBody HalleCreateDTO dto) {
+        return halleService.updateHalle(id, dto);
     }
 
     @DeleteMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteHalle(@RequestParam Integer id) {
-        Halle halle = hallenRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-        hallenRepository.delete(halle);
+        halleService.deleteHalle(id);
     }
 }

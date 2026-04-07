@@ -33,6 +33,7 @@ public class User {
     public User(String keycloakId, String name) {
         this.keycloakId = keycloakId;
         this.name = name;
+        this.bio = "";
     }
 
 }

@@ -5,10 +5,10 @@
  * OpenAPI spec version: v0
  */
 
-export type AscentStyle = typeof AscentStyle[keyof typeof AscentStyle];
+export type AscentCreateDTOStyle = typeof AscentCreateDTOStyle[keyof typeof AscentCreateDTOStyle];
 
 
-export const AscentStyle = {
+export const AscentCreateDTOStyle = {
   onsight: 'onsight',
   flash: 'flash',
   redpoint: 'redpoint',

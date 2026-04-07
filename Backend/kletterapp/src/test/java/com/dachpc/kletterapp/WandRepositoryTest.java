@@ -8,10 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.dachpc.kletterapp.Dtos.WandCreateDTO;
+import com.dachpc.kletterapp.Dtos.WandResponseDTO;
 import com.dachpc.kletterapp.Entities.Halle;
 import com.dachpc.kletterapp.Entities.Wand;
+import com.dachpc.kletterapp.Entities.WandId;
 import com.dachpc.kletterapp.Repositories.HallenRepository;
 import com.dachpc.kletterapp.Repositories.WandRepository;
+import com.dachpc.kletterapp.Services.WandService;
 
 
 public class WandRepositoryTest extends AbstractIntegrationTest {
@@ -20,10 +24,13 @@ public class WandRepositoryTest extends AbstractIntegrationTest {
     private WandRepository wandRepository;
 
     @Autowired
+    private WandService wandService;
+
+    @Autowired
     private HallenRepository hallenRepository;
 
     private int hallenId1;
-    // private int hallenId2;
+    private int hallenId2;
 
 
     @BeforeEach
@@ -32,15 +39,15 @@ public class WandRepositoryTest extends AbstractIntegrationTest {
         hallenRepository.deleteAll();
 
         Halle halle1 = hallenRepository.save(new Halle("DAV Darmstadt", "Lichtwiesenweg 15", "DAV"));
-        // Halle halle2 = hallenRepository.save(new Halle("Heubach", "Adresse", "DAV"));
+        Halle halle2 = hallenRepository.save(new Halle("Heubach", "Adresse", "DAV"));
         hallenId1 = halle1.getId();
-        // hallenId2 = halle2.getId();
+        hallenId2 = halle2.getId();
 
-        // wandRepository.save(new Wand(hallenId1,1,"Sektor in erster Halle"));
-        // wandRepository.save(new Wand(hallenId1,2,"Sektor in zweiter Halle"));
-        // wandRepository.save(new Wand(hallenId2,1,"Sektor in dritter Halle mit Toprope"));
+        wandService.addWand(new WandCreateDTO(hallenId1, "Wand in erster Halle",0,0,0,0,"indoor"));
+        wandService.addWand(new WandCreateDTO(hallenId1, "Wand in zweiter Halle",0,0,0,0,"outdoor"));
+        wandService.addWand(new WandCreateDTO(hallenId2, "Wand in zweiter Halle mit Toprope",0,0,0,0,"outdoor"));
     }
-    
+
     @Test
     public void testFindByHallenId() {
         List<Wand> result = wandRepository.findByIdHallenId(hallenId1);
@@ -55,19 +62,15 @@ public class WandRepositoryTest extends AbstractIntegrationTest {
 
     @Test
     public void testSaveWand() {
-        // Wand newWand = new Wand(hallenId1, 3, "Neue Sektor in erster Halle");
-        // Wand savedWand = wandRepository.save(newWand);
-
-        // assertThat(savedWand.getId()).isNotNull();
-        // assertThat(savedWand.getHallenId()).isEqualTo(hallenId1);
-        // assertThat(savedWand.getWandNr()).isEqualTo(3);
-        // assertThat(savedWand.getSektor()).isEqualTo("Neue Sektor in erster Halle");
+        WandResponseDTO savedWand = wandService.addWand(new WandCreateDTO(hallenId1, "Neue Wand in erster Halle",0,0,0,0,"indoor"));
+        assertThat(savedWand.getHallenId()).isEqualTo(hallenId1);
+        assertThat(savedWand.getWandNr()).isEqualTo(3);
+        assertThat(savedWand.getName()).isEqualTo("Neue Wand in erster Halle");
     }
 
     @Test
     void testDeleteById() {
-        // Wand saved = wandRepository.save(new Wand(hallenId1, 4, "Sektor D"));
-        // wandRepository.deleteById(saved.getId());
-        // assertThat(wandRepository.findById(saved.getId())).isEmpty();
+        wandRepository.deleteById(new WandId(hallenId1, 1));
+        assertThat(wandRepository.findById(new WandId(hallenId1, 1))).isEmpty();
     }
 }

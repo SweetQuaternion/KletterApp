@@ -1,11 +1,11 @@
 import "../../styles/App.css";
 import HallenSuchmaske from "./HallenSuchmaske";
 import Header from "../Header";
-import type { Halle, User } from "../../api/model";
+import type { HalleResponseDTO, User } from "../../api/model";
 
 interface Props {
   user: User | null;
-  setSelectedHalle: (id: Halle) => void;
+  setSelectedHalle: (id: HalleResponseDTO) => void;
 }
 
 function HallenFinder({ user, setSelectedHalle }: Props) {

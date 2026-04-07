@@ -1,51 +1,30 @@
 package com.dachpc.kletterapp.Entities;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 // können wir in andere Klassen einbetten oder so
 @Embeddable
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserRoutenStatusId implements Serializable{
 
+    @NotNull
     @Column(name = "user_id")
     @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private String userId;
     
+    @NotNull
     @Column(name = "route_id")
     @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private int routeId;
-
-    public UserRoutenStatusId() {
-    }
-
-    public UserRoutenStatusId(String userId, int routeId) {
-        this.userId = userId;
-        this.routeId = routeId;
-    }
-
-    public String getUserId() { return userId; }
-    public int getRouteId() { return routeId; }
-
-    public void setUserId(String userId) { this.userId = userId; }
-    public void setRouteId(int routeId) { this.routeId = routeId; }
-    
-    @Override
-    public boolean equals(Object other) {
-        if (this == other) return true;
-        if (other == null || !(other instanceof UserRoutenStatusId)) return false;
-        UserRoutenStatusId that = (UserRoutenStatusId) other;
-        if (this.userId != that.userId) return false;
-        if (this.routeId != that.routeId) return false;
-        return true;
-    }
-    
-    @Override
-    public int hashCode() {
-        return Objects.hash(userId, routeId);
-    }
     
 }

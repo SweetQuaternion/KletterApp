@@ -12,10 +12,12 @@ import com.dachpc.kletterapp.Mappers.RouteMapper;
 import com.dachpc.kletterapp.Repositories.RoutenRepository;
 import com.dachpc.kletterapp.Repositories.WandRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
+@Transactional
 public class RoutenService {
 
     @Autowired
@@ -37,7 +39,7 @@ public class RoutenService {
 
     public List<RouteResponseDTO> getRoutenByHallenId(int hallenId) {
         List<Route> routen = routenRepository.findByWand_Id_HallenId(hallenId);
-        return routen.stream().map(r -> routeMapper.toResponseDTO(r)).toList();
+        return routen.stream().map(routeMapper::toResponseDTO).toList();
     }
 
     public RouteResponseDTO updateRoute(int id, RouteCreateDTO dto) {

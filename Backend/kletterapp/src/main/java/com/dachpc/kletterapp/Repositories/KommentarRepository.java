@@ -9,7 +9,7 @@ import com.dachpc.kletterapp.Entities.Kommentar;
 public interface KommentarRepository extends JpaRepository<Kommentar, Integer> {
 
     Kommentar getReferenceById(int id);
-    List<Kommentar> findByUser_keycloakId(int userId);
+    List<Kommentar> findByUser_keycloakId(String userId1);
     List<Kommentar> findByRoute_id(int routenId);
     void deleteById(int id);
 }

@@ -3,11 +3,11 @@ import "../../styles/HallenFinder.css";
 import "../../styles/Form.css";
 import HallenErgebnisFeld from "./HallenErgebnisFeld";
 import { useQuery } from "@tanstack/react-query";
-import type { Halle } from "../../api/model/halle";
+import type { HalleResponseDTO } from "../../api/model";
 import { getFindHalleQueryOptions } from "../../api/hallen-controller/hallen-controller";
 
 interface Props {
-  setSelectedHalle: (id: Halle) => void;
+  setSelectedHalle: (id: HalleResponseDTO) => void;
 }
 
 function HallenSuchmaske({ setSelectedHalle }: Props) {

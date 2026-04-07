@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dachpc.kletterapp.Entities.UserRoutenStatus;
-import com.dachpc.kletterapp.Repositories.UserRoutenStatusRepository;
+import com.dachpc.kletterapp.Services.UserRoutenStatusService;
 
 
 @RestController
@@ -21,41 +21,29 @@ import com.dachpc.kletterapp.Repositories.UserRoutenStatusRepository;
 public class UserRoutenStatusController {
 
     @Autowired
-    private UserRoutenStatusRepository userRoutenStatusRepository;
+    private UserRoutenStatusService userRoutenStatusService;
 
 
     @GetMapping(produces = "application/json")
     public UserRoutenStatus getUserRoutenStatus(@RequestParam String userId, @RequestParam Integer routenId) {
-        UserRoutenStatus status = userRoutenStatusRepository.findByIdUserIdAndIdRouteId(userId, routenId);
-        if (status == null) {
-            return new UserRoutenStatus(userId, routenId);
-        }
-        return status;
+        return userRoutenStatusService.getStatus(userId, routenId);
     }
 
     @PostMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public UserRoutenStatus createUserRoutenStatus(@RequestBody UserRoutenStatus userRoutenStatus) {
-        userRoutenStatusRepository.save(userRoutenStatus);
-        return userRoutenStatus;
+        return userRoutenStatusService.addStatus(userRoutenStatus);
     }
     
-    // braucht eigentlich immer eine id -> hier schwierig
-    // müsste man nochmal drüber nachdenken
     @PatchMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public UserRoutenStatus updateUserRoutenStatus(@RequestBody UserRoutenStatus userRoutenStatus) {
-        userRoutenStatusRepository.save(userRoutenStatus);
-        return userRoutenStatus;
+        return userRoutenStatusService.updateStatus(userRoutenStatus);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUserRoutenStatus(@RequestParam (required = false) String userId, @RequestParam (required = false) int routenId) {
-        if (userId == null || routenId == 0) {
-            throw new IllegalArgumentException("UserId or RoutenId must be provided");
-        }
-        UserRoutenStatus existingStatus = userRoutenStatusRepository.findByIdUserIdAndIdRouteId(userId, routenId);
-        userRoutenStatusRepository.delete(existingStatus);
+    public void deleteUserRoutenStatus(@RequestParam(required = false) String userId, @RequestParam(required = false) int routenId) {
+        userRoutenStatusService.deleteStatus(userId, routenId);
     }
 }

@@ -4,12 +4,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 // import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter @Setter @NoArgsConstructor
+@Data @NoArgsConstructor 
 @Table(name = "user_routen_status", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "route_id"}))
 @JsonPropertyOrder({"userId", "routenId", "isFavorit", "isProjekt", "geschSchwierigkeit", "notiz"})
 public class UserRoutenStatus {
@@ -31,18 +30,11 @@ public class UserRoutenStatus {
     private String notiz;
 
 
-    public UserRoutenStatus(String userId, int routenId, boolean isFavorit, boolean isProjekt, float geschSchwierigkeit, String notiz) {
-        this.id = new UserRoutenStatusId(userId, routenId);
-        this.isFavorit = isFavorit;
-        this.isProjekt = isProjekt;
-        this.geschSchwierigkeit = geschSchwierigkeit;
-        this.notiz = notiz;
-    }
-
     public UserRoutenStatus(String userId, int routenId) {
         this.id = new UserRoutenStatusId(userId, routenId);
         this.isFavorit = false;
         this.isProjekt = false;
+        this.notiz = "";
     }
 
     public String getUserId() {

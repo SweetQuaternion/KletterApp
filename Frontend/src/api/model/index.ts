@@ -5,9 +5,12 @@
  * OpenAPI spec version: v0
  */
 
-export * from './ascent';
-export * from './ascentSicherung';
-export * from './ascentStyle';
+export * from './ascentCreateDTO';
+export * from './ascentCreateDTOSicherung';
+export * from './ascentCreateDTOStyle';
+export * from './ascentResponseDTO';
+export * from './ascentResponseDTOSicherung';
+export * from './ascentResponseDTOStyle';
 export * from './deleteAscentParams';
 export * from './deleteHalleParams';
 export * from './deleteKommentarParams';
@@ -15,16 +18,19 @@ export * from './deleteRouteParams';
 export * from './deleteUserParams';
 export * from './deleteUserRoutenStatusParams';
 export * from './deleteWandParams';
-export * from './findAscentsByUserIdParams';
+export * from './findAscentsParams';
 export * from './findHalleParams';
 export * from './getKommentareByRouteIDParams';
 export * from './getUserParams';
 export * from './getUserRoutenStatusParams';
-export * from './halle';
+export * from './halleCreateDTO';
+export * from './halleResponseDTO';
 export * from './kommentarCreateDTO';
 export * from './kommentarResponseDTO';
 export * from './routeCreateDTO';
 export * from './routeResponseDTO';
+export * from './updateAscentParams';
+export * from './updateHalleParams';
 export * from './updateKommentarParams';
 export * from './updateRouteParams';
 export * from './updateWandParams';
