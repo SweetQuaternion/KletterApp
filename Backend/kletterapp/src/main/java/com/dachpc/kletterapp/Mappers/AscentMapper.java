@@ -11,11 +11,15 @@ import com.dachpc.kletterapp.Entities.Ascent;
 @Mapper(componentModel = "spring")
 public interface AscentMapper {
     
+    @Mapping(ignore = true, target = "route")
     @Mapping(ignore = true, target = "id")
     Ascent toEntity(AscentCreateDTO dto);
-    
+
+    @Mapping(ignore = true, target = "route.hallenId")
+    @Mapping(ignore = true, target = "route.wandNr")
     AscentResponseDTO toResponseDTO(Ascent ascent);
 
+    @Mapping(ignore = true, target = "route")
     @Mapping(ignore = true, target = "id")
     Ascent updateEntity(AscentCreateDTO dto, @MappingTarget Ascent ascent);
 

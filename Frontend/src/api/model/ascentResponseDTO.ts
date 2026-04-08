@@ -6,11 +6,12 @@
  */
 import type { AscentResponseDTOSicherung } from './ascentResponseDTOSicherung';
 import type { AscentResponseDTOStyle } from './ascentResponseDTOStyle';
+import type { RouteResponseDTO } from './routeResponseDTO';
 
 export interface AscentResponseDTO {
   id: number;
   userId: string;
-  routenId: number;
+  route: RouteResponseDTO;
   datum: string;
   style?: AscentResponseDTOStyle;
   sicherung?: AscentResponseDTOSicherung;

@@ -3,9 +3,13 @@ import "../../styles/Profil.css";
 import Header from "../Header";
 import defaultpic from "../../assets/default-pic.png";
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { createUserSyncMutation } from "../../constants/queries.ts";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  createAscentQueryOptions,
+  createUserSyncMutation,
+} from "../../constants/queries.ts";
 import type { User } from "../../api/model";
+import { pointsToLevel } from "../../constants/levels.ts";
 
 interface Props {
   user: User | null;
@@ -16,6 +20,8 @@ const Profil = ({ user }: Props) => {
   const [username, setUsername] = useState(user?.name || "");
   const [bildUrl, setBildUrl] = useState(user?.bildUrl || "");
   const [bio, setBio] = useState(user?.bio || "");
+
+  const { data: ascents } = useQuery(createAscentQueryOptions(null, user));
 
   const { mutate, isPending, isSuccess, isError } = useMutation(
     createUserSyncMutation(),
@@ -74,11 +80,14 @@ const Profil = ({ user }: Props) => {
           <div className="flex-row small-gap">
             <div className="highlight-feld">
               <div className="mini-dot"></div>
-              <p>Level 5</p>
+              <p>Level {pointsToLevel(ascents || [])}</p>
             </div>
             <div className="highlight-feld">
               <div className="mini-dot"></div>
-              <p>50 Routen geklettert</p>
+              <p>
+                {ascents?.length || 0} Route{ascents?.length !== 1 ? "n" : ""}{" "}
+                geklettert
+              </p>
             </div>
           </div>
           <div className="flex-row small-gap bottom">

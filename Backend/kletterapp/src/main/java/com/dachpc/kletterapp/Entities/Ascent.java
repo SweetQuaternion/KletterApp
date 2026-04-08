@@ -2,6 +2,7 @@ package com.dachpc.kletterapp.Entities;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import jakarta.persistence.*;
@@ -22,8 +23,10 @@ public class Ascent {
     @Column(name = "user_id")
     private String userId;
 
-    @Column(name = "route_id")
-    private int routenId;
+    @ManyToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(name = "route_id", referencedColumnName = "id")
+    private Route route;
 
     @Column(name = "datum")
     private LocalDate datum;

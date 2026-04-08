@@ -24,7 +24,7 @@ public class AscentResponseDTO {
 
     @NotNull
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    private int routenId;
+    private RouteResponseDTO route;
 
     @NotNull
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)

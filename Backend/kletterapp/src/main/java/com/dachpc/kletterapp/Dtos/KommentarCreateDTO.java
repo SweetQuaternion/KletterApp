@@ -1,6 +1,7 @@
 package com.dachpc.kletterapp.Dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class KommentarCreateDTO {
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private String userId;
 
-    @NotNull
+    @NotBlank(message = "Text darf nicht leer sein")
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private String text;
 

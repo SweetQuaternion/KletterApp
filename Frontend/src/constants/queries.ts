@@ -50,7 +50,10 @@ export function createProfileQueryOptions(username: string) {
   };
 }
 
-export function createAscentQueryOptions(routenId: number, user: User | null) {
+export function createAscentQueryOptions(
+  routenId: number | null,
+  user: User | null,
+) {
   return {
     queryKey: ["ascents", routenId, user?.keycloakId],
     queryFn: async () => {
@@ -58,7 +61,7 @@ export function createAscentQueryOptions(routenId: number, user: User | null) {
         return null;
       }
       const response = await findAscents({
-        routenId,
+        routenId: routenId || undefined,
         userId: user.keycloakId,
       });
       return response as AscentResponseDTO[];
@@ -145,9 +148,9 @@ export function createAddRouteMutationOptions() {
 export function createAddAscentMutationOptions() {
   return mutationOptions({
     mutationFn: (data: AscentCreateDTO) => addAscent(data),
-    onSuccess: async (_, variables) => {
+    onSuccess: async (_) => {
       await queryClient.invalidateQueries({
-        queryKey: ["ascents", variables.routenId, variables.userId],
+        queryKey: ["ascents"],
       });
     },
   });

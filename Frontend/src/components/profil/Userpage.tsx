@@ -5,7 +5,11 @@ import defaultpic from "../../assets/default-pic.png";
 import type { User } from "../../api/model";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { createProfileQueryOptions } from "../../constants/queries";
+import {
+  createAscentQueryOptions,
+  createProfileQueryOptions,
+} from "../../constants/queries";
+import { pointsToLevel } from "../../constants/levels";
 
 interface Props {
   user: User | null;
@@ -15,6 +19,10 @@ const Profil = ({ user }: Props) => {
   let params = useParams();
 
   const { data } = useQuery(createProfileQueryOptions(params.username || ""));
+
+  const { data: ascents } = useQuery(
+    createAscentQueryOptions(null, data || null),
+  );
 
   return (
     <>
@@ -33,18 +41,29 @@ const Profil = ({ user }: Props) => {
           <div className="flex-row small-gap">
             <div className="highlight-feld">
               <div className="mini-dot"></div>
-              <p>Level 5</p>
+              <p>Level {pointsToLevel(ascents || [])}</p>
             </div>
             <div className="highlight-feld">
               <div className="mini-dot"></div>
-              <p>50 Routen geklettert</p>
+              <p>
+                {ascents?.length || 0} Route{ascents?.length !== 1 ? "n" : ""}{" "}
+                geklettert
+              </p>
             </div>
           </div>
         </div>
       )}
+      {!data && (
+        <div className="white-box large profile">
+          <h2>Hey sorry</h2>
+          <p>
+            Das Profil, das du suchst, existiert nicht. Vielleicht vertippt?
+          </p>
+        </div>
+      )}
       {!user && (
         <div className="white-box large">
-          <h2>Hey sorry.</h2>
+          <h2>Hey sorry</h2>
           <p>Du bist nicht angemeldet. Mach das mal!</p>
         </div>
       )}

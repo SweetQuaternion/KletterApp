@@ -12,6 +12,7 @@ import com.dachpc.kletterapp.Dtos.AscentResponseDTO;
 import com.dachpc.kletterapp.Entities.Ascent;
 import com.dachpc.kletterapp.Mappers.AscentMapper;
 import com.dachpc.kletterapp.Repositories.AscentRepository;
+import com.dachpc.kletterapp.Repositories.RoutenRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -23,6 +24,9 @@ public class AscentService {
     private AscentRepository ascentRepository;
 
     @Autowired
+    private RoutenRepository routenRepository;
+
+    @Autowired
     private AscentMapper ascentMapper;
     
     public AscentResponseDTO addAscent(AscentCreateDTO dto) {
@@ -30,6 +34,7 @@ public class AscentService {
         if (ascent.getDatum() == null) {
             ascent.setDatum(LocalDate.now());
         }
+        ascent.setRoute(routenRepository.getReferenceById(dto.getRoutenId()));
         Ascent savedAscent = ascentRepository.save(ascent);
         return ascentMapper.toResponseDTO(savedAscent);
     }

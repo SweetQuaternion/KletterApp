@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class User {
     private String keycloakId;
 
     @Column(name = "name")
+    @NotBlank(message = "Name darf nicht leer sein")
     @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
