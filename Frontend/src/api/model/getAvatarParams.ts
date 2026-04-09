@@ -5,9 +5,6 @@
  * OpenAPI spec version: v0
  */
 
-export interface User {
-  name: string;
-  keycloakId: string;
-  bildUrl?: string;
-  bio?: string;
-}
+export type GetAvatarParams = {
+userId: string;
+};

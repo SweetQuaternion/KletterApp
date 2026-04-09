@@ -15,40 +15,14 @@
 
 // ab Level 9: 1000 Punkte pro Level
 
-import { type AscentResponseDTO, AscentResponseDTOStyle } from "../api/model";
-
-export const pointsToLevel = (ascents: AscentResponseDTO[]): number => {
-  console.log(ascents);
-  const points = ascentsToPoints(ascents);
-  console.log(points);
-  if (points < 10) return 1;
-  if (points < 50) return 2;
-  if (points < 100) return 3;
-  if (points < 300) return 4;
-  if (points < 600) return 5;
-  if (points < 1000) return 6;
-  if (points < 1500) return 7;
-  if (points < 2000) return 8;
-  if (points < 2000) return 9;
-  return Math.floor((points - 2000) / 1000) + 9;
-};
-
-const ascentsToPoints = (ascents: AscentResponseDTO[]): number => {
-  return ascents
-    .map(
-      (ascent) => ascent.route.schwierigkeit || 5 * styleToFactor(ascent.style),
-    )
-    .reduce((acc, points) => acc + points, 0);
-};
-
-const styleToFactor = (style: AscentResponseDTOStyle | undefined): number => {
-  if (!style) return 1;
-  if (style === AscentResponseDTOStyle.onsight) return 2.5;
-  if (style === AscentResponseDTOStyle.flash) return 2;
-  if (style === AscentResponseDTOStyle.redpoint) return 1.5;
-  if (style === AscentResponseDTOStyle.pinkpoint) return 1;
-  if (style === AscentResponseDTOStyle.toprope) return 0.5;
-  if (style === AscentResponseDTOStyle.hangdog) return 0.5;
-  if (style === AscentResponseDTOStyle.attempt) return 0.2;
-  return 0;
+export const pointsToLevel = (points: number): number => {
+  if (points < 10) return 0;
+  if (points < 50) return 1;
+  if (points < 100) return 2;
+  if (points < 300) return 3;
+  if (points < 600) return 4;
+  if (points < 1000) return 5;
+  if (points < 1500) return 6;
+  if (points < 2000) return 7;
+  return Math.floor((points - 2000) / 1000) + 8;
 };

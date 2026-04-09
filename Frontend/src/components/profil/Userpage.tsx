@@ -1,18 +1,17 @@
 import "../../styles/App.css";
 import "../../styles/Profil.css";
 import Header from "../Header";
-import defaultpic from "../../assets/default-pic.png";
-import type { User } from "../../api/model";
+import type { UserDTO } from "../../api/model";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
-  createAscentQueryOptions,
+  createAvatarQueryOptions,
   createProfileQueryOptions,
 } from "../../constants/queries";
 import { pointsToLevel } from "../../constants/levels";
 
 interface Props {
-  user: User | null;
+  user: UserDTO | null;
 }
 
 const Profil = ({ user }: Props) => {
@@ -20,8 +19,8 @@ const Profil = ({ user }: Props) => {
 
   const { data } = useQuery(createProfileQueryOptions(params.username || ""));
 
-  const { data: ascents } = useQuery(
-    createAscentQueryOptions(null, data || null),
+  const { data: avatar } = useQuery(
+    createAvatarQueryOptions(data?.keycloakId || ""),
   );
 
   return (
@@ -31,7 +30,7 @@ const Profil = ({ user }: Props) => {
         <div className="white-box large profile">
           <div className="flex-row wide-gap">
             <div className="profile-picture-container">
-              <img src={data.bildUrl || defaultpic} />
+              <img src={avatar ? URL.createObjectURL(avatar) : undefined} />
             </div>
             <div className="flex-column">
               <h2>{params.username}</h2>
@@ -41,12 +40,12 @@ const Profil = ({ user }: Props) => {
           <div className="flex-row small-gap">
             <div className="highlight-feld">
               <div className="mini-dot"></div>
-              <p>Level {pointsToLevel(ascents || [])}</p>
+              <p>Level {pointsToLevel(data.punkte || 0)}</p>
             </div>
             <div className="highlight-feld">
               <div className="mini-dot"></div>
               <p>
-                {ascents?.length || 0} Route{ascents?.length !== 1 ? "n" : ""}{" "}
+                {data.ascentCount || 0} Route{data.ascentCount !== 1 ? "n" : ""}{" "}
                 geklettert
               </p>
             </div>

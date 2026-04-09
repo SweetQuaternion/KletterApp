@@ -18,7 +18,7 @@ keycloak
     let user: User | null = null;
     if (authenticated) {
       user = await fetchUser(keycloak.subject!, keycloak.tokenParsed?.name!);
-      console.log("User authenticated:", user);
+      console.log("User authenticated:", user.name);
     } else {
       console.log("User not authenticated");
     }

@@ -2,10 +2,9 @@ import { useState } from "react";
 import { convertSchwierigkeitToString } from "../../constants/conversions";
 import "../../styles/RoutenDetails.css";
 import type {
-  AscentResponseDTOSicherung,
   AscentResponseDTOStyle,
   RouteResponseDTO,
-  User,
+  UserDTO,
 } from "../../api/model";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -20,7 +19,7 @@ import { Link } from "react-router";
 
 interface Props {
   selectedRoute: RouteResponseDTO;
-  user: User | null;
+  user: UserDTO | null;
 }
 
 const RoutenDetails = ({ selectedRoute, user }: Props) => {
@@ -67,7 +66,6 @@ const RoutenDetails = ({ selectedRoute, user }: Props) => {
     addAscent({
       userId: user?.keycloakId || "",
       routenId: selectedRoute.id,
-      sicherung: input.get("sicherungsart") as AscentResponseDTOSicherung,
       style: input.get("style") as AscentResponseDTOStyle,
       datum: new Date().toISOString().split("T")[0],
     });
@@ -163,14 +161,6 @@ const RoutenDetails = ({ selectedRoute, user }: Props) => {
             <>
               <b>Glückwunsch!</b>
               <form onSubmit={handleAscent}>
-                <div className="form-group">
-                  <label htmlFor="sicherungsart">Sicherungsart</label>
-                  <select name="sicherungsart" id="sicherungsart">
-                    <option value="vorstieg">Vorstieg</option>
-                    <option value="toprope">Toprope</option>
-                    <option value="solo">Solo</option>
-                  </select>
-                </div>
                 <div className="form-group">
                   <label htmlFor="style">Style</label>
                   <select name="style" id="style">

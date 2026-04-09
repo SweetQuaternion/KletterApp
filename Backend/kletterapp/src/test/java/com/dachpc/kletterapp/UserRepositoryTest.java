@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.dachpc.kletterapp.Entities.User;
+import com.dachpc.kletterapp.Mappers.UserMapper;
 import com.dachpc.kletterapp.Repositories.UserRepository;
 import com.dachpc.kletterapp.Security.UserSyncRequest;
 import com.dachpc.kletterapp.Services.UserService;
@@ -26,6 +27,9 @@ public class UserRepositoryTest extends AbstractIntegrationTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @BeforeEach
     void setUp() {
@@ -50,7 +54,7 @@ public class UserRepositoryTest extends AbstractIntegrationTest {
 
     @Test
     void testSaveUser() {
-        User user = userService.syncUser(new UserSyncRequest("keycloakId3", "Mona"));
+        User user = userMapper.toEntity(userService.syncUser(new UserSyncRequest("keycloakId3", "Mona")));
         User saved = userRepository.save(user);
         assertThat(saved.getKeycloakId()).isEqualTo("keycloakId3");
         assertThat(saved.getName()).isEqualTo("Mona");
@@ -60,15 +64,15 @@ public class UserRepositoryTest extends AbstractIntegrationTest {
 
     @Test
     void testFindById() {
-        User saved = userService.syncUser(new UserSyncRequest("keycloakId3", "Mona"));
-        User result = userService.findUser(saved.getKeycloakId(), null);
+        User saved = userMapper.toEntity(userService.syncUser(new UserSyncRequest("keycloakId3", "Mona")));
+        User result = userMapper.toEntity(userService.findUser(saved.getKeycloakId(), null));
         assertThat(result).isNotNull();
         assertThat(result.getName()).isEqualTo("Mona");
     }
 
     @Test
     void testDeleteById() {
-        User saved = userService.syncUser(new UserSyncRequest("keycloakId3", "Mona"));
+        User saved = userMapper.toEntity(userService.syncUser(new UserSyncRequest("keycloakId3", "Mona")));
         userRepository.deleteById(saved.getKeycloakId());
         assertThat(userRepository.findById(saved.getKeycloakId())).isEmpty();
     }

@@ -1,14 +1,15 @@
 import "../styles/App.css";
 import "../styles/Header.css";
 import logo from "../assets/react.svg";
-import defaultpic from "../assets/default-pic.png";
-import type { User } from "../api/model/user";
+import type { UserDTO } from "../api/model";
 import { login, register, logout } from "../constants/keycloak";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import { createAvatarQueryOptions } from "../constants/queries";
 
 interface Props {
-  user: User | null;
+  user: UserDTO | null;
 }
 
 function Header({ user }: Props) {
@@ -19,6 +20,10 @@ function Header({ user }: Props) {
     document.addEventListener("click", handler);
     return () => document.removeEventListener("click", handler);
   }, []);
+
+  const { data: avatar } = useQuery(
+    createAvatarQueryOptions(user?.keycloakId || ""),
+  );
 
   return (
     <>
@@ -43,7 +48,7 @@ function Header({ user }: Props) {
                 setMenuToggled(!menuToggled);
               }}
             >
-              <img src={user.bildUrl || defaultpic} alt="Profil" />
+              {avatar && <img src={URL.createObjectURL(avatar)} alt="Profil" />}
             </button>
           </div>
         )}

@@ -10,12 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.dachpc.kletterapp.Dtos.AscentCreateDTO;
+import com.dachpc.kletterapp.Dtos.UserDTO;
 import com.dachpc.kletterapp.Entities.Ascent;
 import com.dachpc.kletterapp.Entities.Halle;
 import com.dachpc.kletterapp.Entities.Route;
-import com.dachpc.kletterapp.Entities.Sicherung;
 import com.dachpc.kletterapp.Entities.Style;
-import com.dachpc.kletterapp.Entities.User;
 import com.dachpc.kletterapp.Entities.Wand;
 import com.dachpc.kletterapp.Entities.WandId;
 import com.dachpc.kletterapp.Repositories.AscentRepository;
@@ -52,8 +51,8 @@ public class AscentRepositoryTest extends AbstractIntegrationTest {
     private HallenRepository hallenRepository;
 
     private int hallenId;
-    private User user1;
-    private User user2;
+    private UserDTO user1;
+    private UserDTO user2;
     private String userId1;
     private String userId2;
     private int routenId1;
@@ -84,11 +83,11 @@ public class AscentRepositoryTest extends AbstractIntegrationTest {
         userId1 = user1.getKeycloakId();
         userId2 = user2.getKeycloakId();
 
-        ascentService.addAscent(new AscentCreateDTO(userId1, routenId1, LocalDate.now(), Style.onsight, Sicherung.vorstieg));
-        ascentService.addAscent(new AscentCreateDTO(userId1, routenId2, LocalDate.now(), Style.flash, Sicherung.vorstieg));
-        ascentService.addAscent(new AscentCreateDTO(userId2, routenId1, LocalDate.now(), Style.redpoint, Sicherung.vorstieg));
-        ascentService.addAscent(new AscentCreateDTO(userId2, routenId2, LocalDate.now(), Style.toprope, Sicherung.toprope));
-        ascentService.addAscent(new AscentCreateDTO(userId1, routenId1, LocalDate.now(), Style.attempt, Sicherung.toprope));
+        ascentService.addAscent(new AscentCreateDTO(userId1, routenId1, LocalDate.now(), Style.onsight));
+        ascentService.addAscent(new AscentCreateDTO(userId1, routenId2, LocalDate.now(), Style.flash));
+        ascentService.addAscent(new AscentCreateDTO(userId2, routenId1, LocalDate.now(), Style.redpoint));
+        ascentService.addAscent(new AscentCreateDTO(userId2, routenId2, LocalDate.now(), Style.toprope));
+        ascentService.addAscent(new AscentCreateDTO(userId1, routenId1, LocalDate.now(), Style.attempt));
     }
     
     @Test

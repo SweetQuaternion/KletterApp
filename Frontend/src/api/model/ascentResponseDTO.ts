@@ -4,7 +4,6 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
-import type { AscentResponseDTOSicherung } from './ascentResponseDTOSicherung';
 import type { AscentResponseDTOStyle } from './ascentResponseDTOStyle';
 import type { RouteResponseDTO } from './routeResponseDTO';
 
@@ -14,5 +13,4 @@ export interface AscentResponseDTO {
   route: RouteResponseDTO;
   datum: string;
   style?: AscentResponseDTOStyle;
-  sicherung?: AscentResponseDTOSicherung;
 }

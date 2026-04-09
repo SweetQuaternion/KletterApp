@@ -2,7 +2,6 @@ package com.dachpc.kletterapp.Dtos;
 
 import java.time.LocalDate;
 
-import com.dachpc.kletterapp.Entities.Sicherung;
 import com.dachpc.kletterapp.Entities.Style;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -31,6 +30,5 @@ public class AscentResponseDTO {
     private LocalDate datum;
 
     private Style style;
-    private Sicherung sicherung;
     
 }

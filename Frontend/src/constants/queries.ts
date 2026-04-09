@@ -5,10 +5,10 @@ import type {
   KommentarCreateDTO,
   KommentarResponseDTO,
   RouteCreateDTO,
-  User,
+  UserDTO,
   UserRoutenStatus,
 } from "../api/model";
-import { keycloak, KEYCLOAK_URL } from "./keycloak";
+import { keycloak } from "./keycloak";
 import {
   changeUser,
   getUser,
@@ -27,7 +27,11 @@ import {
   getUserRoutenStatus,
   updateUserRoutenStatus,
 } from "../api/user-routen-status-controller/user-routen-status-controller";
-import { customFetch } from "./fetcher";
+import { customFetch, keycloakFetch } from "./fetcher";
+import {
+  getAvatar,
+  getUploadAvatarUrl,
+} from "../api/avatar-controller/avatar-controller";
 
 const ONE_DAY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
@@ -40,19 +44,19 @@ export const queryClient = new QueryClient({
 });
 
 export async function fetchUser(keycloakId: string, name: string) {
-  return (await syncUser({ keycloakId, name })) as User;
+  return (await syncUser({ keycloakId, name })) as UserDTO;
 }
 
 export function createProfileQueryOptions(username: string) {
   return {
     queryKey: ["profile", username],
-    queryFn: () => getUser({ username }) as Promise<User>,
+    queryFn: () => getUser({ username }) as Promise<UserDTO>,
   };
 }
 
 export function createAscentQueryOptions(
   routenId: number | null,
-  user: User | null,
+  user: UserDTO | null,
 ) {
   return {
     queryKey: ["ascents", routenId, user?.keycloakId],
@@ -72,7 +76,7 @@ export function createAscentQueryOptions(
 
 export function createUserRoutenStatusQueryOptions(
   routenId: number,
-  user: User | null,
+  user: UserDTO | null,
 ) {
   return {
     queryKey: ["userRoutenStatus", routenId, user?.keycloakId],
@@ -112,8 +116,8 @@ export function createUserRoutenStatusMutationOptions() {
 
 export function createUserSyncMutation() {
   return mutationOptions({
-    mutationFn: async (data: User) => {
-      await customFetch(`${KEYCLOAK_URL}/realms/${keycloak.realm}/account`, {
+    mutationFn: async (data: UserDTO) => {
+      await keycloakFetch({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -159,5 +163,38 @@ export function createAddAscentMutationOptions() {
 export function createAddKommentarMutationOptions() {
   return mutationOptions({
     mutationFn: (data: KommentarCreateDTO) => addKommentar(data),
+  });
+}
+
+export function createAvatarQueryOptions(userId: string) {
+  return {
+    queryKey: ["avatar", userId],
+    queryFn: async () => {
+      if (!userId) {
+        return null;
+      }
+      return getAvatar({ userId }) as Promise<Blob>;
+    },
+    staleTime: ONE_DAY,
+  };
+}
+
+export function createAvatarMutationOptions() {
+  return mutationOptions({
+    mutationFn: async (data: File) => {
+      const userId = keycloak.tokenParsed?.sub || "";
+      const formData = new FormData();
+      formData.append("file", data);
+
+      return customFetch<string>(getUploadAvatarUrl({ userId }), {
+        method: "POST",
+        body: formData,
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["avatar"],
+      });
+    },
   });
 }

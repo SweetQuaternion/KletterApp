@@ -6,10 +6,8 @@
  */
 
 export * from './ascentCreateDTO';
-export * from './ascentCreateDTOSicherung';
 export * from './ascentCreateDTOStyle';
 export * from './ascentResponseDTO';
-export * from './ascentResponseDTOSicherung';
 export * from './ascentResponseDTOStyle';
 export * from './deleteAscentParams';
 export * from './deleteHalleParams';
@@ -20,6 +18,7 @@ export * from './deleteUserRoutenStatusParams';
 export * from './deleteWandParams';
 export * from './findAscentsParams';
 export * from './findHalleParams';
+export * from './getAvatarParams';
 export * from './getKommentareByRouteIDParams';
 export * from './getUserParams';
 export * from './getUserRoutenStatusParams';
@@ -34,7 +33,9 @@ export * from './updateHalleParams';
 export * from './updateKommentarParams';
 export * from './updateRouteParams';
 export * from './updateWandParams';
-export * from './user';
+export * from './uploadAvatarBody';
+export * from './uploadAvatarParams';
+export * from './userDTO';
 export * from './userRoutenStatus';
 export * from './userRoutenStatusId';
 export * from './userSyncRequest';

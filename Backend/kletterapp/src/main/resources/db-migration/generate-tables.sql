@@ -39,8 +39,11 @@ CREATE TABLE users(
     keycloak_id text PRIMARY KEY,
     name text NOT NULL,
     bild_url text,
-    bio text
+    bio text,
+    punkte int default 0,
+    ascent_count int default 0
 );
+
 
 -- CREATE TYPE style_enum AS ENUM ('onsight', 'flash', 'redpoint', 'pinkpoint', 'toprope', 'hangdog', 'attempt');
 -- CREATE TYPE sicherung_enum AS ENUM ('vorstieg', 'toprope', 'solo');
@@ -51,7 +54,7 @@ CREATE TABLE ascents(
     route_id INT NOT NULL,
     datum date NOT NULL,
     style VARCHAR(50),
-    sicherung VARCHAR(50),
+    -- sicherung VARCHAR(50),
     FOREIGN KEY (user_id) REFERENCES users(keycloak_id),
     FOREIGN KEY (route_id) REFERENCES routen(id)
 );

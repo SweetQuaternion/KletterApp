@@ -1,34 +1,56 @@
 import "../../styles/App.css";
 import "../../styles/Profil.css";
 import Header from "../Header";
-import defaultpic from "../../assets/default-pic.png";
 import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
-  createAscentQueryOptions,
+  createAvatarMutationOptions,
+  createAvatarQueryOptions,
   createUserSyncMutation,
 } from "../../constants/queries.ts";
-import type { User } from "../../api/model";
+import type { UserDTO } from "../../api/model";
 import { pointsToLevel } from "../../constants/levels.ts";
 
 interface Props {
-  user: User | null;
+  user: UserDTO | null;
 }
 
 const Profil = ({ user }: Props) => {
+  const avatarInputId = "avatar-upload-input";
   const [isEditing, setIsEditing] = useState(false);
   const [username, setUsername] = useState(user?.name || "");
-  const [bildUrl, setBildUrl] = useState(user?.bildUrl || "");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [bio, setBio] = useState(user?.bio || "");
 
-  const { data: ascents } = useQuery(createAscentQueryOptions(null, user));
-
-  const { mutate, isPending, isSuccess, isError } = useMutation(
-    createUserSyncMutation(),
+  const { data: avatar } = useQuery(
+    createAvatarQueryOptions(user?.keycloakId || ""),
   );
 
-  const handleBildUpload = () => {
-    setBildUrl("");
+  const {
+    mutate: syncUser,
+    isPending,
+    isSuccess,
+    isError,
+    error,
+  } = useMutation(createUserSyncMutation());
+
+  const { mutate: uploadAvatar } = useMutation(createAvatarMutationOptions());
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] || null; // Get the first selected file
+    setSelectedFile(file);
+  };
+
+  const handleSubmit = () => {
+    syncUser({
+      keycloakId: user?.keycloakId || "",
+      name: username,
+      bio,
+    });
+    if (selectedFile) {
+      uploadAvatar(selectedFile);
+    }
+    setIsEditing(false);
   };
 
   return (
@@ -39,7 +61,16 @@ const Profil = ({ user }: Props) => {
           {!isEditing && (
             <div className="flex-row wide-gap">
               <div className="profile-picture-container">
-                <img src={bildUrl || defaultpic} alt="Profilbild" />
+                {(selectedFile && (
+                  <img
+                    src={URL.createObjectURL(selectedFile)}
+                    className="editable"
+                    alt="Profilbild"
+                  />
+                )) ||
+                  (avatar && (
+                    <img src={URL.createObjectURL(avatar)} alt="Profilbild" />
+                  ))}
               </div>
               <div className="flex-column">
                 <h2>{username}</h2>
@@ -49,12 +80,33 @@ const Profil = ({ user }: Props) => {
           )}
           {isEditing && (
             <div className="flex-row wide-gap">
-              <div className="profile-picture-container">
-                <img
-                  className="editable"
-                  src={bildUrl || defaultpic}
-                  alt="Profilbild"
-                  onClick={handleBildUpload}
+              <div className="profile-picture-container avatar-edit">
+                {(selectedFile && (
+                  <img
+                    src={URL.createObjectURL(selectedFile)}
+                    className="editable"
+                    alt="Profilbild"
+                  />
+                )) ||
+                  (avatar && (
+                    <img
+                      src={URL.createObjectURL(avatar)}
+                      className="editable"
+                      alt="Profilbild"
+                    />
+                  ))}
+                <label
+                  htmlFor={avatarInputId}
+                  className="avatar-overlay-button"
+                >
+                  Bild auswählen
+                </label>
+                <input
+                  id={avatarInputId}
+                  className="avatar-file-input"
+                  type="file"
+                  onChange={handleFileSelect}
+                  accept="image/*"
                 />
               </div>
               <div className="flex-column">
@@ -80,12 +132,12 @@ const Profil = ({ user }: Props) => {
           <div className="flex-row small-gap">
             <div className="highlight-feld">
               <div className="mini-dot"></div>
-              <p>Level {pointsToLevel(ascents || [])}</p>
+              <p>Level {pointsToLevel(user.punkte || 0)}</p>
             </div>
             <div className="highlight-feld">
               <div className="mini-dot"></div>
               <p>
-                {ascents?.length || 0} Route{ascents?.length !== 1 ? "n" : ""}{" "}
+                {user.ascentCount || 0} Route{user.ascentCount !== 1 ? "n" : ""}{" "}
                 geklettert
               </p>
             </div>
@@ -94,23 +146,14 @@ const Profil = ({ user }: Props) => {
             <button onClick={() => setIsEditing(!isEditing)}>
               {isEditing ? "Abbrechen" : "Bearbeiten"}
             </button>
-            {isEditing && (
-              <button
-                onClick={() =>
-                  mutate({
-                    keycloakId: user?.keycloakId || "",
-                    name: username,
-                    bildUrl,
-                    bio,
-                  })
-                }
-              >
-                Speichern
-              </button>
-            )}
+            {isEditing && <button onClick={handleSubmit}>Speichern</button>}
             {isPending && <p className="status">speichern...</p>}
             {isSuccess && <p className="status success">gespeichert!</p>}
-            {isError && <p className="status error">Fehler beim Speichern</p>}
+            {isError && (
+              <p className="status error">
+                Fehler beim Speichern: {error?.message}
+              </p>
+            )}
           </div>
         </div>
       )}

@@ -35,8 +35,4 @@ public class Ascent {
     @Column(name = "style")
     private Style style;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "sicherung")
-    private Sicherung sicherung;
-
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import com.dachpc.kletterapp.Entities.User;
+import com.dachpc.kletterapp.Dtos.UserDTO;
 import com.dachpc.kletterapp.Security.UserSyncRequest;
 import com.dachpc.kletterapp.Services.UserService;
 
@@ -28,20 +28,20 @@ public class UserController {
 
 
     @GetMapping(produces = "application/json")
-    public User getUser(@RequestParam(required = false) String id, @RequestParam(required = false) String username) {
+    public UserDTO getUser(@RequestParam(required = false) String id, @RequestParam(required = false) String username) {
         return userService.findUser(id, username);
     }
     
     @PostMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN') or #request.keycloakId == authentication.principal.subject")
-    public User syncUser(@RequestBody UserSyncRequest request) { 
+    public UserDTO syncUser(@RequestBody UserSyncRequest request) { 
         return userService.syncUser(request);
     }
 
     @PatchMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_ADMIN') or #request.keycloakId == authentication.principal.subject")
-    public User changeUser(@RequestBody User updatedUser) {
+    public UserDTO changeUser(@RequestBody UserDTO updatedUser) {
         return userService.updateUser(updatedUser);
     }
     
