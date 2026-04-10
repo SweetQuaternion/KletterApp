@@ -56,6 +56,7 @@ public class UserService {
     public void reward(String userId, int punkte) {
         User user = userRepository.findByKeycloakId(userId).orElseThrow(() -> new EntityNotFoundException());
         user.setPunkte(user.getPunkte() + punkte);
+        user.setAscentCount(user.getAscentCount() + 1);
         userRepository.save(user);
     }
 
