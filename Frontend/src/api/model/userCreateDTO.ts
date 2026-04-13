@@ -5,10 +5,8 @@
  * OpenAPI spec version: v0
  */
 
-export interface UserDTO {
+export interface UserCreateDTO {
   keycloakId: string;
   name: string;
   bio?: string;
-  punkte?: number;
-  ascentCount?: number;
 }

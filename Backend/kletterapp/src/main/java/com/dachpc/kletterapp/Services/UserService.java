@@ -3,7 +3,8 @@ package com.dachpc.kletterapp.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dachpc.kletterapp.Dtos.UserDTO;
+import com.dachpc.kletterapp.Dtos.UserCreateDTO;
+import com.dachpc.kletterapp.Dtos.UserResponseDTO;
 import com.dachpc.kletterapp.Entities.User;
 import com.dachpc.kletterapp.Mappers.UserMapper;
 import com.dachpc.kletterapp.Repositories.UserRepository;
@@ -21,7 +22,7 @@ public class UserService {
     private UserMapper userMapper;
     
 
-    public UserDTO findUser(String id, String username) {
+    public UserResponseDTO findUser(String id, String username) {
     if (id != null) {
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User mit id " + id + " nicht gefunden"));
         return userMapper.toDTO(user);
@@ -33,7 +34,7 @@ public class UserService {
     throw new IllegalArgumentException("need either id or username");
     }
 
-    public UserDTO syncUser(UserSyncRequest request) {
+    public UserResponseDTO syncUser(UserSyncRequest request) {
         User user = userRepository.findByKeycloakId(request.keycloakId()).orElse(null);
         if (user == null) {
             user = userRepository.save(new User(request.keycloakId(), request.name()));
@@ -41,7 +42,7 @@ public class UserService {
         return userMapper.toDTO(user);
     }
 
-    public UserDTO updateUser(UserDTO updatedUser) {
+    public UserResponseDTO updateUser(UserCreateDTO updatedUser) {
         User prevUser = userRepository.findByKeycloakId(updatedUser.getKeycloakId()).orElseThrow(() -> new EntityNotFoundException());
         userMapper.updateEntity(updatedUser, prevUser);
         userRepository.save(prevUser);

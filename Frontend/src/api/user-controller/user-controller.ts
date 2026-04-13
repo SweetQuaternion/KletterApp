@@ -26,7 +26,8 @@ import type {
 import type {
   DeleteUserParams,
   GetUserParams,
-  UserDTO,
+  UserCreateDTO,
+  UserResponseDTO,
   UserSyncRequest
 } from '../model';
 
@@ -52,9 +53,9 @@ export const getGetUserUrl = (params?: GetUserParams,) => {
   return stringifiedParams.length > 0 ? `/api/users?${stringifiedParams}` : `/api/users`
 }
 
-export const getUser = async (params?: GetUserParams, options?: RequestInit): Promise<UserDTO> => {
+export const getUser = async (params?: GetUserParams, options?: RequestInit): Promise<UserResponseDTO> => {
   
-  return customFetch<UserDTO>(getGetUserUrl(params),
+  return customFetch<UserResponseDTO>(getGetUserUrl(params),
   {      
     ...options,
     method: 'GET'
@@ -144,9 +145,9 @@ export const getSyncUserUrl = () => {
   return `/api/users`
 }
 
-export const syncUser = async (userSyncRequest: UserSyncRequest, options?: RequestInit): Promise<UserDTO> => {
+export const syncUser = async (userSyncRequest: UserSyncRequest, options?: RequestInit): Promise<UserResponseDTO> => {
   
-  return customFetch<UserDTO>(getSyncUserUrl(),
+  return customFetch<UserResponseDTO>(getSyncUserUrl(),
   {      
     ...options,
     method: 'POST',
@@ -278,15 +279,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return `/api/users`
 }
 
-export const changeUser = async (userDTO: UserDTO, options?: RequestInit): Promise<UserDTO> => {
+export const changeUser = async (userCreateDTO: UserCreateDTO, options?: RequestInit): Promise<UserResponseDTO> => {
   
-  return customFetch<UserDTO>(getChangeUserUrl(),
+  return customFetch<UserResponseDTO>(getChangeUserUrl(),
   {      
     ...options,
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      userDTO,)
+      userCreateDTO,)
   }
 );}
   
@@ -294,8 +295,8 @@ export const changeUser = async (userDTO: UserDTO, options?: RequestInit): Promi
 
 
 export const getChangeUserMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changeUser>>, TError,{data: UserDTO}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof changeUser>>, TError,{data: UserDTO}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changeUser>>, TError,{data: UserCreateDTO}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof changeUser>>, TError,{data: UserCreateDTO}, TContext> => {
 
 const mutationKey = ['changeUser'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -307,7 +308,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof changeUser>>, {data: UserDTO}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof changeUser>>, {data: UserCreateDTO}> = (props) => {
           const {data} = props ?? {};
 
           return  changeUser(data,requestOptions)
@@ -321,15 +322,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type ChangeUserMutationResult = NonNullable<Awaited<ReturnType<typeof changeUser>>>
-    export type ChangeUserMutationBody = UserDTO
+    export type ChangeUserMutationBody = UserCreateDTO
     export type ChangeUserMutationError = void
 
     export const useChangeUser = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changeUser>>, TError,{data: UserDTO}, TContext>, request?: SecondParameter<typeof customFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changeUser>>, TError,{data: UserCreateDTO}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof changeUser>>,
         TError,
-        {data: UserDTO},
+        {data: UserCreateDTO},
         TContext
       > => {
       return useMutation(getChangeUserMutationOptions(options), queryClient);

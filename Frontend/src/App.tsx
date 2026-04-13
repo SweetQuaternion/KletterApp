@@ -4,20 +4,22 @@ import RoutenKarte from "./components/routenkarte/RoutenKarte";
 import Profil from "./components/profil/Profil";
 import Willkommen from "./components/login/Willkommen";
 import { useState } from "react";
-import type { Halle, User } from "./api/model";
+import type { HalleResponseDTO, UserResponseDTO } from "./api/model";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Userpage from "./components/profil/Userpage";
 
 interface Props {
-  user: User | null;
+  user: UserResponseDTO | null;
 }
 
 function App({ user }: Props) {
-  const [selectedHalle, setSelectedHalle] = useState<Halle | null>(() => {
-    const savedHalle = localStorage.getItem("Halle");
-    return savedHalle ? JSON.parse(savedHalle) : null;
-  });
+  const [selectedHalle, setSelectedHalle] = useState<HalleResponseDTO | null>(
+    () => {
+      const savedHalle = localStorage.getItem("Halle");
+      return savedHalle ? JSON.parse(savedHalle) : null;
+    },
+  );
 
   return (
     <BrowserRouter>

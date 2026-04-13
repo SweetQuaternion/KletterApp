@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.dachpc.kletterapp.Dtos.AscentCreateDTO;
-import com.dachpc.kletterapp.Dtos.UserDTO;
+import com.dachpc.kletterapp.Dtos.UserResponseDTO;
 import com.dachpc.kletterapp.Entities.Ascent;
 import com.dachpc.kletterapp.Entities.Halle;
 import com.dachpc.kletterapp.Entities.Route;
@@ -51,8 +51,8 @@ public class AscentRepositoryTest extends AbstractIntegrationTest {
     private HallenRepository hallenRepository;
 
     private int hallenId;
-    private UserDTO user1;
-    private UserDTO user2;
+    private UserResponseDTO user1;
+    private UserResponseDTO user2;
     private String userId1;
     private String userId2;
     private int routenId1;

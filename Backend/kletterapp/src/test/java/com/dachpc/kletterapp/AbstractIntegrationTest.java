@@ -1,6 +1,6 @@
 package com.dachpc.kletterapp;
 
-import org.junit.jupiter.api.AfterAll;
+// import org.junit.jupiter.api.AfterAll;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.testcontainers.junit.jupiter.Container;
@@ -20,9 +20,9 @@ public abstract class AbstractIntegrationTest {
         .withPassword("testpasswort")
         .withInitScript("init.sql");
 
-    @AfterAll
-    static void afterAll() {
-        postgresqlContainer.stop();
-        postgresqlContainer.close();
-    }
+    // @AfterAll
+    // static void afterAll() {
+    //     postgresqlContainer.stop();
+    //     postgresqlContainer.close();
+    // }
 }

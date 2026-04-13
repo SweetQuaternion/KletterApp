@@ -4,18 +4,21 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-import com.dachpc.kletterapp.Dtos.UserDTO;
+import com.dachpc.kletterapp.Dtos.UserCreateDTO;
+import com.dachpc.kletterapp.Dtos.UserResponseDTO;
 import com.dachpc.kletterapp.Entities.User;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     
     @Mapping(ignore = true, target = "bildUrl")
-    User toEntity(UserDTO dto);
+    User toEntity(UserResponseDTO dto);
 
-    UserDTO toDTO(User user);
+    UserResponseDTO toDTO(User user);
 
     @Mapping(ignore = true, target = "bildUrl")
-    User updateEntity(UserDTO dto, @MappingTarget User user);
+    @Mapping(ignore = true, target = "punkte")
+    @Mapping(ignore = true, target = "ascentCount")
+    User updateEntity(UserCreateDTO dto, @MappingTarget User user);
 
 }

@@ -1,0 +1,81 @@
+services:
+  database:
+    image: postgres:18.2
+    env_file: .env
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      PGDATA: /var/lib/postgresql/18/docker
+    volumes:
+      - kletterapp-db-data:/var/lib/postgresql
+      - ./Backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'pg_isready -h 127.0.0.1 -p 5432 -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  pgadmin:
+    image: dpage/pgadmin4
+    env_file: .env
+    restart: unless-stopped
+    ports:
+      - "5050:80"
+
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    command: start-dev
+    env_file: .env
+    environment:
+      KC_HEALTH_ENABLED: "true"
+    restart: unless-stopped
+    ports:
+      - "8180:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: "exit 0"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  backend:
+    build: Backend
+    env_file: .env
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    healthcheck:
+      test: "exit 0"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  frontend:
+    build: Frontend
+    env_file: .env
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  kletterapp-db-data:
+    external: true
+    name: ${DB_VOLUME_NAME:-kletterapp-db-data}

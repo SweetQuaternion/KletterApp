@@ -1,7 +1,7 @@
 import "../../styles/App.css";
 import "../../styles/Profil.css";
 import Header from "../Header";
-import type { UserDTO } from "../../api/model";
+import type { UserResponseDTO } from "../../api/model";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -11,7 +11,7 @@ import {
 import { pointsToLevel } from "../../constants/levels";
 
 interface Props {
-  user: UserDTO | null;
+  user: UserResponseDTO | null;
 }
 
 const Profil = ({ user }: Props) => {

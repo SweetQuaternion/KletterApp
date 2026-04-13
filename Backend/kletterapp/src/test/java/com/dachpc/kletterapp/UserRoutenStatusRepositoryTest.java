@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.dachpc.kletterapp.Dtos.UserDTO;
+import com.dachpc.kletterapp.Dtos.UserResponseDTO;
 import com.dachpc.kletterapp.Entities.Halle;
 import com.dachpc.kletterapp.Entities.Route;
 import com.dachpc.kletterapp.Entities.UserRoutenStatus;
@@ -47,8 +47,8 @@ public class UserRoutenStatusRepositoryTest extends AbstractIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
-    UserDTO user1;
-    UserDTO user2;
+    UserResponseDTO user1;
+    UserResponseDTO user2;
     String userId1;
     String userId2;
     int hallenId;

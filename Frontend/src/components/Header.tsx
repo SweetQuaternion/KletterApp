@@ -1,7 +1,7 @@
 import "../styles/App.css";
 import "../styles/Header.css";
 import logo from "../assets/react.svg";
-import type { UserDTO } from "../api/model";
+import type { UserResponseDTO } from "../api/model";
 import { login, register, logout } from "../constants/keycloak";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { createAvatarQueryOptions } from "../constants/queries";
 
 interface Props {
-  user: UserDTO | null;
+  user: UserResponseDTO | null;
 }
 
 function Header({ user }: Props) {

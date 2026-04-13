@@ -8,11 +8,11 @@ import {
   createAvatarQueryOptions,
   createUserSyncMutation,
 } from "../../constants/queries.ts";
-import type { UserDTO } from "../../api/model";
+import type { UserCreateDTO, UserResponseDTO } from "../../api/model";
 import { pointsToLevel } from "../../constants/levels.ts";
 
 interface Props {
-  user: UserDTO | null;
+  user: UserResponseDTO | null;
 }
 
 const Profil = ({ user }: Props) => {
@@ -46,7 +46,7 @@ const Profil = ({ user }: Props) => {
       keycloakId: user?.keycloakId || "",
       name: username,
       bio,
-    });
+    } as UserCreateDTO);
     if (selectedFile) {
       uploadAvatar(selectedFile);
     }

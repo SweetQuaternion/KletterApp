@@ -5,7 +5,7 @@ import App from "./App.tsx";
 import { keycloak } from "./constants/keycloak.ts";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { fetchUser, queryClient } from "./constants/queries.ts";
-import type { User } from "./api/model";
+import type { UserResponseDTO } from "./api/model";
 
 keycloak
   .init({
@@ -15,12 +15,9 @@ keycloak
   })
 
   .then(async (authenticated) => {
-    let user: User | null = null;
+    let user: UserResponseDTO | null = null;
     if (authenticated) {
       user = await fetchUser(keycloak.subject!, keycloak.tokenParsed?.name!);
-      console.log("User authenticated:", user.name);
-    } else {
-      console.log("User not authenticated");
     }
 
     createRoot(document.getElementById("root")!).render(
@@ -31,9 +28,3 @@ keycloak
       </StrictMode>,
     );
   });
-
-// login-required authenticates if the user is logged in or displays the login page, zwingt User zum Login
-// check-sso authenticates if user is logged in, otherwise does nothing, lässt User trotzdem die Seite nutzen
-
-// wir wollen hier check-sso (optional auth), damit Nutzer die Seite auch ohne Login nutzen können, aber wenn
-// sie Dinge speichern wollen, müssen sie sich einloggen, damit wir wissen, wem die Daten gehören

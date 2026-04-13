@@ -1,0 +1,12 @@
+target/
+.git/
+.gitignore
+.idea/
+.vscode/
+*.iml
+.env*
+uploads/
+.directory
+start.sh
+.gitattributes
+dockerfile

@@ -1,10 +1,10 @@
 import { Link } from "react-router";
 import "../../styles/App.css";
 import Header from "../Header";
-import type { UserDTO } from "../../api/model";
+import type { UserResponseDTO } from "../../api/model";
 
 interface Props {
-  user: UserDTO | null;
+  user: UserResponseDTO | null;
 }
 
 function Willkommen({ user }: Props) {

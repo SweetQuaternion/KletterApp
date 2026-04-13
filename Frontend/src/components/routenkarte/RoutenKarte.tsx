@@ -1,7 +1,7 @@
 import {
   type HalleResponseDTO,
   type RouteResponseDTO,
-  type UserDTO,
+  type UserResponseDTO,
   type WandResponseDTO,
 } from "../../api/model";
 import Header from "./../Header";
@@ -17,7 +17,7 @@ import { getGetWaendeByHallenIdQueryOptions } from "../../api/wand-controller/wa
 
 interface Props {
   selectedHalle: HalleResponseDTO;
-  user: UserDTO | null;
+  user: UserResponseDTO | null;
 }
 
 const RoutenKarte = ({ selectedHalle, user }: Props) => {

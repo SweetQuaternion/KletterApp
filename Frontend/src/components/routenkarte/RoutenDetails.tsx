@@ -4,7 +4,7 @@ import "../../styles/RoutenDetails.css";
 import type {
   AscentResponseDTOStyle,
   RouteResponseDTO,
-  UserDTO,
+  UserResponseDTO,
 } from "../../api/model";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -19,7 +19,7 @@ import { Link } from "react-router";
 
 interface Props {
   selectedRoute: RouteResponseDTO;
-  user: UserDTO | null;
+  user: UserResponseDTO | null;
 }
 
 const RoutenDetails = ({ selectedRoute, user }: Props) => {
