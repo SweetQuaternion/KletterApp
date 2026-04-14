@@ -5,6 +5,8 @@ import HallenErgebnisFeld from "./HallenErgebnisFeld";
 import { useQuery } from "@tanstack/react-query";
 import type { HalleResponseDTO } from "../../api/model";
 import { getFindHalleQueryOptions } from "../../api/hallen-controller/hallen-controller";
+import { isAdmin } from "../../constants/keycloak.ts";
+import { Link } from "react-router";
 
 interface Props {
   setSelectedHalle: (id: HalleResponseDTO) => void;
@@ -19,7 +21,7 @@ function HallenSuchmaske({ setSelectedHalle }: Props) {
   );
 
   return (
-    <div className="hallensuche white-box">
+    <div className="hallensuche white-box center">
       <h2>Wähle deine Halle aus</h2>
       <form
         className="flex-row"
@@ -52,6 +54,11 @@ function HallenSuchmaske({ setSelectedHalle }: Props) {
           ))}
         {error !== null && (
           <p className="sans-serif small">Ein Fehler ist aufgetreten</p>
+        )}
+        {isAdmin() && (
+          <Link to="/hallenfinder/neu">
+            <div className="hinzufügen">Halle hinzufügen</div>
+          </Link>
         )}
       </div>
     </div>

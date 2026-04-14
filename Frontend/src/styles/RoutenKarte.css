@@ -72,11 +72,11 @@ circle {
   /* mokka aber mit Transparenz weil drop shadow komisch ist */
 }
 
-g:hover > g > circle {
+.routenkarte-container:hover > g > circle {
   fill: var(--blassblau);
 }
 
-g:hover > line {
+.routenkarte-container:hover > g > line {
   stroke: var(--espresso);
 }
 
@@ -162,7 +162,7 @@ g:hover > line {
   margin-right: 1em;
 }
 
-.route-hinzufügen {
+.hinzufügen {
   margin-top: 1em;
   margin-bottom: -0.5em;
   font-size: 1em;

@@ -42,10 +42,7 @@ const WandInfoBox = ({
         ))}
       </div>
       {isAdmin() && (
-        <div
-          className="route-hinzufügen"
-          onClick={() => setShowNeueRoute(true)}
-        >
+        <div className="hinzufügen" onClick={() => setShowNeueRoute(true)}>
           Route hinzufügen
         </div>
       )}

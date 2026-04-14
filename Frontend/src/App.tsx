@@ -8,6 +8,7 @@ import type { HalleResponseDTO, UserResponseDTO } from "./api/model";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Userpage from "./components/profil/Userpage";
+import NeueHalle from "./components/hallensuche/neueHalle/NeueHalle";
 
 interface Props {
   user: UserResponseDTO | null;
@@ -31,6 +32,7 @@ function App({ user }: Props) {
             <HallenFinder user={user} setSelectedHalle={setSelectedHalle} />
           }
         />
+        <Route path="/hallenfinder/neu" element={<NeueHalle user={user} />} />
         <Route path="/willkommen" element={<Willkommen user={user} />} />
         <Route path="/profil" element={<Profil user={user} />} />
         <Route

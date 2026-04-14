@@ -14,6 +14,15 @@ form {
   min-width: 25em;
 }
 
+.neue-halle-box input {
+  background-color: white;
+  color: var(--espresso);
+  padding: 0.5em;
+  border: 1px solid var(--mokka);
+  border-radius: 5px;
+  min-width: 25em;
+}
+
 input:focus {
   outline: none;
 }
