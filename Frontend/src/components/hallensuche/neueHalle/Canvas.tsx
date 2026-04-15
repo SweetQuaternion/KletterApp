@@ -1,21 +1,26 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Knopfsis from "../../routenkarte/Knopfsis";
 import type { WandCreateDTO } from "../../../api/model";
 
 interface Props {
   wände: WandCreateDTO[];
+  setWände: (wände: WandCreateDTO[]) => void;
 }
 
-const Canvas = ({ wände }: Props) => {
+const Canvas = ({ wände, setWände }: Props) => {
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const svgRef = useRef<SVGSVGElement | null>(null);
   const dragging = useRef(false);
   const dragStart = useRef({ x: 0, y: 0, offsetX: 0, offsetY: 0 });
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const drawing = useRef(false);
   const [wandStart, setWandStart] = useState({ x: 0, y: 0 });
   const shiftPressed = useRef(false);
-  const [, setCount] = useState(0);
+
+  useEffect(() => {
+    svgRef.current?.focus();
+  }, []);
 
   function onWheel(e: React.WheelEvent<SVGSVGElement>) {
     setScale(scale + (e.deltaY > 0 ? -0.02 : 0.02));
@@ -44,6 +49,7 @@ const Canvas = ({ wände }: Props) => {
   }
 
   function onPointerDown(e: React.PointerEvent<SVGSVGElement>) {
+    svgRef.current?.focus();
     dragging.current = true;
     dragStart.current = {
       x: e.clientX,
@@ -79,13 +85,18 @@ const Canvas = ({ wände }: Props) => {
       drawing.current = true;
       setWandStart(pos);
     } else {
-      wände.push({
-        hallenId: 0,
-        startX: wandStart.x,
-        startY: wandStart.y,
-        endX: pos.x,
-        endY: pos.y,
-      });
+      setWände([
+        ...wände,
+        {
+          hallenId: 0,
+          // name: `Wand ${wände.length + 1}`,
+          startX: Math.round(wandStart.x),
+          startY: Math.round(wandStart.y),
+          endX: Math.round(pos.x),
+          endY: Math.round(pos.y),
+          position: "indoor",
+        },
+      ]);
       drawing.current = false;
     }
   }
@@ -98,8 +109,7 @@ const Canvas = ({ wände }: Props) => {
       shiftPressed.current = true;
     }
     if (e.ctrlKey && e.key === "z") {
-      wände.pop();
-      setCount((c) => c + 1);
+      setWände(wände.slice(0, -1));
     }
   }
 
@@ -113,6 +123,7 @@ const Canvas = ({ wände }: Props) => {
     <div className="canvas-container">
       <Knopfsis scale={scale} setScale={setScale} />
       <svg
+        ref={svgRef}
         onClick={onClick}
         onMouseMove={onMouseMove}
         onPointerDown={onPointerDown}
@@ -145,7 +156,7 @@ const Canvas = ({ wände }: Props) => {
           <line className="axis" x1="0" y1="-1000" x2="0" y2="1000" />
           {[-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(
             (i) => (
-              <g key={i}>
+              <g key={`gitter-${i}`}>
                 <line
                   key={`horizontal-${i}`}
                   className="gitter"
@@ -166,15 +177,46 @@ const Canvas = ({ wände }: Props) => {
             ),
           )}
           {wände.map((wand, index) => (
-            <line
-              key={index}
-              x1={wand.startX}
-              y1={wand.startY}
-              x2={wand.endX}
-              y2={wand.endY}
-              stroke="black"
-              strokeWidth={5}
-            />
+            <g key={index}>
+              <line
+                key={`wand-${index}`}
+                x1={wand.startX}
+                y1={wand.startY}
+                x2={wand.endX}
+                y2={wand.endY}
+                stroke="black"
+                strokeWidth={5}
+              />
+              <circle
+                cx={
+                  (wand.startX + wand.endX) / 2 -
+                  (wand.endY - wand.startY) * 0.1
+                }
+                cy={
+                  (wand.startY + wand.endY) / 2 +
+                  (wand.endX - wand.startX) * 0.1
+                }
+                r={20}
+                fill={"white"}
+                style={{ cursor: "pointer" }}
+              />
+              <text
+                x={
+                  (wand.startX + wand.endX) / 2 -
+                  (wand.endY - wand.startY) * 0.1
+                }
+                y={
+                  (wand.startY + wand.endY) / 2 +
+                  (wand.endX - wand.startX) * 0.1
+                }
+                fontSize={16}
+                fill="black"
+                textAnchor="middle"
+                dominantBaseline="central"
+              >
+                {index + 1}
+              </text>
+            </g>
           ))}
           {drawing.current && (
             <line

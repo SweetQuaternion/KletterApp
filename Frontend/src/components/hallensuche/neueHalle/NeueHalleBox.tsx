@@ -2,13 +2,14 @@ import { useState } from "react";
 
 const NeueHalleBox = () => {
   const [hidden, setHidden] = useState(false);
+
   return (
-    <>
-      <button className="halle-menu" onClick={() => setHidden(false)}>
+    <div className="details-subcontainer">
+      <button className="menu" onClick={() => setHidden(false)}>
         ⌂
       </button>
       <div
-        className={`white-box neue-halle-box top-left ${hidden ? "hidden" : ""}`}
+        className={`white-box relative neue-halle-box top-left ${hidden ? "hidden" : ""}`}
       >
         <button className="close-button">
           <div onClick={() => setHidden(true)}>×</div>
@@ -29,7 +30,7 @@ const NeueHalleBox = () => {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 

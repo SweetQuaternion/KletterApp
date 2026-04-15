@@ -6,7 +6,7 @@ interface Props {
 
 const HallenInfoBox = ({ selectedHalle }: Props) => {
   return (
-    <div className="hallen-infobox">
+    <div className="white-box top left">
       <h2>{selectedHalle.name}</h2>
       <p>{selectedHalle.betreiber}</p>
       <p>{selectedHalle.adresse}</p>

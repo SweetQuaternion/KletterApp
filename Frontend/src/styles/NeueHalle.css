@@ -4,10 +4,25 @@
   right: 1em;
 }
 
-.halle-menu {
+.details-container {
   position: absolute;
-  top: 4.8em;
-  left: 1.3em;
+  display: flex;
+  gap: 1em;
+  flex-direction: column;
+  top: 4.5em;
+  left: 1em;
+}
+
+.details-subcontainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu {
+  position: absolute;
+  top: 0.3em;
+  left: 0.3em;
   background-color: white;
   padding: 0.5em;
   width: 2em;
@@ -22,7 +37,7 @@
   color: var(--espresso);
 }
 
-.halle-menu:hover {
+.menu:hover {
   opacity: 0.7;
   background-color: white;
 }
@@ -82,7 +97,19 @@
   align-items: center;
   display: flex;
   overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
 }
+
+/* .canvas-container svg,
+.canvas-container text {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.canvas-container text {
+  pointer-events: none;
+} */
 
 line.axis {
   stroke: var(--espresso);
@@ -92,4 +119,74 @@ line.axis {
 line.gitter {
   stroke: var(--espresso);
   stroke-width: 0.2px;
+}
+
+.wände-liste {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.wand-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.3em;
+  border-radius: 999px;
+  background-color: var(--abendsonne);
+  font-family:
+    DM Sans,
+    sans-serif;
+  font-size: 0.9em;
+}
+
+.wand-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.wand-right {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  padding-right: 0.5em;
+}
+
+.flip-button {
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  color: var(--espresso);
+  box-shadow: none;
+}
+
+.flip-button:hover {
+  background-color: transparent;
+  opacity: 0.7;
+}
+
+.mini-dot-indoor {
+  height: 11px;
+  width: 11px;
+  border-radius: 50%;
+  margin: 0.5em;
+  margin-right: 0.2em;
+  background-color: var(--pfirsichorange);
+  cursor: pointer;
+}
+
+.mini-dot-outdoor {
+  height: 11px;
+  width: 11px;
+  border-radius: 50%;
+  margin: 0.5em;
+  margin-right: 0.7em;
+  background-color: var(--himmelsblau);
+  cursor: pointer;
 }

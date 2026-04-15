@@ -89,19 +89,29 @@ h2 {
   transition: transform 1s ease-in-out;
 }
 
+.white-box.relative {
+  position: sticky;
+}
+
 .center {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.top-left {
+.top {
   top: 4.5em;
+}
+
+.bottom {
+  bottom: 2em;
+}
+
+.left {
   left: 1em;
 }
 
-.top-right {
-  top: 4.5em;
+.right {
   right: 1em;
 }
 

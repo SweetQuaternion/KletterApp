@@ -2,10 +2,12 @@ import { mutationOptions, QueryClient } from "@tanstack/react-query";
 import type {
   AscentCreateDTO,
   AscentResponseDTO,
+  HalleCreateDTO,
   KommentarCreateDTO,
   KommentarResponseDTO,
   RouteCreateDTO,
-  UserDTO,
+  UserCreateDTO,
+  UserResponseDTO,
   UserRoutenStatus,
 } from "../api/model";
 import { keycloak } from "./keycloak";
@@ -32,6 +34,7 @@ import {
   getAvatar,
   getUploadAvatarUrl,
 } from "../api/avatar-controller/avatar-controller";
+import { addHalle } from "../api/hallen-controller/hallen-controller";
 
 const ONE_DAY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
@@ -43,80 +46,22 @@ export const queryClient = new QueryClient({
   },
 });
 
+// ============= User Queries and Mutations =============
+
 export async function fetchUser(keycloakId: string, name: string) {
-  return (await syncUser({ keycloakId, name })) as UserDTO;
+  return (await syncUser({ keycloakId, name })) as UserResponseDTO;
 }
 
 export function createProfileQueryOptions(username: string) {
   return {
     queryKey: ["profile", username],
-    queryFn: () => getUser({ username }) as Promise<UserDTO>,
+    queryFn: () => getUser({ username }) as Promise<UserResponseDTO>,
   };
-}
-
-export function createAscentQueryOptions(
-  routenId: number | null,
-  user: UserDTO | null,
-) {
-  return {
-    queryKey: ["ascents", routenId, user?.keycloakId],
-    queryFn: async () => {
-      if (!user) {
-        return null;
-      }
-      const response = await findAscents({
-        routenId: routenId || undefined,
-        userId: user.keycloakId,
-      });
-      return response as AscentResponseDTO[];
-    },
-    staleTime: ONE_DAY,
-  };
-}
-
-export function createUserRoutenStatusQueryOptions(
-  routenId: number,
-  user: UserDTO | null,
-) {
-  return {
-    queryKey: ["userRoutenStatus", routenId, user?.keycloakId],
-    queryFn: async () => {
-      if (!user) {
-        return null;
-      }
-      const response = await getUserRoutenStatus({
-        routenId,
-        userId: user.keycloakId,
-      });
-      return response as UserRoutenStatus;
-    },
-    staleTime: ONE_DAY,
-  };
-}
-
-export function createKommentarQueryOptions(routeId: number) {
-  return {
-    queryKey: ["kommentare", routeId],
-    queryFn: async () =>
-      getKommentareByRouteID({ routeId }) as Promise<KommentarResponseDTO[]>,
-    staleTime: ONE_DAY,
-  };
-}
-
-export function createUserRoutenStatusMutationOptions() {
-  return mutationOptions({
-    mutationFn: (data: UserRoutenStatus) => updateUserRoutenStatus(data),
-    onSuccess: async (_, variables) => {
-      await queryClient.invalidateQueries({
-        queryKey: ["userRoutenStatus", variables.routenId, variables.userId],
-      });
-    },
-  });
 }
 
 export function createUserSyncMutation() {
   return mutationOptions({
-    mutationFn: async (data: UserDTO) => {
+    mutationFn: async (data: UserCreateDTO) => {
       await keycloakFetch({
         method: "POST",
         headers: {
@@ -134,6 +79,91 @@ export function createUserSyncMutation() {
   });
 }
 
+// ============= Ascent Queries and Mutations =============
+
+export function createAscentQueryOptions(
+  routenId: number | null,
+  user: UserResponseDTO | null,
+) {
+  return {
+    queryKey: ["ascents", routenId, user?.keycloakId],
+    queryFn: async () => {
+      if (!user) {
+        return null;
+      }
+      const response = await findAscents({
+        routenId: routenId || undefined,
+        userId: user.keycloakId,
+      });
+      return response as AscentResponseDTO[];
+    },
+    staleTime: ONE_DAY,
+  };
+}
+
+export function createAddAscentMutationOptions() {
+  return mutationOptions({
+    mutationFn: (data: AscentCreateDTO) => addAscent(data),
+    onSuccess: async (_) => {
+      await queryClient.invalidateQueries({
+        queryKey: ["ascents"],
+      });
+    },
+  });
+}
+
+// ============= UserRoutenStatus Queries and Mutations =============
+
+export function createUserRoutenStatusQueryOptions(
+  routenId: number,
+  user: UserResponseDTO | null,
+) {
+  return {
+    queryKey: ["userRoutenStatus", routenId, user?.keycloakId],
+    queryFn: async () => {
+      if (!user) {
+        return null;
+      }
+      const response = await getUserRoutenStatus({
+        routenId,
+        userId: user.keycloakId,
+      });
+      return response as UserRoutenStatus;
+    },
+    staleTime: ONE_DAY,
+  };
+}
+
+export function createUserRoutenStatusMutationOptions() {
+  return mutationOptions({
+    mutationFn: (data: UserRoutenStatus) => updateUserRoutenStatus(data),
+    onSuccess: async (_, variables) => {
+      await queryClient.invalidateQueries({
+        queryKey: ["userRoutenStatus", variables.routenId, variables.userId],
+      });
+    },
+  });
+}
+
+// ============= Kommentar Queries and Mutations =============
+
+export function createKommentarQueryOptions(routeId: number) {
+  return {
+    queryKey: ["kommentare", routeId],
+    queryFn: async () =>
+      getKommentareByRouteID({ routeId }) as Promise<KommentarResponseDTO[]>,
+    staleTime: ONE_DAY,
+  };
+}
+
+export function createAddKommentarMutationOptions() {
+  return mutationOptions({
+    mutationFn: (data: KommentarCreateDTO) => addKommentar(data),
+  });
+}
+
+// ============= Route Queries and Mutations =============
+
 export function createAddRouteMutationOptions() {
   return mutationOptions({
     mutationFn: async (data: RouteCreateDTO) => {
@@ -149,22 +179,7 @@ export function createAddRouteMutationOptions() {
   });
 }
 
-export function createAddAscentMutationOptions() {
-  return mutationOptions({
-    mutationFn: (data: AscentCreateDTO) => addAscent(data),
-    onSuccess: async (_) => {
-      await queryClient.invalidateQueries({
-        queryKey: ["ascents"],
-      });
-    },
-  });
-}
-
-export function createAddKommentarMutationOptions() {
-  return mutationOptions({
-    mutationFn: (data: KommentarCreateDTO) => addKommentar(data),
-  });
-}
+// ============= Avatar Queries and Mutations =============
 
 export function createAvatarQueryOptions(userId: string) {
   return {
@@ -194,6 +209,21 @@ export function createAvatarMutationOptions() {
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["avatar"],
+      });
+    },
+  });
+}
+
+// ============= Halle Queries and Mutations =============
+
+export function createHalleMutationOptions() {
+  return mutationOptions({
+    mutationFn: async (data: HalleCreateDTO) => {
+      addHalle(data);
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["hallen"],
       });
     },
   });
