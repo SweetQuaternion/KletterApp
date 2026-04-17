@@ -2,15 +2,20 @@
   position: absolute;
   bottom: 1em;
   right: 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5em;
 }
 
 .details-container {
   position: absolute;
-  display: flex;
-  gap: 1em;
-  flex-direction: column;
   top: 4.5em;
   left: 1em;
+  min-width: 25em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .details-subcontainer {
@@ -121,6 +126,10 @@ line.gitter {
   stroke-width: 0.2px;
 }
 
+line.selected {
+  stroke: var(--latte);
+}
+
 .wände-liste {
   display: flex;
   flex-direction: column;
@@ -140,6 +149,11 @@ line.gitter {
     DM Sans,
     sans-serif;
   font-size: 0.9em;
+}
+
+.wand-item:hover {
+  background-color: var(--buttergelb);
+  cursor: pointer;
 }
 
 .wand-left {
@@ -189,4 +203,20 @@ line.gitter {
   margin-right: 0.7em;
   background-color: var(--himmelsblau);
   cursor: pointer;
+}
+
+.wand-coords {
+  margin-top: 0.2em;
+  margin-right: 0.2em;
+  font-size: small;
+  color: var(--espresso);
+}
+
+@media (max-width: 500px) {
+  .close-button {
+    opacity: 1;
+  }
+  .details-container {
+    min-width: 90vw;
+  }
 }

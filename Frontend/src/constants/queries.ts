@@ -9,6 +9,7 @@ import type {
   UserCreateDTO,
   UserResponseDTO,
   UserRoutenStatus,
+  WandCreateDTO,
 } from "../api/model";
 import { keycloak } from "./keycloak";
 import {
@@ -35,6 +36,7 @@ import {
   getUploadAvatarUrl,
 } from "../api/avatar-controller/avatar-controller";
 import { addHalle } from "../api/hallen-controller/hallen-controller";
+import { addWände } from "../api/wand-controller/wand-controller";
 
 const ONE_DAY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
@@ -219,7 +221,28 @@ export function createAvatarMutationOptions() {
 export function createHalleMutationOptions() {
   return mutationOptions({
     mutationFn: async (data: HalleCreateDTO) => {
-      addHalle(data);
+      return addHalle(data);
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["hallen"],
+      });
+    },
+  });
+}
+
+// ============= Wand Queries and Mutations =============
+
+export function createWandMutationOptions() {
+  return mutationOptions({
+    mutationFn: async ({
+      hallenId,
+      data,
+    }: {
+      hallenId: number;
+      data: WandCreateDTO[];
+    }) => {
+      addWände(hallenId, data);
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({

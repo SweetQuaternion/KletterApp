@@ -9,6 +9,16 @@
   align-items: center;
 }
 
+.menu.map {
+  top: 4.8em;
+  left: 1.3em;
+}
+
+.infobox-container {
+  position: absolute;
+  display: flex;
+}
+
 .knopfsis-container {
   position: absolute;
   bottom: 1em;
@@ -162,4 +172,13 @@ circle {
 
 .route-hinzufügen:hover {
   color: var(--ozeanblau);
+}
+
+@media (max-width: 500px) {
+  .infobox-container.left {
+    left: 0.5em;
+  }
+  .hallen-info-box {
+    max-width: 95vw;
+  }
 }

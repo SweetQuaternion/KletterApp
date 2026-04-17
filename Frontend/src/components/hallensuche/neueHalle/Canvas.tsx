@@ -5,9 +5,10 @@ import type { WandCreateDTO } from "../../../api/model";
 interface Props {
   wände: WandCreateDTO[];
   setWände: (wände: WandCreateDTO[]) => void;
+  selectedWand: number | null;
 }
 
-const Canvas = ({ wände, setWände }: Props) => {
+const Canvas = ({ wände, setWände, selectedWand }: Props) => {
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -186,6 +187,7 @@ const Canvas = ({ wände, setWände }: Props) => {
                 y2={wand.endY}
                 stroke="black"
                 strokeWidth={5}
+                className={selectedWand === index ? "selected" : ""}
               />
               <circle
                 cx={

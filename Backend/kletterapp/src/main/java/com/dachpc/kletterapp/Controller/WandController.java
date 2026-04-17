@@ -37,8 +37,11 @@ public class WandController {
     @PostMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public WandResponseDTO addWand(@PathVariable int hallenId, @RequestBody WandCreateDTO dto) {
-        return wandService.addWand(dto);
+    public void addWände(@PathVariable int hallenId, @RequestBody WandCreateDTO[] dto) {
+        for (WandCreateDTO wand : dto) {
+            wand.setHallenId(hallenId);
+            wandService.addWand(wand);
+        }
     }
 
     @PatchMapping(produces = "application/json")

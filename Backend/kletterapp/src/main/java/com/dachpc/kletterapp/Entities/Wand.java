@@ -33,8 +33,9 @@ public class Wand {
     @Column(name = "end_y")
     private float endY;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "position")
-    private String position;
+    private Position position;
 
     @OneToMany(mappedBy = "wand") // fetch = FetchType.EAGER hat es irgendwie nicht getan
     private List<Route> routen;

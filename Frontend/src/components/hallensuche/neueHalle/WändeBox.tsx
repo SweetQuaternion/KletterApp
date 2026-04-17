@@ -4,9 +4,10 @@ import type { WandCreateDTO } from "../../../api/model";
 interface Props {
   wände: WandCreateDTO[];
   setWände: (wände: WandCreateDTO[]) => void;
+  setSelectedWand: (index: number | null) => void;
 }
 
-const WändeBox = ({ wände, setWände }: Props) => {
+const WändeBox = ({ wände, setWände, setSelectedWand }: Props) => {
   const [hidden, setHidden] = useState(false);
 
   function moveWand(fromIndex: number, toIndex: number) {
@@ -54,18 +55,57 @@ const WändeBox = ({ wände, setWände }: Props) => {
   }
 
   function WandItem({ wand, index }: { wand: WandCreateDTO; index: number }) {
+    function handleNameChange(e: React.FocusEvent<HTMLDivElement>) {
+      const newName = e.currentTarget.textContent || "";
+      const newWände = [...wände];
+      newWände[index] = {
+        ...wand,
+        name: newName || undefined,
+      };
+      setWände(newWände);
+    }
+
     return (
-      <div className="wand-item" key={index}>
+      <div
+        className="wand-item"
+        key={index}
+        onMouseOver={() => setSelectedWand(index)}
+        onMouseOut={() => setSelectedWand(null)}
+      >
         <div className="wand-left">
           <div
             className={`mini-dot-${wand.position}`}
             onClick={() => flipPosition(index)}
             title={`${wand.position}`}
           />
-          <div className="wand-name">{wand.name || `Wand ${index + 1}`}</div>(
-          {wand.startX}, {wand.startY}) - ({wand.endX}, {wand.endY})
+          <div
+            className="wand-name"
+            contentEditable={true}
+            suppressContentEditableWarning={true}
+            onBlur={handleNameChange}
+          >
+            {wand.name || `Wand ${index + 1}`}
+          </div>
         </div>
         <div className="wand-right">
+          <div className="wand-coords">
+            ({wand.startX}, {wand.startY}) → ({wand.endX}, {wand.endY})
+          </div>
+
+          <button
+            className="flip-button"
+            onClick={() => flipWand(index)}
+            title="flip"
+          >
+            ⟲
+          </button>
+          <button
+            className="flip-button"
+            onClick={() => deleteWand(index)}
+            title="Wand löschen"
+          >
+            ×
+          </button>
           <div>
             <button
               className="flip-button"
@@ -84,20 +124,6 @@ const WändeBox = ({ wände, setWände }: Props) => {
               ↓
             </button>
           </div>
-          <button
-            className="flip-button"
-            onClick={() => flipWand(index)}
-            title="flip"
-          >
-            ⟲
-          </button>
-          <button
-            className="flip-button"
-            onClick={() => deleteWand(index)}
-            title="Wand löschen"
-          >
-            ×
-          </button>
         </div>
       </div>
     );

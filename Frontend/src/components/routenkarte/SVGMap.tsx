@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import WandInfoBox from "./WandInfoBox";
 import { isAdmin } from "../../constants/keycloak";
 import type { RouteResponseDTO, WandResponseDTO } from "../../api/model";
+import TouchTracker from "../touch/TouchTracker";
 
 interface Props {
   scale: number;
@@ -23,32 +24,32 @@ function SVGMap({
   setShowNeueRoute,
 }: Props) {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const dragging = useRef(false);
-  const dragStart = useRef({ x: 0, y: 0, offsetX: 0, offsetY: 0 });
+  // const dragging = useRef(false);
+  // const dragStart = useRef({ x: 0, y: 0, offsetX: 0, offsetY: 0 });
 
-  function onPointerDown(e: React.PointerEvent<SVGSVGElement>) {
-    dragging.current = true;
-    dragStart.current = {
-      x: e.clientX,
-      y: e.clientY,
-      offsetX: offset.x,
-      offsetY: offset.y,
-    };
-  }
+  // function onPointerDown(e: React.PointerEvent<SVGSVGElement>) {
+  //   dragging.current = true;
+  //   dragStart.current = {
+  //     x: e.clientX,
+  //     y: e.clientY,
+  //     offsetX: offset.x,
+  //     offsetY: offset.y,
+  //   };
+  // }
 
-  function onPointerMove(e: React.PointerEvent<SVGSVGElement>) {
-    if (!dragging.current) return;
-    const dx = e.clientX - dragStart.current.x;
-    const dy = e.clientY - dragStart.current.y;
-    setOffset({
-      x: dragStart.current.offsetX + dx / scale,
-      y: dragStart.current.offsetY + dy / scale,
-    });
-  }
+  // function onPointerMove(e: React.PointerEvent<SVGSVGElement>) {
+  //   if (!dragging.current) return;
+  //   const dx = e.clientX - dragStart.current.x;
+  //   const dy = e.clientY - dragStart.current.y;
+  //   setOffset({
+  //     x: dragStart.current.offsetX + dx / scale,
+  //     y: dragStart.current.offsetY + dy / scale,
+  //   });
+  // }
 
-  function onPointerUp() {
-    dragging.current = false;
-  }
+  // function onPointerUp() {
+  //   dragging.current = false;
+  // }
 
   function onWheel(e: React.WheelEvent<SVGSVGElement>) {
     setScale(scale + (e.deltaY > 0 ? -0.02 : 0.02));
@@ -58,7 +59,7 @@ function SVGMap({
   // Closure-Problems trotzdem. selectedWand ist immer ein Render hinterher und
   // deswegen funktioniert der Vergleich. Man sollte hier wohl useRef nehmen.
   const handleWandClick = (wand: WandResponseDTO | null) => {
-    // console.log("Wand " + wand?.wandNr + " clicked");
+    console.log("Wand " + wand?.wandNr + " clicked");
     setSelectedWand(wand);
     if (selectedWand !== wand) {
       setSelectedRoute(null);
@@ -79,106 +80,120 @@ function SVGMap({
     : null;
 
   return (
-    <div className="routenkarte-container">
-      <svg
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onWheel={onWheel}
-        onClick={() => handleWandClick(null)}
-        className="routenkarte"
-        xmlns="http://www.w3.org/2000/svg"
-        width="100%"
-        height="100%"
-      >
-        <g
-          transform={`
+    <TouchTracker
+      onTouchMove={(moveDelta) => {
+        offset.x += moveDelta.dx / scale;
+        offset.y += moveDelta.dy / scale;
+        setOffset({ ...offset });
+      }}
+      onTouchZoom={(zoomDelta) => {
+        let newScale = scale * zoomDelta;
+        if (newScale < 0.1) newScale = 0.1;
+        if (newScale > 10) newScale = 10;
+        setScale(newScale);
+      }}
+    >
+      <div className="routenkarte-container">
+        <svg
+          // onPointerDown={onPointerDown}
+          // onPointerMove={onPointerMove}
+          // onPointerUp={onPointerUp}
+          onWheel={onWheel}
+          onClick={() => handleWandClick(null)}
+          className="routenkarte"
+          xmlns="http://www.w3.org/2000/svg"
+          width="100%"
+          height="100%"
+        >
+          <g
+            transform={`
             translate(${500 + offset.x * scale}, ${500 + offset.y * scale}) 
             scale(${scale}) 
             translate(200, -100)
           `}
-        >
-          {wände.map((wand) => (
-            <g
-              key={wand.wandNr}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleWandClick(wand);
-              }}
-            >
-              <line
-                x1={wand.startX}
-                y1={wand.startY}
-                x2={wand.endX}
-                y2={wand.endY}
-                stroke="black"
-                strokeWidth={5}
-                style={{ cursor: "pointer" }}
-              />
-              {(wand.routen?.length || 0) > 0 || isAdmin() ? (
-                <g>
-                  <circle
-                    cx={
-                      (wand.startX + wand.endX) / 2 -
-                      (wand.endY - wand.startY) * 0.1
-                    }
-                    cy={
-                      (wand.startY + wand.endY) / 2 +
-                      (wand.endX - wand.startX) * 0.1
-                    }
-                    r={20}
-                    fill={"white"}
-                    style={{ cursor: "pointer" }}
-                  />
-                  <text
-                    x={
-                      (wand.startX + wand.endX) / 2 -
-                      (wand.endY - wand.startY) * 0.1
-                    }
-                    y={
-                      (wand.startY + wand.endY) / 2 +
-                      (wand.endX - wand.startX) * 0.1
-                    }
-                    fontSize={16}
-                    fill="black"
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                  >
-                    {wand.routen?.length || 0}
-                  </text>
-                </g>
-              ) : null}
-            </g>
-          ))}
-
-          {selectedWand && selectedWandBox && (
-            <g
-              onPointerDown={(e) => e.stopPropagation()}
-              onClick={(e) => e.stopPropagation()}
-              transform={`translate(${selectedWandBox.boxX}, ${selectedWandBox.boxY}) scale(${1 / scale}) translate(${-selectedWandBox.boxX}, ${-selectedWandBox.boxY})`}
-            >
-              <foreignObject
-                x={selectedWandBox.boxX}
-                y={selectedWandBox.boxY}
-                width="370"
-                height={
-                  (selectedWand.routen?.length || 0) * 40 +
-                  (isAdmin() ? 40 : 0) +
-                  160
-                }
+          >
+            {wände.map((wand) => (
+              <g
+                key={wand.wandNr}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleWandClick(wand);
+                }}
               >
-                <WandInfoBox
-                  selectedWand={selectedWand}
-                  routen={selectedWand.routen || []}
-                  setSelectedRoute={setSelectedRoute}
-                  setShowNeueRoute={setShowNeueRoute}
+                <line
+                  x1={wand.startX}
+                  y1={wand.startY}
+                  x2={wand.endX}
+                  y2={wand.endY}
+                  stroke="black"
+                  strokeWidth={5}
+                  style={{ cursor: "pointer" }}
                 />
-              </foreignObject>
-            </g>
-          )}
-        </g>
-      </svg>
-    </div>
+                {(wand.routen?.length || 0) > 0 || isAdmin() ? (
+                  <g>
+                    <circle
+                      cx={
+                        (wand.startX + wand.endX) / 2 -
+                        (wand.endY - wand.startY) * 0.1
+                      }
+                      cy={
+                        (wand.startY + wand.endY) / 2 +
+                        (wand.endX - wand.startX) * 0.1
+                      }
+                      r={20}
+                      fill={"white"}
+                      style={{ cursor: "pointer" }}
+                    />
+                    <text
+                      x={
+                        (wand.startX + wand.endX) / 2 -
+                        (wand.endY - wand.startY) * 0.1
+                      }
+                      y={
+                        (wand.startY + wand.endY) / 2 +
+                        (wand.endX - wand.startX) * 0.1
+                      }
+                      fontSize={16}
+                      fill="black"
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                    >
+                      {wand.routen?.length || 0}
+                    </text>
+                  </g>
+                ) : null}
+              </g>
+            ))}
+
+            {selectedWand && selectedWandBox && (
+              <g
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => e.stopPropagation()}
+                transform={`translate(${selectedWandBox.boxX}, ${selectedWandBox.boxY}) scale(${1 / scale}) translate(${-selectedWandBox.boxX}, ${-selectedWandBox.boxY})`}
+              >
+                <foreignObject
+                  x={selectedWandBox.boxX}
+                  y={selectedWandBox.boxY}
+                  width="370"
+                  height={
+                    (selectedWand.routen?.length || 0) * 40 +
+                    (isAdmin() ? 40 : 0) +
+                    160
+                  }
+                >
+                  <WandInfoBox
+                    selectedWand={selectedWand}
+                    routen={selectedWand.routen || []}
+                    setSelectedRoute={setSelectedRoute}
+                    setShowNeueRoute={setShowNeueRoute}
+                  />
+                </foreignObject>
+              </g>
+            )}
+          </g>
+        </svg>
+      </div>
+    </TouchTracker>
   );
 }
 

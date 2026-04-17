@@ -34,13 +34,17 @@ function Header({ user }: Props) {
         </div>
         {!user && (
           <div className="right-part">
-            <button onClick={() => login()}>Anmelden</button>
-            <button onClick={() => register()}>Registrieren</button>
+            <button className="login" onClick={() => login()}>
+              Anmelden
+            </button>
+            <button className="register" onClick={() => register()}>
+              Registrieren
+            </button>
           </div>
         )}
         {user && (
           <div className="right-part">
-            <span>Hallo {user.name}</span>
+            <span className="username">Hallo {user.name}</span>
             <button
               className="profile-button"
               onClick={(e) => {
