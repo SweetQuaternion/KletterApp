@@ -19,10 +19,11 @@ import { Link } from "react-router";
 
 interface Props {
   selectedRoute: RouteResponseDTO;
+  setSelectedRoute: (route: RouteResponseDTO | null) => void;
   user: UserResponseDTO | null;
 }
 
-const RoutenDetails = ({ selectedRoute, user }: Props) => {
+const RoutenDetails = ({ selectedRoute, setSelectedRoute, user }: Props) => {
   const [ascentToggled, setAscentToggled] = useState(false);
 
   const { data: userRoutenStatus } = useQuery(
@@ -84,6 +85,9 @@ const RoutenDetails = ({ selectedRoute, user }: Props) => {
 
   return (
     <div className="routen-details">
+      <button className="close-button">
+        <div onClick={() => setSelectedRoute(null)}>×</div>
+      </button>
       <div className="routen-details-header">
         <h2>{selectedRoute?.name || "Route"}</h2>
 
@@ -106,7 +110,12 @@ const RoutenDetails = ({ selectedRoute, user }: Props) => {
             {selectedRoute.farbe}
           </div>
         )}
-        {ascents?.length !== 0 && (
+        <p className="small">
+          {selectedRoute.isToprope ? "Toprope" : ""}{" "}
+          {selectedRoute.isToprope && selectedRoute.isVorstieg ? " / " : ""}{" "}
+          {selectedRoute.isVorstieg ? "Vorstieg" : ""}
+        </p>
+        {user && ascents?.length !== 0 && (
           <img src="/tick.svg" alt="geschafft" className="geschafft-haken" />
         )}
       </div>

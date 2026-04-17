@@ -179,6 +179,13 @@ circle {
     left: 0.5em;
   }
   .hallen-info-box {
-    max-width: 95vw;
+    max-width: 90vw;
+  }
+  .close-button {
+    opacity: 1;
+  }
+  .routen-details {
+    min-width: 90vw;
+    max-width: 90vw;
   }
 }

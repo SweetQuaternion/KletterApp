@@ -26,46 +26,48 @@ const Profil = ({ user }: Props) => {
   return (
     <>
       <Header user={user} />
-      {user && data && (
-        <div className="white-box large profile">
-          <div className="flex-row wide-gap">
-            <div className="profile-picture-container">
-              <img src={avatar ? URL.createObjectURL(avatar) : undefined} />
+      <div className="profil-container">
+        {user && data && (
+          <div className="white-box large profile">
+            <div className="flex-row wide-gap">
+              <div className="profile-picture-container">
+                <img src={avatar ? URL.createObjectURL(avatar) : undefined} />
+              </div>
+              <div className="flex-column">
+                <h2>{params.username}</h2>
+                <p className="sans-serif">{data.bio}</p>
+              </div>
             </div>
-            <div className="flex-column">
-              <h2>{params.username}</h2>
-              <p className="sans-serif">{data.bio}</p>
+            <div className="flex-row small-gap level-container">
+              <div className="highlight-feld">
+                <div className="mini-dot"></div>
+                <p>Level {pointsToLevel(data.punkte || 0)}</p>
+              </div>
+              <div className="highlight-feld">
+                <div className="mini-dot"></div>
+                <p>
+                  {data.ascentCount || 0} Route
+                  {data.ascentCount !== 1 ? "n" : ""} geklettert
+                </p>
+              </div>
             </div>
           </div>
-          <div className="flex-row small-gap">
-            <div className="highlight-feld">
-              <div className="mini-dot"></div>
-              <p>Level {pointsToLevel(data.punkte || 0)}</p>
-            </div>
-            <div className="highlight-feld">
-              <div className="mini-dot"></div>
-              <p>
-                {data.ascentCount || 0} Route{data.ascentCount !== 1 ? "n" : ""}{" "}
-                geklettert
-              </p>
-            </div>
+        )}
+        {!data && (
+          <div className="white-box large profile">
+            <h2>Hey sorry</h2>
+            <p>
+              Das Profil, das du suchst, existiert nicht. Vielleicht vertippt?
+            </p>
           </div>
-        </div>
-      )}
-      {!data && (
-        <div className="white-box large profile">
-          <h2>Hey sorry</h2>
-          <p>
-            Das Profil, das du suchst, existiert nicht. Vielleicht vertippt?
-          </p>
-        </div>
-      )}
-      {!user && (
-        <div className="white-box large">
-          <h2>Hey sorry</h2>
-          <p>Du bist nicht angemeldet. Mach das mal!</p>
-        </div>
-      )}
+        )}
+        {!user && (
+          <div className="white-box large">
+            <h2>Hey sorry</h2>
+            <p>Du bist nicht angemeldet. Mach das mal!</p>
+          </div>
+        )}
+      </div>
     </>
   );
 };

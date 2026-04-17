@@ -56,113 +56,120 @@ const Profil = ({ user }: Props) => {
   return (
     <>
       <Header user={user} />
-      {user && (
-        <div className="white-box large profile">
-          {!isEditing && (
-            <div className="flex-row wide-gap">
-              <div className="profile-picture-container">
-                {(selectedFile && (
-                  <img
-                    src={URL.createObjectURL(selectedFile)}
-                    className="editable"
-                    alt="Profilbild"
-                  />
-                )) ||
-                  (avatar && (
-                    <img src={URL.createObjectURL(avatar)} alt="Profilbild" />
-                  ))}
-              </div>
-              <div className="flex-column">
-                <h2>{username}</h2>
-                <p className="sans-serif">{bio}</p>
-              </div>
-            </div>
-          )}
-          {isEditing && (
-            <div className="flex-row wide-gap">
-              <div className="profile-picture-container avatar-edit">
-                {(selectedFile && (
-                  <img
-                    src={URL.createObjectURL(selectedFile)}
-                    className="editable"
-                    alt="Profilbild"
-                  />
-                )) ||
-                  (avatar && (
-                    <img
-                      src={URL.createObjectURL(avatar)}
-                      className="editable"
-                      alt="Profilbild"
+      <div className="profil-container">
+        {user && (
+          <div className="white-box large profile">
+            <div className="top-section">
+              {!isEditing && (
+                <div className="flex-row wide-gap">
+                  <div className="profile-picture-container">
+                    {(selectedFile && (
+                      <img
+                        src={URL.createObjectURL(selectedFile)}
+                        className="editable"
+                        alt="Profilbild"
+                      />
+                    )) ||
+                      (avatar && (
+                        <img
+                          src={URL.createObjectURL(avatar)}
+                          alt="Profilbild"
+                        />
+                      ))}
+                  </div>
+                  <div className="flex-column">
+                    <h2>{username}</h2>
+                    <p className="sans-serif">{bio}</p>
+                  </div>
+                </div>
+              )}
+              {isEditing && (
+                <div className="flex-row wide-gap">
+                  <div className="profile-picture-container avatar-edit">
+                    {(selectedFile && (
+                      <img
+                        src={URL.createObjectURL(selectedFile)}
+                        className="editable"
+                        alt="Profilbild"
+                      />
+                    )) ||
+                      (avatar && (
+                        <img
+                          src={URL.createObjectURL(avatar)}
+                          className="editable"
+                          alt="Profilbild"
+                        />
+                      ))}
+                    <label
+                      htmlFor={avatarInputId}
+                      className="avatar-overlay-button"
+                    >
+                      Bild auswählen
+                    </label>
+                    <input
+                      id={avatarInputId}
+                      className="avatar-file-input"
+                      type="file"
+                      onChange={handleFileSelect}
+                      accept="image/*"
                     />
-                  ))}
-                <label
-                  htmlFor={avatarInputId}
-                  className="avatar-overlay-button"
-                >
-                  Bild auswählen
-                </label>
-                <input
-                  id={avatarInputId}
-                  className="avatar-file-input"
-                  type="file"
-                  onChange={handleFileSelect}
-                  accept="image/*"
-                />
+                  </div>
+                  <div className="flex-column">
+                    <h2
+                      contentEditable="plaintext-only"
+                      suppressContentEditableWarning
+                      onBlur={(e) => setUsername(e.currentTarget.textContent)}
+                    >
+                      {username}
+                    </h2>
+                    <p
+                      className="sans-serif"
+                      contentEditable="plaintext-only"
+                      data-placeholder="Hier könnte deine Bio stehen..."
+                      suppressContentEditableWarning
+                      onBlur={(e) => setBio(e.currentTarget.textContent)}
+                    >
+                      {bio}
+                    </p>
+                  </div>
+                </div>
+              )}
+              <div className="flex-row small-gap level-container">
+                <div className="highlight-feld">
+                  <div className="mini-dot"></div>
+                  <p>Level {pointsToLevel(user.punkte || 0)}</p>
+                </div>
+                <div className="highlight-feld">
+                  <div className="mini-dot"></div>
+                  <p>
+                    {user.ascentCount || 0} Route
+                    {user.ascentCount !== 1 ? "n" : ""} geklettert
+                  </p>
+                </div>
               </div>
-              <div className="flex-column">
-                <h2
-                  contentEditable="plaintext-only"
-                  suppressContentEditableWarning
-                  onBlur={(e) => setUsername(e.currentTarget.textContent)}
-                >
-                  {username}
-                </h2>
-                <p
-                  className="sans-serif"
-                  contentEditable="plaintext-only"
-                  data-placeholder="Hier könnte deine Bio stehen..."
-                  suppressContentEditableWarning
-                  onBlur={(e) => setBio(e.currentTarget.textContent)}
-                >
-                  {bio}
+            </div>
+            <div className="flex-row small-gap bottom-section">
+              <button onClick={() => setIsEditing(!isEditing)}>
+                {isEditing ? "Abbrechen" : "Bearbeiten"}
+              </button>
+              {isEditing && <button onClick={handleSubmit}>Speichern</button>}
+              {isPending && <p className="status">speichern...</p>}
+              {isSuccess && <p className="status success">gespeichert!</p>}
+              {isError && (
+                <p className="status error">
+                  Fehler beim Speichern: {error?.message}
                 </p>
-              </div>
-            </div>
-          )}
-          <div className="flex-row small-gap">
-            <div className="highlight-feld">
-              <div className="mini-dot"></div>
-              <p>Level {pointsToLevel(user.punkte || 0)}</p>
-            </div>
-            <div className="highlight-feld">
-              <div className="mini-dot"></div>
-              <p>
-                {user.ascentCount || 0} Route{user.ascentCount !== 1 ? "n" : ""}{" "}
-                geklettert
-              </p>
+              )}
             </div>
           </div>
-          <div className="flex-row small-gap bottom">
-            <button onClick={() => setIsEditing(!isEditing)}>
-              {isEditing ? "Abbrechen" : "Bearbeiten"}
-            </button>
-            {isEditing && <button onClick={handleSubmit}>Speichern</button>}
-            {isPending && <p className="status">speichern...</p>}
-            {isSuccess && <p className="status success">gespeichert!</p>}
-            {isError && (
-              <p className="status error">
-                Fehler beim Speichern: {error?.message}
-              </p>
-            )}
+        )}
+        {!user && (
+          <div className="white-box large">
+            <h2>Hey sorry.</h2>
+            <p>Du bist nicht angemeldet. Mach das mal!</p>
           </div>
-        </div>
-      )}
-      {!user && (
-        <div className="white-box large">
-          <h2>Hey sorry.</h2>
-          <p>Du bist nicht angemeldet. Mach das mal!</p>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };

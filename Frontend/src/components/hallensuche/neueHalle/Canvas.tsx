@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Knopfsis from "../../routenkarte/Knopfsis";
 import type { WandCreateDTO } from "../../../api/model";
+import TouchTracker from "../../touch/TouchTracker";
 
 interface Props {
   wände: WandCreateDTO[];
@@ -121,42 +122,56 @@ const Canvas = ({ wände, setWände, selectedWand }: Props) => {
   }
 
   return (
-    <div className="canvas-container">
-      <Knopfsis scale={scale} setScale={setScale} />
-      <svg
-        ref={svgRef}
-        onClick={onClick}
-        onMouseMove={onMouseMove}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onWheel={onWheel}
-        onKeyDown={onKeyDown}
-        onKeyUp={onKeyUp}
-        width={scale * 2000}
-        height={scale * 2000}
-        viewBox="0 0 2000 2000"
-        preserveAspectRatio="xMidYMid meet"
-        style={{ display: "block" }}
-        tabIndex={0}
-      >
-        <g
-          transform={`translate(1000,1000) scale(${scale}) translate(${offset.x}, ${offset.y})`}
+    <TouchTracker
+      onTouchMove={(moveDelta) => {
+        offset.x += moveDelta.dx / scale;
+        offset.y += moveDelta.dy / scale;
+        setOffset({ ...offset });
+      }}
+      onTouchZoom={(zoomDelta) => {
+        let newScale = scale * zoomDelta;
+        if (newScale < 0.1) newScale = 0.1;
+        if (newScale > 10) newScale = 10;
+        setScale(newScale);
+      }}
+    >
+      <div className="canvas-container">
+        <Knopfsis scale={scale} setScale={setScale} />
+        <svg
+          ref={svgRef}
+          onClick={onClick}
+          onMouseMove={onMouseMove}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onWheel={onWheel}
+          onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
+          width={scale * 2000}
+          height={scale * 2000}
+          viewBox="0 0 2000 2000"
+          preserveAspectRatio="xMidYMid meet"
+          style={{ display: "block" }}
+          tabIndex={0}
         >
-          <circle cx={mousePos.x} cy={mousePos.y} r="5" fill="var(--mokka)" />
-          <text
-            x={mousePos.x + 15}
-            y={mousePos.y + 10}
-            fill="var(--mokka)"
-            fontSize={`${15 / scale}px`}
+          <g
+            transform={`translate(1000,1000) scale(${scale}) translate(${offset.x}, ${offset.y})`}
           >
-            ({Math.round(mousePos.x)}, {Math.round(mousePos.y)})
-          </text>
+            <circle cx={mousePos.x} cy={mousePos.y} r="5" fill="var(--mokka)" />
+            <text
+              x={mousePos.x + 15}
+              y={mousePos.y + 10}
+              fill="var(--mokka)"
+              fontSize={`${15 / scale}px`}
+            >
+              ({Math.round(mousePos.x)}, {Math.round(mousePos.y)})
+            </text>
 
-          <line className="axis" x1="-1000" y1="0" x2="1000" y2="0" />
-          <line className="axis" x1="0" y1="-1000" x2="0" y2="1000" />
-          {[-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(
-            (i) => (
+            <line className="axis" x1="-1000" y1="0" x2="1000" y2="0" />
+            <line className="axis" x1="0" y1="-1000" x2="0" y2="1000" />
+            {[
+              -9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+            ].map((i) => (
               <g key={`gitter-${i}`}>
                 <line
                   key={`horizontal-${i}`}
@@ -175,64 +190,64 @@ const Canvas = ({ wände, setWände, selectedWand }: Props) => {
                   y2="1000"
                 />
               </g>
-            ),
-          )}
-          {wände.map((wand, index) => (
-            <g key={index}>
+            ))}
+            {wände.map((wand, index) => (
+              <g key={index}>
+                <line
+                  key={`wand-${index}`}
+                  x1={wand.startX}
+                  y1={wand.startY}
+                  x2={wand.endX}
+                  y2={wand.endY}
+                  stroke="black"
+                  strokeWidth={5}
+                  className={selectedWand === index ? "selected" : ""}
+                />
+                <circle
+                  cx={
+                    (wand.startX + wand.endX) / 2 -
+                    (wand.endY - wand.startY) * 0.1
+                  }
+                  cy={
+                    (wand.startY + wand.endY) / 2 +
+                    (wand.endX - wand.startX) * 0.1
+                  }
+                  r={20}
+                  fill={"white"}
+                  style={{ cursor: "pointer" }}
+                />
+                <text
+                  x={
+                    (wand.startX + wand.endX) / 2 -
+                    (wand.endY - wand.startY) * 0.1
+                  }
+                  y={
+                    (wand.startY + wand.endY) / 2 +
+                    (wand.endX - wand.startX) * 0.1
+                  }
+                  fontSize={16}
+                  fill="black"
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                >
+                  {index + 1}
+                </text>
+              </g>
+            ))}
+            {drawing.current && (
               <line
-                key={`wand-${index}`}
-                x1={wand.startX}
-                y1={wand.startY}
-                x2={wand.endX}
-                y2={wand.endY}
+                x1={wandStart.x}
+                y1={wandStart.y}
+                x2={mousePos.x}
+                y2={mousePos.y}
                 stroke="black"
                 strokeWidth={5}
-                className={selectedWand === index ? "selected" : ""}
               />
-              <circle
-                cx={
-                  (wand.startX + wand.endX) / 2 -
-                  (wand.endY - wand.startY) * 0.1
-                }
-                cy={
-                  (wand.startY + wand.endY) / 2 +
-                  (wand.endX - wand.startX) * 0.1
-                }
-                r={20}
-                fill={"white"}
-                style={{ cursor: "pointer" }}
-              />
-              <text
-                x={
-                  (wand.startX + wand.endX) / 2 -
-                  (wand.endY - wand.startY) * 0.1
-                }
-                y={
-                  (wand.startY + wand.endY) / 2 +
-                  (wand.endX - wand.startX) * 0.1
-                }
-                fontSize={16}
-                fill="black"
-                textAnchor="middle"
-                dominantBaseline="central"
-              >
-                {index + 1}
-              </text>
-            </g>
-          ))}
-          {drawing.current && (
-            <line
-              x1={wandStart.x}
-              y1={wandStart.y}
-              x2={mousePos.x}
-              y2={mousePos.y}
-              stroke="black"
-              strokeWidth={5}
-            />
-          )}
-        </g>
-      </svg>
-    </div>
+            )}
+          </g>
+        </svg>
+      </div>
+    </TouchTracker>
   );
 };
 
