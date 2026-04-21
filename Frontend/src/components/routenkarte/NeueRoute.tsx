@@ -43,7 +43,7 @@ const NeueRoute = ({ selectedHalle, selectedWand }: Props) => {
   };
 
   return (
-    <div className="routen-details">
+    <div className="white-box top right bottom routen-details">
       <h2>Neue Route</h2>
       <form onSubmit={handleRoutenSubmit}>
         <div className="form-group">

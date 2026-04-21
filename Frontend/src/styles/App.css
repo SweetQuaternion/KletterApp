@@ -122,9 +122,16 @@ h2 {
   align-items: center;
 }
 
+.space-between {
+  justify-content: space-between;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
 .button-container {
   display: flex;
-  justify-content: center;
   gap: 0.5em;
   margin-top: 1em;
 }
@@ -139,8 +146,39 @@ a:hover {
   color: var(--espresso);
 }
 
+.close-button {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  max-height: 1em;
+  overflow: hidden;
+  top: 0;
+  right: 0.4em;
+  cursor: pointer;
+  font-size: 3em;
+  color: #00000015;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+.close-button:hover {
+  color: #00000008;
+  background: none;
+}
+
+.white-box:hover .close-button {
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
+
 @media (max-width: 500px) {
   h2 {
     font-size: 1.4em;
+  }
+  .close-button {
+    opacity: 1;
   }
 }

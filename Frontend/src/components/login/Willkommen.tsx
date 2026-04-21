@@ -11,9 +11,9 @@ function Willkommen({ user }: Props) {
   return (
     <>
       <Header user={user} />
-      <div className="white-box">
+      <div className="white-box center">
         <h2>Willkommen bei der KletterApp!</h2>
-        <p>Du bist nun eingeloggt.</p>
+        <p>Du bist nun erfolgreich registriert.</p>
         <div className="centering">
           <div className="button-container">
             <Link to="/profile">

@@ -1,17 +1,5 @@
 .routen-details {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 4.5em;
-  right: 1em;
-  bottom: 1em;
-  margin: 0;
-  padding: 2em;
   width: 20em;
-  background-color: white;
-  border-radius: 15px;
-  color: var(--espresso);
-  box-shadow: 0px 0px 20px -5px var(--mokka);
   overflow: scroll;
   z-index: 1000;
 }
@@ -36,7 +24,6 @@
   display: inline-block;
   padding: 0.2em 0.7em;
   margin-bottom: 1em;
-  /* border: 1px solid var(--espresso); */
   border-radius: 999px;
   font-size: small;
   font-family:
@@ -51,6 +38,7 @@ img.geschafft-haken {
 }
 
 .routen-details b {
+  display: block;
   margin-top: 1em;
 }
 
@@ -64,12 +52,16 @@ img.geschafft-haken {
   font-size: 0.9em;
 }
 
+.routen-details .close-button {
+  display: none;
+}
+
 .routen-details-badges {
   display: flex;
   flex-direction: row;
   gap: 0.5em;
   margin-top: 1em;
-  margin-bottom: 1em;
+  margin-bottom: 1.5em;
   flex-wrap: wrap;
 }
 
@@ -142,12 +134,15 @@ b {
 .bearbeiten {
   font-size: 0.8em;
   color: var(--espresso);
-  margin-top: 0.2em;
+  margin-top: 0.1em;
   cursor: pointer;
 }
 
 @media (max-width: 500px) {
   .routen-details-header {
     margin-top: 0;
+  }
+  .routen-details .close-button {
+    display: block;
   }
 }

@@ -6,6 +6,7 @@ import type {
   KommentarCreateDTO,
   KommentarResponseDTO,
   RouteCreateDTO,
+  RouteResponseDTO,
   UserCreateDTO,
   UserResponseDTO,
   UserRoutenStatus,
@@ -21,7 +22,11 @@ import {
   addAscent,
   findAscents,
 } from "../api/ascent-controller/ascent-controller";
-import { addRoute } from "../api/routen-controller/routen-controller";
+import {
+  addRoute,
+  deleteRoute,
+  updateRoute,
+} from "../api/routen-controller/routen-controller";
 import {
   addKommentar,
   getKommentareByRouteID,
@@ -169,14 +174,46 @@ export function createAddKommentarMutationOptions() {
 export function createAddRouteMutationOptions() {
   return mutationOptions({
     mutationFn: async (data: RouteCreateDTO) => {
-      await keycloak.updateToken(30).catch((err) => {
-        console.error("Failed to refresh token", err);
-        throw new Error("Failed to refresh token");
-      });
       const response = await addRoute(data.hallenId || 0, data);
       if (!response) {
         throw new Error("Failed to add route");
       }
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["waende"],
+      });
+    },
+  });
+}
+
+export function createUpdateRouteMutationOptions() {
+  return mutationOptions({
+    mutationFn: async (data: { route: RouteCreateDTO; id: number }) => {
+      const response = await updateRoute(data.route.hallenId, data.route, {
+        id: data.id,
+      });
+      if (!response) {
+        throw new Error("Failed to update route");
+      }
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["waende"],
+      });
+    },
+  });
+}
+
+export function createDeleteRouteMutationOptions() {
+  return mutationOptions({
+    mutationFn: async (data: { hallenId: number; id: number }) => {
+      await deleteRoute(data.hallenId, { id: data.id });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["waende"],
+      });
     },
   });
 }

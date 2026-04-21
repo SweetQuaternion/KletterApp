@@ -16,6 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getGetWaendeByHallenIdQueryOptions } from "../../api/wand-controller/wand-controller";
 import { isAdmin } from "../../constants/keycloak";
 import { Link } from "react-router-dom";
+import RouteBearbeiten from "./RouteBearbeiten";
 
 interface Props {
   selectedHalle: HalleResponseDTO;
@@ -31,6 +32,9 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
     null,
   );
   const [showNeueRoute, setShowNeueRoute] = useState(false);
+  const [editingRoute, setEditingRoute] = useState<RouteResponseDTO | null>(
+    null,
+  );
 
   const { data } = useQuery(
     getGetWaendeByHallenIdQueryOptions(selectedHalle.id),
@@ -46,6 +50,7 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
         setSelectedWand={setSelectedWand}
         setSelectedRoute={setSelectedRoute}
         setShowNeueRoute={setShowNeueRoute}
+        setEditingRoute={setEditingRoute}
       />
       <Header user={user} />
       <HallenInfoBox selectedHalle={selectedHalle} />
@@ -54,6 +59,7 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
         <RoutenDetails
           selectedRoute={selectedRoute}
           setSelectedRoute={setSelectedRoute}
+          setEditingRoute={setEditingRoute}
           user={user}
         />
       )}
@@ -62,6 +68,14 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
           selectedHalle={selectedHalle}
           selectedWand={selectedWand}
           setShowNeueRoute={setShowNeueRoute}
+        />
+      )}
+      {editingRoute && selectedWand && (
+        <RouteBearbeiten
+          selectedHalle={selectedHalle}
+          selectedWand={selectedWand}
+          selectedRoute={editingRoute}
+          setEditingRoute={setEditingRoute}
         />
       )}
       {isAdmin() && (

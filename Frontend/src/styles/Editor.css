@@ -49,34 +49,6 @@
   background-color: white;
 }
 
-.close-button {
-  position: absolute;
-  margin: 0;
-  padding: 0;
-  max-height: 1em;
-  overflow: hidden;
-  top: 0;
-  right: 0.4em;
-  cursor: pointer;
-  font-size: 3em;
-  color: #00000015;
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
-  background: none;
-  border: none;
-  box-shadow: none;
-}
-
-.close-button:hover {
-  color: #00000008;
-  background: none;
-}
-
-.white-box:hover .close-button {
-  opacity: 1;
-  transition: opacity 0.2s ease-in-out;
-}
-
 .white-box.hidden {
   transform: translateX(-120%);
   transition: transform 1s ease-in-out;
@@ -206,10 +178,11 @@ line.selected {
 }
 
 @media (max-width: 500px) {
-  .close-button {
-    opacity: 1;
-  }
   .details-container {
-    min-width: 90vw;
+    min-width: calc(100vw - 2em);
+    max-width: calc(100vw - 2em);
+  }
+  .wand-coords {
+    display: none;
   }
 }

@@ -12,6 +12,7 @@ interface Props {
   setSelectedWand: (wand: WandResponseDTO | null) => void;
   setSelectedRoute: (route: RouteResponseDTO | null) => void;
   setShowNeueRoute: (show: boolean) => void;
+  setEditingRoute: (route: RouteResponseDTO | null) => void;
 }
 
 function SVGMap({
@@ -22,34 +23,9 @@ function SVGMap({
   setSelectedWand,
   setSelectedRoute,
   setShowNeueRoute,
+  setEditingRoute,
 }: Props) {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  // const dragging = useRef(false);
-  // const dragStart = useRef({ x: 0, y: 0, offsetX: 0, offsetY: 0 });
-
-  // function onPointerDown(e: React.PointerEvent<SVGSVGElement>) {
-  //   dragging.current = true;
-  //   dragStart.current = {
-  //     x: e.clientX,
-  //     y: e.clientY,
-  //     offsetX: offset.x,
-  //     offsetY: offset.y,
-  //   };
-  // }
-
-  // function onPointerMove(e: React.PointerEvent<SVGSVGElement>) {
-  //   if (!dragging.current) return;
-  //   const dx = e.clientX - dragStart.current.x;
-  //   const dy = e.clientY - dragStart.current.y;
-  //   setOffset({
-  //     x: dragStart.current.offsetX + dx / scale,
-  //     y: dragStart.current.offsetY + dy / scale,
-  //   });
-  // }
-
-  // function onPointerUp() {
-  //   dragging.current = false;
-  // }
 
   function onWheel(e: React.WheelEvent<SVGSVGElement>) {
     setScale(scale + (e.deltaY > 0 ? -0.02 : 0.02));
@@ -64,6 +40,7 @@ function SVGMap({
     if (selectedWand !== wand) {
       setSelectedRoute(null);
       setShowNeueRoute(false);
+      setEditingRoute(null);
     }
     if (wand == null) setSelectedRoute(null);
   };
@@ -95,9 +72,6 @@ function SVGMap({
     >
       <div className="routenkarte-container">
         <svg
-          // onPointerDown={onPointerDown}
-          // onPointerMove={onPointerMove}
-          // onPointerUp={onPointerUp}
           onWheel={onWheel}
           onClick={() => handleWandClick(null)}
           className="routenkarte"
@@ -198,8 +172,3 @@ function SVGMap({
 }
 
 export default SVGMap;
-
-/* <rect x="-500" y="-500" width="50" height="50" fill="tomato" />
-  <rect x="450" y="-500" width="50" height="50" fill="green" />
-  <rect x="-500" y="450" width="50" height="50" fill="steelblue" />
-  <rect x="450" y="450" width="50" height="50" fill="purple" /> */

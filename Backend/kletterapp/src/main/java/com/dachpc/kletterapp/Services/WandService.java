@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dachpc.kletterapp.Dtos.WandCreateDTO;
 import com.dachpc.kletterapp.Dtos.WandResponseDTO;
+import com.dachpc.kletterapp.Entities.Route;
 import com.dachpc.kletterapp.Entities.Wand;
 import com.dachpc.kletterapp.Entities.WandId;
 import com.dachpc.kletterapp.Mappers.WandMapper;
@@ -44,7 +45,9 @@ public class WandService {
 
     public List<WandResponseDTO> getWändeByHallenId(int hallenId) {
         List<Wand> wände = wandRepository.findByHallenIdWithRouten(hallenId);
-        return wände.stream().map(wandMapper::toResponseDTO).toList();
+        return wände.stream().peek(wand -> wand.setRouten(wand.getRouten().stream().filter(Route::getIsActive).toList()))
+            .map(wandMapper::toResponseDTO)
+            .toList();
     }
 
     public WandResponseDTO updateWand(int hallenId, int wandNr, WandCreateDTO dto) {
