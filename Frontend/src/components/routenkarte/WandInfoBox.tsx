@@ -32,14 +32,16 @@ const WandInfoBox = ({
         </div>
       </div>
       <div className="routen-container">
-        {routen.map((route) => (
-          <RoutenErgebnisFeld
-            key={route.id}
-            route={route}
-            setSelectedRoute={setSelectedRoute}
-            setShowNeueRoute={setShowNeueRoute}
-          />
-        ))}
+        {routen
+          .sort((a, b) => (b.schwierigkeit || 0) - (a.schwierigkeit || 0))
+          .map((route) => (
+            <RoutenErgebnisFeld
+              key={route.id}
+              route={route}
+              setSelectedRoute={setSelectedRoute}
+              setShowNeueRoute={setShowNeueRoute}
+            />
+          ))}
       </div>
       {isAdmin() && (
         <div className="hinzufügen" onClick={() => setShowNeueRoute(true)}>

@@ -9,7 +9,7 @@ interface Props {
 
 function HallenErgebnisFeld({ ergebnis, setSelectedHalle }: Props) {
   const handleHallenSelection = (ergebnis: HalleResponseDTO) => {
-    localStorage.setItem("Halle", JSON.stringify(ergebnis));
+    sessionStorage.setItem("Halle", JSON.stringify(ergebnis));
     setSelectedHalle(ergebnis);
   };
   return (

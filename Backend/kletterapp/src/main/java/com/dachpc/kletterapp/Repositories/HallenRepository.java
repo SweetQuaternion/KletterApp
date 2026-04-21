@@ -26,8 +26,6 @@ public interface HallenRepository extends JpaRepository<Halle, Integer> {
     )
     List<Halle> search(String search);
     List<Halle> findAll();
-
     Optional<Halle> findById(int id);
-
     void deleteById(int id);
 }

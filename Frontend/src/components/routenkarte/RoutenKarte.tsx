@@ -14,6 +14,8 @@ import RoutenDetails from "./RoutenDetails";
 import NeueRoute from "./NeueRoute";
 import { useQuery } from "@tanstack/react-query";
 import { getGetWaendeByHallenIdQueryOptions } from "../../api/wand-controller/wand-controller";
+import { isAdmin } from "../../constants/keycloak";
+import { Link } from "react-router-dom";
 
 interface Props {
   selectedHalle: HalleResponseDTO;
@@ -61,6 +63,13 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
           selectedWand={selectedWand}
           setShowNeueRoute={setShowNeueRoute}
         />
+      )}
+      {isAdmin() && (
+        <Link to="/routenkarte/edit">
+          <div className="speichern-knopfsi">
+            <button>Bearbeiten</button>
+          </div>
+        </Link>
       )}
     </>
   );

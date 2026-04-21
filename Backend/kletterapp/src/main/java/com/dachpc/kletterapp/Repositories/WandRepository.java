@@ -16,4 +16,5 @@ public interface WandRepository extends JpaRepository<Wand, WandId> {
     @Query("SELECT w FROM Wand w LEFT JOIN FETCH w.routen WHERE w.id.hallenId = :hallenId")
     List<Wand> findByHallenIdWithRouten(@Param("hallenId") int hallenId);
     void deleteById(WandId id);
+    void deleteByIdHallenId(int hallenId);    
 }

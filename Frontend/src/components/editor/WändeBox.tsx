@@ -1,14 +1,37 @@
 import { useState } from "react";
-import type { WandCreateDTO } from "../../../api/model";
+import type { WandCreateDTO } from "../../api/model";
 
 interface Props {
   wände: WandCreateDTO[];
   setWände: (wände: WandCreateDTO[]) => void;
+  selectedWand: number | null;
   setSelectedWand: (index: number | null) => void;
+  setHoveredWand: (index: number | null) => void;
+  undo: () => void;
+  redo: () => void;
 }
 
-const WändeBox = ({ wände, setWände, setSelectedWand }: Props) => {
+const WändeBox = ({
+  wände,
+  setWände,
+  selectedWand,
+  setSelectedWand,
+  setHoveredWand,
+  undo,
+  redo,
+}: Props) => {
   const [hidden, setHidden] = useState(false);
+
+  function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (e.ctrlKey && e.key === "z") {
+      e.preventDefault();
+      undo();
+    }
+    if (e.ctrlKey && e.key === "y") {
+      e.preventDefault();
+      redo();
+    }
+  }
 
   function moveWand(fromIndex: number, toIndex: number) {
     if (fromIndex === toIndex) return;
@@ -67,10 +90,14 @@ const WändeBox = ({ wände, setWände, setSelectedWand }: Props) => {
 
     return (
       <div
-        className="wand-item"
+        className={`wand-item ${index === selectedWand ? "selected" : ""}`}
         key={index}
-        onMouseOver={() => setSelectedWand(index)}
-        onMouseOut={() => setSelectedWand(null)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setSelectedWand(index);
+        }}
+        onMouseOver={() => setHoveredWand(index)}
+        onMouseOut={() => setHoveredWand(null)}
       >
         <div className="wand-left">
           <div
@@ -134,7 +161,12 @@ const WändeBox = ({ wände, setWände, setSelectedWand }: Props) => {
       <button className="menu" onClick={() => setHidden(false)}>
         ⌂
       </button>
-      <div className={`white-box relative ${hidden ? "hidden" : ""}`}>
+      <div
+        className={`white-box relative ${hidden ? "hidden" : ""}`}
+        onClick={() => setSelectedWand(null)}
+        onKeyDown={onKeyDown}
+        tabIndex={0}
+      >
         <button className="close-button">
           <div onClick={() => setHidden(true)}>×</div>
         </button>

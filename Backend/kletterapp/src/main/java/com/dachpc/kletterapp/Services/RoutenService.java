@@ -39,7 +39,7 @@ public class RoutenService {
 
     public List<RouteResponseDTO> getRoutenByHallenId(int hallenId) {
         List<Route> routen = routenRepository.findByWand_Id_HallenId(hallenId);
-        return routen.stream().map(routeMapper::toResponseDTO).toList();
+        return routen.stream().map(routeMapper::toResponseDTO).filter(dto -> dto.getIsActive()).toList();
     }
 
     public RouteResponseDTO updateRoute(int id, RouteCreateDTO dto) {
@@ -51,7 +51,8 @@ public class RoutenService {
 
     public void deleteRoute(int id) {
         Route route = routenRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Zu löschende Route nicht gefunden"));
-        routenRepository.delete(route);
+        route.setIsActive(false);
+        routenRepository.save(route);
     }
 
 }

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import type { FocusEvent } from "react";
+import type { HalleResponseDTO } from "../../api/model";
 
 interface Props {
+  selectedHalle: HalleResponseDTO | null | undefined;
   setHalleData: (data: {
     name: string;
     adresse: string;
@@ -9,7 +11,7 @@ interface Props {
   }) => void;
 }
 
-const NeueHalleBox = ({ setHalleData }: Props) => {
+const NeueHalleBox = ({ selectedHalle, setHalleData }: Props) => {
   const [hidden, setHidden] = useState(false);
 
   function handleFormBlur(e: FocusEvent<HTMLFormElement>) {
@@ -38,19 +40,36 @@ const NeueHalleBox = ({ setHalleData }: Props) => {
         <button className="close-button">
           <div onClick={() => setHidden(true)}>×</div>
         </button>
-        <h2>Halle hinzufügen</h2>
+        <h2>{selectedHalle ? "Halle bearbeiten" : "Halle hinzufügen"}</h2>
         <form onBlur={handleFormBlur}>
           <div className="form-group">
             <label htmlFor="name">Name der Halle *</label>
-            <input type="text" id="name" name="name" required />
+            <input
+              type="text"
+              id="name"
+              name="name"
+              defaultValue={selectedHalle?.name || ""}
+              required
+            />
           </div>
           <div className="form-group">
             <label htmlFor="adresse">Adresse *</label>
-            <input type="text" id="adresse" name="adresse" required />
+            <input
+              type="text"
+              id="adresse"
+              name="adresse"
+              defaultValue={selectedHalle?.adresse || ""}
+              required
+            />
           </div>
           <div className="form-group">
             <label htmlFor="betreiber">Betreiber</label>
-            <input type="text" id="betreiber" name="betreiber" />
+            <input
+              type="text"
+              id="betreiber"
+              name="betreiber"
+              defaultValue={selectedHalle?.betreiber || ""}
+            />
           </div>
         </form>
       </div>

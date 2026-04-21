@@ -8,7 +8,7 @@ import type { HalleResponseDTO, UserResponseDTO } from "./api/model";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Userpage from "./components/profil/Userpage";
-import HalleEditor from "./components/hallensuche/neueHalle/HalleEditor";
+import HalleEditor from "./components/editor/HalleEditor";
 
 interface Props {
   user: UserResponseDTO | null;
@@ -17,7 +17,7 @@ interface Props {
 function App({ user }: Props) {
   const [selectedHalle, setSelectedHalle] = useState<HalleResponseDTO | null>(
     () => {
-      const savedHalle = localStorage.getItem("Halle");
+      const savedHalle = sessionStorage.getItem("Halle");
       return savedHalle ? JSON.parse(savedHalle) : null;
     },
   );
@@ -44,6 +44,10 @@ function App({ user }: Props) {
               <Navigate to="/hallenfinder" replace />
             )
           }
+        />
+        <Route
+          path="/routenkarte/edit"
+          element={<HalleEditor user={user} selectedHalle={selectedHalle} />}
         />
         <Route path="/user/:username" element={<Userpage user={user} />} />
       </Routes>

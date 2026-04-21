@@ -70,6 +70,7 @@ img.geschafft-haken {
   gap: 0.5em;
   margin-top: 1em;
   margin-bottom: 1em;
+  flex-wrap: wrap;
 }
 
 b {
@@ -143,4 +144,10 @@ b {
   color: var(--espresso);
   margin-top: 0.2em;
   cursor: pointer;
+}
+
+@media (max-width: 500px) {
+  .routen-details-header {
+    margin-top: 0;
+  }
 }

@@ -1,5 +1,6 @@
 package com.dachpc.kletterapp.Services;
 
+import com.dachpc.kletterapp.Repositories.RoutenRepository;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ import org.springframework.stereotype.Service;
 public class WandService {
 
     @Autowired
+    RoutenRepository routenRepository;
+
+    @Autowired
     private WandMapper wandMapper;
 
     @Autowired
@@ -28,7 +32,7 @@ public class WandService {
 
     public WandResponseDTO addWand(WandCreateDTO dto) {
         Wand wand = wandMapper.toEntity(dto);
-        // geht das hier noch besser?
+        // geht das hier noch besser? (automatische Nummern setzen)
         int nextWandNr = wandRepository.findByIdHallenId(dto.getHallenId()).stream()
             .map(existingWand -> existingWand.getId().getWandNr())
             .max(Integer::compareTo)
@@ -51,6 +55,7 @@ public class WandService {
     }
 
     public void deleteWand(int hallenId, int wandNr) {
+        routenRepository.deleteByWandId(new WandId(hallenId, wandNr));
         wandRepository.deleteById(new WandId(hallenId, wandNr));
     }
     

@@ -179,13 +179,14 @@ circle {
     left: 0.5em;
   }
   .hallen-info-box {
-    max-width: 90vw;
+    max-width: calc(100vw - 2em);
+    overflow-wrap: break-word;
   }
   .close-button {
     opacity: 1;
   }
   .routen-details {
-    min-width: 90vw;
-    max-width: 90vw;
+    min-width: calc(100vw - 2em);
+    max-width: calc(100vw - 2em);
   }
 }

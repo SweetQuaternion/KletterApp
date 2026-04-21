@@ -2,7 +2,7 @@ CREATE TABLE hallen(
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name text NOT NULL,
     adresse text NOT NULL,
-    betreiber text NOT NULL DEFAULT 'Unbekannt'
+    betreiber text
 );
 
 create type position_enum as enum ('indoor', 'outdoor');

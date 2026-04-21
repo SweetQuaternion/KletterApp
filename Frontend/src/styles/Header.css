@@ -74,7 +74,7 @@ header h1 {
   }
 }
 
-@media (max-width: 320px) {
+@media (max-width: 350px) {
   header {
     height: 3em;
   }

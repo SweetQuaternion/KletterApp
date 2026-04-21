@@ -1,15 +1,29 @@
 import { useEffect, useRef, useState } from "react";
-import Knopfsis from "../../routenkarte/Knopfsis";
-import type { WandCreateDTO } from "../../../api/model";
-import TouchTracker from "../../touch/TouchTracker";
+import Knopfsis from "../routenkarte/Knopfsis";
+import type { WandCreateDTO } from "../../api/model";
+import TouchTracker from "../touch/TouchTracker";
 
 interface Props {
   wände: WandCreateDTO[];
   setWände: (wände: WandCreateDTO[]) => void;
   selectedWand: number | null;
+  setSelectedWand: (index: number | null) => void;
+  hoveredWand: number | null;
+  setHoveredWand: (index: number | null) => void;
+  undo: () => void;
+  redo: () => void;
 }
 
-const Canvas = ({ wände, setWände, selectedWand }: Props) => {
+const Canvas = ({
+  wände,
+  setWände,
+  selectedWand,
+  setSelectedWand,
+  hoveredWand,
+  setHoveredWand,
+  undo,
+  redo,
+}: Props) => {
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -17,8 +31,16 @@ const Canvas = ({ wände, setWände, selectedWand }: Props) => {
   const dragStart = useRef({ x: 0, y: 0, offsetX: 0, offsetY: 0 });
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const drawing = useRef(false);
+  const editing = useRef({ isEditing: false, index: null, part: "" } as {
+    isEditing: boolean;
+    index: number | null;
+    part: string;
+  });
   const [wandStart, setWandStart] = useState({ x: 0, y: 0 });
   const shiftPressed = useRef(false);
+  const selectedWandData = selectedWand !== null ? wände[selectedWand] : null;
+  const editingWand =
+    editing.current.index !== null ? wände[editing.current.index] : null;
 
   useEffect(() => {
     svgRef.current?.focus();
@@ -82,6 +104,10 @@ const Canvas = ({ wände, setWände, selectedWand }: Props) => {
     ) {
       return;
     }
+    if (selectedWand !== null) {
+      setSelectedWand(null);
+      return;
+    }
     const pos = getMousePositionSVG(e);
     if (!drawing.current) {
       drawing.current = true;
@@ -105,13 +131,20 @@ const Canvas = ({ wände, setWände, selectedWand }: Props) => {
 
   function onKeyDown(e: React.KeyboardEvent<SVGSVGElement>) {
     if (e.key === "Escape") {
+      setSelectedWand(null);
       drawing.current = false;
+      editing.current = { isEditing: false, index: null, part: "" };
     }
     if (e.key === "Shift") {
       shiftPressed.current = true;
     }
     if (e.ctrlKey && e.key === "z") {
-      setWände(wände.slice(0, -1));
+      e.preventDefault();
+      undo();
+    }
+    if (e.ctrlKey && e.key === "y") {
+      e.preventDefault();
+      redo();
     }
   }
 
@@ -119,6 +152,24 @@ const Canvas = ({ wände, setWände, selectedWand }: Props) => {
     if (e.key === "Shift") {
       shiftPressed.current = false;
     }
+  }
+
+  function applyWandEdit(part: "start" | "end") {
+    if (selectedWand === null) return;
+
+    const updatedWände = [...wände];
+    const currentWand = updatedWände[selectedWand];
+    if (!currentWand) return;
+
+    if (part === "start") {
+      currentWand.startX = Math.round(mousePos.x);
+      currentWand.startY = Math.round(mousePos.y);
+    } else {
+      currentWand.endX = Math.round(mousePos.x);
+      currentWand.endY = Math.round(mousePos.y);
+    }
+
+    setWände(updatedWände);
   }
 
   return (
@@ -192,16 +243,34 @@ const Canvas = ({ wände, setWände, selectedWand }: Props) => {
               </g>
             ))}
             {wände.map((wand, index) => (
-              <g key={index}>
+              <g
+                key={index}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedWand(index);
+                }}
+                onMouseOver={() => setHoveredWand(index)}
+                onMouseOut={() => setHoveredWand(null)}
+                style={{
+                  cursor: "pointer",
+                  visibility:
+                    editing.current.isEditing && editing.current.index === index
+                      ? "hidden"
+                      : "visible",
+                }}
+              >
                 <line
                   key={`wand-${index}`}
                   x1={wand.startX}
                   y1={wand.startY}
                   x2={wand.endX}
                   y2={wand.endY}
-                  stroke="black"
                   strokeWidth={5}
-                  className={selectedWand === index ? "selected" : ""}
+                  className={
+                    hoveredWand === index || selectedWand === index
+                      ? "selected"
+                      : ""
+                  }
                 />
                 <circle
                   cx={
@@ -234,14 +303,136 @@ const Canvas = ({ wände, setWände, selectedWand }: Props) => {
                 </text>
               </g>
             ))}
+
+            {/* Anfangs- und Endknopfsis */}
+            {selectedWandData && (
+              <g>
+                {/* Anfangsknopfsi */}
+                <circle
+                  cx={
+                    editing.current.isEditing &&
+                    editing.current.index === selectedWand &&
+                    editing.current.part === "start"
+                      ? mousePos.x
+                      : selectedWandData.startX
+                  }
+                  cy={
+                    editing.current.isEditing &&
+                    editing.current.index === selectedWand &&
+                    editing.current.part === "start"
+                      ? mousePos.y
+                      : selectedWandData.startY
+                  }
+                  r={10}
+                  fill="var(--latte)"
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!editing.current.isEditing) {
+                      editing.current = {
+                        isEditing: true,
+                        index: selectedWand,
+                        part: "start",
+                      };
+                    } else if (
+                      editing.current.index === selectedWand &&
+                      editing.current.part === "start"
+                    ) {
+                      applyWandEdit("start");
+                      editing.current = {
+                        isEditing: false,
+                        index: null,
+                        part: "",
+                      };
+                    } else {
+                      editing.current = {
+                        isEditing: true,
+                        index: selectedWand,
+                        part: "start",
+                      };
+                    }
+                  }}
+                />
+                {/* Endknopfsi */}
+                <circle
+                  cx={
+                    editing.current.isEditing &&
+                    editing.current.index === selectedWand &&
+                    editing.current.part === "end"
+                      ? mousePos.x
+                      : selectedWandData.endX
+                  }
+                  cy={
+                    editing.current.isEditing &&
+                    editing.current.index === selectedWand &&
+                    editing.current.part === "end"
+                      ? mousePos.y
+                      : selectedWandData.endY
+                  }
+                  r={10}
+                  fill="var(--latte)"
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!editing.current.isEditing) {
+                      editing.current = {
+                        isEditing: true,
+                        index: selectedWand,
+                        part: "end",
+                      };
+                    } else if (
+                      editing.current.index === selectedWand &&
+                      editing.current.part === "end"
+                    ) {
+                      applyWandEdit("end");
+                      editing.current = {
+                        isEditing: false,
+                        index: null,
+                        part: "",
+                      };
+                    } else {
+                      editing.current = {
+                        isEditing: true,
+                        index: selectedWand,
+                        part: "end",
+                      };
+                    }
+                  }}
+                />
+              </g>
+            )}
             {drawing.current && (
               <line
                 x1={wandStart.x}
                 y1={wandStart.y}
                 x2={mousePos.x}
                 y2={mousePos.y}
-                stroke="black"
                 strokeWidth={5}
+              />
+            )}
+
+            {/* Editing */}
+            {editing.current.isEditing && editingWand && (
+              <line
+                x1={
+                  editing.current.part === "start"
+                    ? mousePos.x
+                    : editingWand.startX
+                }
+                y1={
+                  editing.current.part === "start"
+                    ? mousePos.y
+                    : editingWand.startY
+                }
+                x2={
+                  editing.current.part === "end" ? mousePos.x : editingWand.endX
+                }
+                y2={
+                  editing.current.part === "end" ? mousePos.y : editingWand.endY
+                }
+                strokeWidth={5}
+                className="selected"
+                pointerEvents="none"
               />
             )}
           </g>
