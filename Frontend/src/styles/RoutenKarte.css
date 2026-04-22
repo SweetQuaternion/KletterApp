@@ -174,6 +174,30 @@ circle {
   color: var(--ozeanblau);
 }
 
+.halle-favorit-container {
+  position: absolute;
+  margin-right: 0.5em;
+}
+
+.halle-favorit {
+  background-color: transparent;
+  color: var(--himmelsblau);
+  box-shadow: none;
+  font-size: 2em;
+  padding: 0;
+}
+
+.halle-favorit:hover {
+  background-color: transparent;
+  opacity: 0.7;
+}
+
+.halle-favorit.active {
+  color: var(--ozeanblau);
+  text-shadow: 0 0 15px var(--ozeanblau);
+  opacity: 1;
+}
+
 @media (max-width: 500px) {
   .infobox-container.left {
     left: 0.5em;

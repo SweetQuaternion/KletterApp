@@ -35,7 +35,6 @@ function SVGMap({
   // Closure-Problems trotzdem. selectedWand ist immer ein Render hinterher und
   // deswegen funktioniert der Vergleich. Man sollte hier wohl useRef nehmen.
   const handleWandClick = (wand: WandResponseDTO | null) => {
-    console.log("Wand " + wand?.wandNr + " clicked");
     setSelectedWand(wand);
     if (selectedWand !== wand) {
       setSelectedRoute(null);

@@ -1,25 +1,24 @@
 import "../styles/App.css";
 import "../styles/Header.css";
 import logo from "../assets/react.svg";
-import type { UserResponseDTO } from "../api/model";
+import type { HalleResponseDTO, UserResponseDTO } from "../api/model";
 import { login, register, logout } from "../constants/keycloak";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { createAvatarQueryOptions } from "../constants/queries";
 
 interface Props {
   user: UserResponseDTO | null;
+  setSelectedHalle: (halle: HalleResponseDTO) => void;
 }
 
-function Header({ user }: Props) {
-  const [menuToggled, setMenuToggled] = useState(false);
-
-  useEffect(() => {
-    const handler = () => setMenuToggled(false);
-    document.addEventListener("click", handler);
-    return () => document.removeEventListener("click", handler);
-  }, []);
+function Header({ user, setSelectedHalle }: Props) {
+  const [profileToggled, setProfileToggled] = useState(false);
+  const [navigationToggled, setNavigationToggled] = useState(false);
+  const heimatHallen = JSON.parse(
+    localStorage.getItem("Heimathallen") || "[]",
+  ) as HalleResponseDTO[];
 
   const { data: avatar } = useQuery(
     createAvatarQueryOptions(user?.keycloakId || ""),
@@ -29,7 +28,13 @@ function Header({ user }: Props) {
     <>
       <header>
         <div className="left-part">
-          <img src={logo} />
+          <img
+            src={logo}
+            onClick={(e) => {
+              e.stopPropagation();
+              setNavigationToggled(!navigationToggled);
+            }}
+          />
           <h1>KletterApp</h1>
         </div>
         {!user && (
@@ -49,7 +54,7 @@ function Header({ user }: Props) {
               className="profile-button"
               onClick={(e) => {
                 e.stopPropagation();
-                setMenuToggled(!menuToggled);
+                setProfileToggled(!profileToggled);
               }}
             >
               {avatar && <img src={URL.createObjectURL(avatar)} alt="Profil" />}
@@ -57,12 +62,37 @@ function Header({ user }: Props) {
           </div>
         )}
       </header>
-      {menuToggled && (
-        <div className="profile-menu">
-          <Link to="/profil">
-            <button>Mein Profil</button>
-          </Link>
-          <button onClick={() => logout()}>Abmelden</button>
+      {profileToggled && (
+        <div className="overlay" onClick={() => setProfileToggled(false)}>
+          <div className="profile-menu">
+            <Link to="/profil">
+              <button>Mein Profil</button>
+            </Link>
+            <button onClick={() => logout()}>Abmelden</button>
+          </div>
+        </div>
+      )}
+      {navigationToggled && (
+        <div className="overlay" onClick={() => setNavigationToggled(false)}>
+          <div className="navigation-menu">
+            {heimatHallen.map((halle) => (
+              <Link to="/routenkarte/">
+                <button onClick={() => setSelectedHalle(halle)}>
+                  {halle.name}
+                </button>
+              </Link>
+            ))}
+            <Link to="/hallenfinder">
+              <button>Hallenfinder</button>
+            </Link>
+            {user && (
+              <>
+                <Link to="/profil">
+                  <button>Mein Profil</button>
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       )}
     </>

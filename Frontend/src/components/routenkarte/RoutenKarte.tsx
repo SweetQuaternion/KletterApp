@@ -4,7 +4,6 @@ import {
   type UserResponseDTO,
   type WandResponseDTO,
 } from "../../api/model";
-import Header from "./../Header";
 import "../../styles/RoutenKarte.css";
 import HallenInfoBox from "./HallenInfoBox";
 import SVGMap from "./SVGMap";
@@ -36,9 +35,33 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
     null,
   );
 
+  const heimatHallen = JSON.parse(
+    localStorage.getItem("Heimathallen") || "[]",
+  ) as HalleResponseDTO[];
+
+  const [isHalleFavorit, setIsHalleFavorit] = useState(() => {
+    const heimatHallen = JSON.parse(
+      localStorage.getItem("Heimathallen") || "[]",
+    ) as HalleResponseDTO[];
+    return heimatHallen.some((halle) => halle.id === selectedHalle.id);
+  });
+
   const { data } = useQuery(
     getGetWaendeByHallenIdQueryOptions(selectedHalle.id),
   );
+
+  const handleFavoriteClick = () => {
+    if (isHalleFavorit) {
+      const updatedHallen = heimatHallen.filter(
+        (halle) => halle.id !== selectedHalle.id,
+      );
+      localStorage.setItem("Heimathallen", JSON.stringify(updatedHallen));
+    } else {
+      heimatHallen.push(selectedHalle);
+      localStorage.setItem("Heimathallen", JSON.stringify(heimatHallen));
+    }
+    setIsHalleFavorit(!isHalleFavorit);
+  };
 
   return (
     <>
@@ -52,9 +75,18 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
         setShowNeueRoute={setShowNeueRoute}
         setEditingRoute={setEditingRoute}
       />
-      <Header user={user} />
+      <div className="halle-favorit-container top right">
+        <button
+          className={`halle-favorit ${isHalleFavorit ? "active" : ""}`}
+          title="Als Heimathalle markieren"
+          onClick={handleFavoriteClick}
+        >
+          ❤︎⁠
+        </button>
+      </div>
       <HallenInfoBox selectedHalle={selectedHalle} />
       <Knopfsis scale={scale} setScale={setScale} />
+
       {selectedRoute && (
         <RoutenDetails
           selectedRoute={selectedRoute}

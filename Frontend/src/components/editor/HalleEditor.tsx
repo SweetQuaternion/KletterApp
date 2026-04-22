@@ -4,7 +4,6 @@ import type {
   UserResponseDTO,
   WandCreateDTO,
 } from "../../api/model";
-import Header from "../Header";
 import NeueHalleBox from "./NeueHalleBox";
 import "../../styles/Editor.css";
 import Canvas from "./Canvas";
@@ -22,7 +21,7 @@ interface Props {
   selectedHalle?: HalleResponseDTO | null;
 }
 
-const HalleEditor = ({ user, selectedHalle }: Props) => {
+const HalleEditor = ({ selectedHalle }: Props) => {
   const [halleData, setHalleData] = useState<HalleCreateDTO>({
     name: "",
     adresse: "",
@@ -165,7 +164,6 @@ const HalleEditor = ({ user, selectedHalle }: Props) => {
           </div>
         </div>
       )}
-      <Header user={user} />
     </>
   );
 };

@@ -1,6 +1,5 @@
 import "../../styles/App.css";
 import "../../styles/Profil.css";
-import Header from "../Header";
 import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -55,7 +54,6 @@ const Profil = ({ user }: Props) => {
 
   return (
     <>
-      <Header user={user} />
       <div className="profil-container">
         {user && (
           <div className="white-box large profile">
