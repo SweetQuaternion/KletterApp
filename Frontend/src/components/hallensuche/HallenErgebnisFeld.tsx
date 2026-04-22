@@ -1,13 +1,15 @@
 import { Link } from "react-router";
 import "../../styles/HallenFinder.css";
 import type { HalleResponseDTO } from "../../api/model";
+import { HalleContext } from "../../constants/context";
+import { useContext } from "react";
 
 interface Props {
   ergebnis: HalleResponseDTO;
-  setSelectedHalle: (id: HalleResponseDTO) => void;
 }
 
-function HallenErgebnisFeld({ ergebnis, setSelectedHalle }: Props) {
+function HallenErgebnisFeld({ ergebnis }: Props) {
+  const { setSelectedHalle } = useContext(HalleContext);
   const handleHallenSelection = (ergebnis: HalleResponseDTO) => {
     sessionStorage.setItem("Halle", JSON.stringify(ergebnis));
     setSelectedHalle(ergebnis);

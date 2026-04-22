@@ -1,14 +1,13 @@
 import {
   type HalleResponseDTO,
   type RouteResponseDTO,
-  type UserResponseDTO,
   type WandResponseDTO,
 } from "../../api/model";
 import "../../styles/RoutenKarte.css";
 import HallenInfoBox from "./HallenInfoBox";
 import SVGMap from "./SVGMap";
 import Knopfsis from "./Knopfsis";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import RoutenDetails from "./RoutenDetails";
 import NeueRoute from "./NeueRoute";
 import { useQuery } from "@tanstack/react-query";
@@ -16,13 +15,11 @@ import { getGetWaendeByHallenIdQueryOptions } from "../../api/wand-controller/wa
 import { isAdmin } from "../../constants/keycloak";
 import { Link } from "react-router-dom";
 import RouteBearbeiten from "./RouteBearbeiten";
+import { HalleContext } from "../../constants/context";
 
-interface Props {
-  selectedHalle: HalleResponseDTO;
-  user: UserResponseDTO | null;
-}
+const RoutenKarte = () => {
+  const { selectedHalle } = useContext(HalleContext);
 
-const RoutenKarte = ({ selectedHalle, user }: Props) => {
   const [scale, setScale] = useState(1);
   const [selectedWand, setSelectedWand] = useState<WandResponseDTO | null>(
     null,
@@ -34,6 +31,10 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
   const [editingRoute, setEditingRoute] = useState<RouteResponseDTO | null>(
     null,
   );
+
+  if (!selectedHalle) {
+    return null;
+  }
 
   const heimatHallen = JSON.parse(
     localStorage.getItem("Heimathallen") || "[]",
@@ -47,7 +48,7 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
   });
 
   const { data } = useQuery(
-    getGetWaendeByHallenIdQueryOptions(selectedHalle.id),
+    getGetWaendeByHallenIdQueryOptions(selectedHalle!.id),
   );
 
   const handleFavoriteClick = () => {
@@ -84,7 +85,7 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
           ❤︎⁠
         </button>
       </div>
-      <HallenInfoBox selectedHalle={selectedHalle} />
+      <HallenInfoBox />
       <Knopfsis scale={scale} setScale={setScale} />
 
       {selectedRoute && (
@@ -92,19 +93,16 @@ const RoutenKarte = ({ selectedHalle, user }: Props) => {
           selectedRoute={selectedRoute}
           setSelectedRoute={setSelectedRoute}
           setEditingRoute={setEditingRoute}
-          user={user}
         />
       )}
       {showNeueRoute && selectedWand && (
         <NeueRoute
-          selectedHalle={selectedHalle}
           selectedWand={selectedWand}
           setShowNeueRoute={setShowNeueRoute}
         />
       )}
       {editingRoute && selectedWand && (
         <RouteBearbeiten
-          selectedHalle={selectedHalle}
           selectedWand={selectedWand}
           selectedRoute={editingRoute}
           setEditingRoute={setEditingRoute}

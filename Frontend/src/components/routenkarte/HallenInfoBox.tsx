@@ -1,12 +1,13 @@
-import { useState } from "react";
-import type { HalleResponseDTO } from "../../api/model";
+import { useContext, useState } from "react";
+import { HalleContext } from "../../constants/context";
 
-interface Props {
-  selectedHalle: HalleResponseDTO;
-}
-
-const HallenInfoBox = ({ selectedHalle }: Props) => {
+const HallenInfoBox = () => {
+  const { selectedHalle } = useContext(HalleContext);
   const [hidden, setHidden] = useState(false);
+
+  if (!selectedHalle) {
+    return null;
+  }
 
   return (
     <>

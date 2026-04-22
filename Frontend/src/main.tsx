@@ -6,6 +6,7 @@ import { keycloak } from "./constants/keycloak.ts";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { fetchUser, queryClient } from "./constants/queries.ts";
 import type { UserResponseDTO } from "./api/model";
+import { UserContext } from "./constants/context.ts";
 
 keycloak
   .init({
@@ -23,7 +24,9 @@ keycloak
     createRoot(document.getElementById("root")!).render(
       <StrictMode>
         <QueryClientProvider client={queryClient}>
-          <App user={user} />
+          <UserContext.Provider value={user}>
+            <App />
+          </UserContext.Provider>
         </QueryClientProvider>
       </StrictMode>,
     );

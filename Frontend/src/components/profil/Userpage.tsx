@@ -1,6 +1,5 @@
 import "../../styles/App.css";
 import "../../styles/Profil.css";
-import type { UserResponseDTO } from "../../api/model";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -8,14 +7,12 @@ import {
   createProfileQueryOptions,
 } from "../../constants/queries";
 import { pointsToLevel } from "../../constants/levels";
+import { UserContext } from "../../constants/context.ts";
+import { useContext } from "react";
 
-interface Props {
-  user: UserResponseDTO | null;
-}
-
-const Profil = ({ user }: Props) => {
+const Profil = () => {
   let params = useParams();
-
+  const user = useContext(UserContext);
   const { data } = useQuery(createProfileQueryOptions(params.username || ""));
 
   const { data: avatar } = useQuery(

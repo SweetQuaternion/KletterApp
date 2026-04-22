@@ -1,19 +1,20 @@
 import "../styles/App.css";
 import "../styles/Header.css";
 import logo from "../assets/react.svg";
-import type { HalleResponseDTO, UserResponseDTO } from "../api/model";
+import type { HalleResponseDTO } from "../api/model";
 import { login, register, logout } from "../constants/keycloak";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { createAvatarQueryOptions } from "../constants/queries";
+import { UserContext } from "../constants/context.ts";
 
 interface Props {
-  user: UserResponseDTO | null;
   setSelectedHalle: (halle: HalleResponseDTO) => void;
 }
 
-function Header({ user, setSelectedHalle }: Props) {
+function Header({ setSelectedHalle }: Props) {
+  const user = useContext(UserContext);
   const [profileToggled, setProfileToggled] = useState(false);
   const [navigationToggled, setNavigationToggled] = useState(false);
   const heimatHallen = JSON.parse(

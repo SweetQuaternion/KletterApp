@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import type {
-  HalleResponseDTO,
   RouteCreateDTO,
   RouteResponseDTO,
   WandResponseDTO,
@@ -12,20 +11,20 @@ import {
   createUpdateRouteMutationOptions,
   createDeleteRouteMutationOptions,
 } from "../../constants/queries";
+import { HalleContext } from "../../constants/context";
 
 interface Props {
-  selectedHalle: HalleResponseDTO;
   selectedWand: WandResponseDTO;
   selectedRoute: RouteResponseDTO;
   setEditingRoute: (route: RouteResponseDTO | null) => void;
 }
 
 const RouteBearbeiten = ({
-  selectedHalle,
   selectedWand,
   selectedRoute,
   setEditingRoute,
 }: Props) => {
+  const { selectedHalle } = useContext(HalleContext);
   const {
     mutate: update,
     isSuccess,
@@ -42,7 +41,7 @@ const RouteBearbeiten = ({
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {
-      hallenId: selectedHalle.id,
+      hallenId: selectedHalle!.id,
       wandNr: selectedWand.wandNr,
       name: formData.get("name") as string,
       farbe: formData.get("farbe") as string,
@@ -60,7 +59,7 @@ const RouteBearbeiten = ({
   };
 
   const handleLöschen = () => {
-    deleteRoute({ hallenId: selectedHalle.id, id: selectedRoute.id });
+    deleteRoute({ hallenId: selectedHalle!.id, id: selectedRoute.id });
   };
 
   return (

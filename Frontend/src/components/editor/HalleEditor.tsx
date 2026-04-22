@@ -1,7 +1,6 @@
 import type {
   HalleCreateDTO,
   HalleResponseDTO,
-  UserResponseDTO,
   WandCreateDTO,
 } from "../../api/model";
 import NeueHalleBox from "./NeueHalleBox";
@@ -17,7 +16,6 @@ import { getGetWaendeByHallenIdQueryOptions } from "../../api/wand-controller/wa
 import { updateHalle } from "../../api/hallen-controller/hallen-controller";
 
 interface Props {
-  user: UserResponseDTO | null;
   selectedHalle?: HalleResponseDTO | null;
 }
 
@@ -29,7 +27,7 @@ const HalleEditor = ({ selectedHalle }: Props) => {
   });
 
   const { data } = useQuery({
-    ...getGetWaendeByHallenIdQueryOptions(selectedHalle!.id),
+    ...getGetWaendeByHallenIdQueryOptions(selectedHalle?.id ?? -1),
     enabled: !!selectedHalle,
   });
 

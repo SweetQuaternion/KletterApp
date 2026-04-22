@@ -1,11 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { convertSchwierigkeitToString } from "../../constants/conversions";
 import "../../styles/RoutenDetails.css";
-import type {
-  AscentResponseDTOStyle,
-  RouteResponseDTO,
-  UserResponseDTO,
-} from "../../api/model";
+import type { AscentResponseDTOStyle, RouteResponseDTO } from "../../api/model";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   createAddAscentMutationOptions,
@@ -17,20 +13,20 @@ import {
 } from "../../constants/queries";
 import { Link } from "react-router";
 import { isAdmin } from "../../constants/keycloak";
+import { UserContext } from "../../constants/context.ts";
 
 interface Props {
   selectedRoute: RouteResponseDTO;
   setSelectedRoute: (route: RouteResponseDTO | null) => void;
   setEditingRoute: (route: RouteResponseDTO | null) => void;
-  user: UserResponseDTO | null;
 }
 
 const RoutenDetails = ({
   selectedRoute,
   setSelectedRoute,
   setEditingRoute,
-  user,
 }: Props) => {
+  const user = useContext(UserContext);
   const [ascentToggled, setAscentToggled] = useState(false);
 
   const { data: userRoutenStatus } = useQuery(

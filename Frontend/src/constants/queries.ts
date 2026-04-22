@@ -6,7 +6,6 @@ import type {
   KommentarCreateDTO,
   KommentarResponseDTO,
   RouteCreateDTO,
-  RouteResponseDTO,
   UserCreateDTO,
   UserResponseDTO,
   UserRoutenStatus,

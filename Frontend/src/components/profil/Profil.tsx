@@ -1,20 +1,18 @@
 import "../../styles/App.css";
 import "../../styles/Profil.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   createAvatarMutationOptions,
   createAvatarQueryOptions,
   createUserSyncMutation,
 } from "../../constants/queries.ts";
-import type { UserCreateDTO, UserResponseDTO } from "../../api/model";
+import type { UserCreateDTO } from "../../api/model";
 import { pointsToLevel } from "../../constants/levels.ts";
+import { UserContext } from "../../constants/context.ts";
 
-interface Props {
-  user: UserResponseDTO | null;
-}
-
-const Profil = ({ user }: Props) => {
+const Profil = () => {
+  const user = useContext(UserContext);
   const avatarInputId = "avatar-upload-input";
   const [isEditing, setIsEditing] = useState(false);
   const [username, setUsername] = useState(user?.name || "");

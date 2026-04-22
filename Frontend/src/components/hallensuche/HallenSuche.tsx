@@ -1,18 +1,13 @@
 import { useState } from "react";
 import "../../styles/HallenFinder.css";
 import "../../styles/Form.css";
-import HallenErgebnisFeld from "./HallenErgebnisFeld";
+import HallenErgebnisFeld from "./HallenErgebnisFeld.tsx";
 import { useQuery } from "@tanstack/react-query";
-import type { HalleResponseDTO } from "../../api/model";
-import { getFindHalleQueryOptions } from "../../api/hallen-controller/hallen-controller";
+import { getFindHalleQueryOptions } from "../../api/hallen-controller/hallen-controller.ts";
 import { isAdmin } from "../../constants/keycloak.ts";
 import { Link } from "react-router";
 
-interface Props {
-  setSelectedHalle: (id: HalleResponseDTO) => void;
-}
-
-function HallenSuchmaske({ setSelectedHalle }: Props) {
+function HallenSuche() {
   const [search, setSearch] = useState<string | undefined>(undefined);
   const { data, error } = useQuery(
     getFindHalleQueryOptions(search ? { name: search } : undefined, {
@@ -42,11 +37,7 @@ function HallenSuchmaske({ setSelectedHalle }: Props) {
       </form>
       <div className="ergebnis-container">
         {data?.map((ergebnis, index) => (
-          <HallenErgebnisFeld
-            key={index}
-            ergebnis={ergebnis}
-            setSelectedHalle={setSelectedHalle}
-          />
+          <HallenErgebnisFeld key={index} ergebnis={ergebnis} />
         ))}
         {!data ||
           (data.length === 0 && (
@@ -65,4 +56,4 @@ function HallenSuchmaske({ setSelectedHalle }: Props) {
   );
 }
 
-export default HallenSuchmaske;
+export default HallenSuche;
