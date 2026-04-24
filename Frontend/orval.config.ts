@@ -12,6 +12,12 @@ export default defineConfig({
       client: "react-query",
       clean: true,
       override: {
+        query: {
+          options: {
+            retry: false,
+            refetchOnReconnect: false,
+          },
+        },
         fetch: {
           includeHttpResponseReturnType: false,
         },

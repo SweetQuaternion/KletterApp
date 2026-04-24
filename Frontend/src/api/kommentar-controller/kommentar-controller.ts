@@ -90,7 +90,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn,   retry: false, refetchOnReconnect: false,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetKommentareByRouteIDQueryResult = NonNullable<Awaited<ReturnType<typeof getKommentareByRouteID>>>

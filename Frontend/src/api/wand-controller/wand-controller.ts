@@ -82,7 +82,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, enabled: !!(hallenId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWaendeByHallenId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(hallenId),  retry: false, refetchOnReconnect: false,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWaendeByHallenId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetWaendeByHallenIdQueryResult = NonNullable<Awaited<ReturnType<typeof getWaendeByHallenId>>>

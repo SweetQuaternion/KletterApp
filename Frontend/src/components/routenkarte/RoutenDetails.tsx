@@ -21,11 +21,7 @@ interface Props {
   setEditingRoute: (route: RouteResponseDTO | null) => void;
 }
 
-const RoutenDetails = ({
-  selectedRoute,
-  setSelectedRoute,
-  setEditingRoute,
-}: Props) => {
+const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Props) => {
   const user = useContext(UserContext);
   const [ascentToggled, setAscentToggled] = useState(false);
 
@@ -33,13 +29,9 @@ const RoutenDetails = ({
     createUserRoutenStatusQueryOptions(selectedRoute.id, user),
   );
 
-  const { data: ascents } = useQuery(
-    createAscentQueryOptions(selectedRoute.id, user),
-  );
+  const { data: ascents } = useQuery(createAscentQueryOptions(selectedRoute.id, user));
 
-  const { data: kommentare } = useQuery(
-    createKommentarQueryOptions(selectedRoute.id),
-  );
+  const { data: kommentare } = useQuery(createKommentarQueryOptions(selectedRoute.id));
 
   const {
     mutate: updateStatus,
@@ -95,9 +87,7 @@ const RoutenDetails = ({
         <div className="routen-details-header">
           <h2>{selectedRoute?.name || "Route"}</h2>
           <div className="routen-details-schwierigkeit">
-            {convertSchwierigkeitToString(
-              selectedRoute.schwierigkeit || undefined,
-            )}
+            {convertSchwierigkeitToString(selectedRoute.schwierigkeit || undefined)}
           </div>
         </div>
         <div className="flex-row small-gap">
@@ -192,30 +182,29 @@ const RoutenDetails = ({
         {!ascentToggled && (
           <>
             {isAscentSuccess && <p className="small">Gespeichert!</p>}
-            {isAscentError && (
-              <p className="small">Etwas ist schiefgelaufen...</p>
-            )}
+            {isAscentError && <p className="small">Etwas ist schiefgelaufen...</p>}
             <b>Beschreibung</b>
             <p className="small">{selectedRoute.beschreibung || "keine"}</p>
-            <b>Kommentare</b>
-            {kommentare && kommentare.length > 0 ? (
-              kommentare.map((kommentar) => (
-                <div key={kommentar.id} className="kommentar">
-                  <Link
-                    to={`/user/${kommentar.username}`}
-                    className="kommentar-user"
-                  >
-                    <p className="kommentar-name">{kommentar.username}</p>
-                  </Link>
-                  <p className="kommentar-text">{kommentar.text}</p>
-                  {/* {(isAdmin() ||
+            {navigator.onLine && (
+              <>
+                <b>Kommentare</b>
+                {kommentare && kommentare.length > 0 ? (
+                  kommentare.map((kommentar) => (
+                    <div key={kommentar.id} className="kommentar">
+                      <Link to={`/user/${kommentar.username}`} className="kommentar-user">
+                        <p className="kommentar-name">{kommentar.username}</p>
+                      </Link>
+                      <p className="kommentar-text">{kommentar.text}</p>
+                      {/* {(isAdmin() ||
                     user?.keycloakId === kommentar.user.keycloakId) && (
                     <p className="bearbeiten">löschen</p>
                   )} */}
-                </div>
-              ))
-            ) : (
-              <p className="small">keine</p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="small">keine</p>
+                )}
+              </>
             )}
             {user && (
               <>
@@ -230,9 +219,7 @@ const RoutenDetails = ({
                   />
                   <button type="submit">Absenden</button>
                 </form>
-                {(isKommentarSuccess || isStatusSuccess) && (
-                  <p className="small">Gespeichert!</p>
-                )}
+                {(isKommentarSuccess || isStatusSuccess) && <p className="small">Gespeichert!</p>}
                 {(isKommentarError || isStatusError) && (
                   <p className="small">Etwas ist schiefgelaufen...</p>
                 )}
@@ -243,10 +230,7 @@ const RoutenDetails = ({
       </div>
       {isAdmin() && (
         <div className="bottom-section">
-          <div
-            className="hinzufügen"
-            onClick={() => setEditingRoute(selectedRoute)}
-          >
+          <div className="hinzufügen" onClick={() => setEditingRoute(selectedRoute)}>
             Route bearbeiten
           </div>
         </div>

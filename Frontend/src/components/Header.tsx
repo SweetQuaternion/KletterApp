@@ -2,12 +2,13 @@ import "../styles/App.css";
 import "../styles/Header.css";
 import logo from "../assets/react.svg";
 import type { HalleResponseDTO } from "../api/model";
-import { login, register, logout } from "../constants/keycloak";
+import { login, register, logout, keycloak } from "../constants/keycloak";
 import { useContext, useState } from "react";
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { createAvatarQueryOptions } from "../constants/queries";
 import { UserContext } from "../constants/context.ts";
+import { useOnline } from "../constants/useOnline.ts";
 
 interface Props {
   setSelectedHalle: (halle: HalleResponseDTO) => void;
@@ -17,13 +18,13 @@ function Header({ setSelectedHalle }: Props) {
   const user = useContext(UserContext);
   const [profileToggled, setProfileToggled] = useState(false);
   const [navigationToggled, setNavigationToggled] = useState(false);
+  const isOnline = useOnline();
+
   const heimatHallen = JSON.parse(
     localStorage.getItem("Heimathallen") || "[]",
   ) as HalleResponseDTO[];
 
-  const { data: avatar } = useQuery(
-    createAvatarQueryOptions(user?.keycloakId || ""),
-  );
+  const { data: avatar } = useQuery(createAvatarQueryOptions(user?.keycloakId || ""));
 
   return (
     <>
@@ -38,7 +39,7 @@ function Header({ setSelectedHalle }: Props) {
           />
           <h1>KletterApp</h1>
         </div>
-        {!user && (
+        {keycloak.didInitialize && isOnline && !user ? (
           <div className="right-part">
             <button className="login" onClick={() => login()}>
               Anmelden
@@ -47,6 +48,8 @@ function Header({ setSelectedHalle }: Props) {
               Registrieren
             </button>
           </div>
+        ) : (
+          <div className="right-part offline">offline</div>
         )}
         {user && (
           <div className="right-part">
@@ -77,11 +80,11 @@ function Header({ setSelectedHalle }: Props) {
         <div className="overlay" onClick={() => setNavigationToggled(false)}>
           <div className="navigation-menu">
             {heimatHallen.map((halle) => (
-              <Link to="/routenkarte/">
-                <button onClick={() => setSelectedHalle(halle)}>
-                  {halle.name}
-                </button>
-              </Link>
+              <div key={halle.id}>
+                <Link to="/routenkarte/">
+                  <button onClick={() => setSelectedHalle(halle)}>{halle.name}</button>
+                </Link>
+              </div>
             ))}
             <Link to="/hallenfinder">
               <button>Hallenfinder</button>

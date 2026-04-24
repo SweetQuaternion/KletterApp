@@ -10,22 +10,12 @@ import type {
   UserResponseDTO,
   UserRoutenStatus,
   WandCreateDTO,
+  WandResponseDTO,
 } from "../api/model";
 import { keycloak } from "./keycloak";
-import {
-  changeUser,
-  getUser,
-  syncUser,
-} from "../api/user-controller/user-controller";
-import {
-  addAscent,
-  findAscents,
-} from "../api/ascent-controller/ascent-controller";
-import {
-  addRoute,
-  deleteRoute,
-  updateRoute,
-} from "../api/routen-controller/routen-controller";
+import { changeUser, getUser, syncUser } from "../api/user-controller/user-controller";
+import { addAscent, findAscents } from "../api/ascent-controller/ascent-controller";
+import { addRoute, deleteRoute, updateRoute } from "../api/routen-controller/routen-controller";
 import {
   addKommentar,
   getKommentareByRouteID,
@@ -35,12 +25,10 @@ import {
   updateUserRoutenStatus,
 } from "../api/user-routen-status-controller/user-routen-status-controller";
 import { customFetch, keycloakFetch } from "./fetcher";
-import {
-  getAvatar,
-  getUploadAvatarUrl,
-} from "../api/avatar-controller/avatar-controller";
+import { getAvatar, getUploadAvatarUrl } from "../api/avatar-controller/avatar-controller";
 import { addHalle } from "../api/hallen-controller/hallen-controller";
-import { addWände } from "../api/wand-controller/wand-controller";
+import { addWände, getWaendeByHallenId } from "../api/wand-controller/wand-controller";
+import getDB from "./db";
 
 const ONE_DAY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
@@ -51,6 +39,16 @@ export const queryClient = new QueryClient({
     },
   },
 });
+
+// This code is only for TypeScript
+declare global {
+  interface Window {
+    __TANSTACK_QUERY_CLIENT__: import("@tanstack/query-core").QueryClient;
+  }
+}
+
+// This code is for all users
+window.__TANSTACK_QUERY_CLIENT__ = queryClient;
 
 // ============= User Queries and Mutations =============
 
@@ -87,10 +85,7 @@ export function createUserSyncMutation() {
 
 // ============= Ascent Queries and Mutations =============
 
-export function createAscentQueryOptions(
-  routenId: number | null,
-  user: UserResponseDTO | null,
-) {
+export function createAscentQueryOptions(routenId: number | null, user: UserResponseDTO | null) {
   return {
     queryKey: ["ascents", routenId, user?.keycloakId],
     queryFn: async () => {
@@ -120,10 +115,7 @@ export function createAddAscentMutationOptions() {
 
 // ============= UserRoutenStatus Queries and Mutations =============
 
-export function createUserRoutenStatusQueryOptions(
-  routenId: number,
-  user: UserResponseDTO | null,
-) {
+export function createUserRoutenStatusQueryOptions(routenId: number, user: UserResponseDTO | null) {
   return {
     queryKey: ["userRoutenStatus", routenId, user?.keycloakId],
     queryFn: async () => {
@@ -156,8 +148,7 @@ export function createUserRoutenStatusMutationOptions() {
 export function createKommentarQueryOptions(routeId: number) {
   return {
     queryKey: ["kommentare", routeId],
-    queryFn: async () =>
-      getKommentareByRouteID({ routeId }) as Promise<KommentarResponseDTO[]>,
+    queryFn: async () => getKommentareByRouteID({ routeId }) as Promise<KommentarResponseDTO[]>,
     staleTime: ONE_DAY,
   };
 }
@@ -269,15 +260,33 @@ export function createHalleMutationOptions() {
 
 // ============= Wand Queries and Mutations =============
 
+export function createWaendeByHallenIdQueryOptions(halleId: number) {
+  return {
+    queryKey: ["waende", halleId],
+    queryFn: async () => {
+      if (navigator.onLine) {
+        try {
+          return (await getWaendeByHallenId(halleId)) as WandResponseDTO[];
+        } catch (error) {
+          console.log("Fehler beim Laden aus dem Netzwerk, nutze Cache.");
+        }
+      }
+
+      try {
+        const db = await getDB();
+        return ((await db.get("waende", halleId)) as WandResponseDTO[]) || [];
+      } catch (error) {
+        console.log("Fehler beim Laden aus dem Cache.");
+        return [];
+      }
+    },
+    staleTime: 60 * 1000,
+  };
+}
+
 export function createWandMutationOptions() {
   return mutationOptions({
-    mutationFn: async ({
-      hallenId,
-      data,
-    }: {
-      hallenId: number;
-      data: WandCreateDTO[];
-    }) => {
+    mutationFn: async ({ hallenId, data }: { hallenId: number; data: WandCreateDTO[] }) => {
       addWände(hallenId, data);
     },
     onSuccess: async () => {

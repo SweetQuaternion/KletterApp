@@ -19,17 +19,22 @@ if ("serviceWorker" in navigator) {
 
 let user: UserResponseDTO | null = null;
 
-const authenticated = await keycloak
-  .init({
-    onLoad: "check-sso",
-    checkLoginIframe: false,
-    silentCheckSsoRedirectUri:
-      window.location.origin + "/silent-check-sso.html",
-  })
-  .catch((error) => {
+let authenticated = false;
+
+if (navigator.onLine) {
+  try {
+    authenticated = await keycloak.init({
+      onLoad: "check-sso",
+      checkLoginIframe: false,
+      silentCheckSsoRedirectUri: window.location.origin + "/silent-check-sso.html",
+    });
+  } catch (error) {
     console.error("Fehler bei der Keycloak-Initialisierung:", error);
-    return false; // Initialisierung fehlgeschlagen, also nicht authentifiziert
-  });
+    authenticated = false;
+  }
+} else {
+  console.info("Offline erkannt: App startet ohne Keycloak-Initialisierung.");
+}
 
 if (authenticated) {
   user = await fetchUser(keycloak.subject!, keycloak.tokenParsed?.name!);

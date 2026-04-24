@@ -1,8 +1,4 @@
-import {
-  type HalleResponseDTO,
-  type RouteResponseDTO,
-  type WandResponseDTO,
-} from "../../api/model";
+import { type RouteResponseDTO, type WandResponseDTO } from "../../api/model";
 import "../../styles/RoutenKarte.css";
 import HallenInfoBox from "./HallenInfoBox";
 import SVGMap from "./SVGMap";
@@ -11,58 +7,27 @@ import { useContext, useState } from "react";
 import RoutenDetails from "./RoutenDetails";
 import NeueRoute from "./NeueRoute";
 import { useQuery } from "@tanstack/react-query";
-import { getGetWaendeByHallenIdQueryOptions } from "../../api/wand-controller/wand-controller";
+import { createWaendeByHallenIdQueryOptions } from "../../constants/queries";
 import { isAdmin } from "../../constants/keycloak";
 import { Link } from "react-router-dom";
 import RouteBearbeiten from "./RouteBearbeiten";
 import { HalleContext } from "../../constants/context";
+import SpeicherKnopfsis from "./SpeicherKnopfsis";
 
 const RoutenKarte = () => {
   const { selectedHalle } = useContext(HalleContext);
 
   const [scale, setScale] = useState(1);
-  const [selectedWand, setSelectedWand] = useState<WandResponseDTO | null>(
-    null,
-  );
-  const [selectedRoute, setSelectedRoute] = useState<RouteResponseDTO | null>(
-    null,
-  );
+  const [selectedWand, setSelectedWand] = useState<WandResponseDTO | null>(null);
+  const [selectedRoute, setSelectedRoute] = useState<RouteResponseDTO | null>(null);
   const [showNeueRoute, setShowNeueRoute] = useState(false);
-  const [editingRoute, setEditingRoute] = useState<RouteResponseDTO | null>(
-    null,
-  );
+  const [editingRoute, setEditingRoute] = useState<RouteResponseDTO | null>(null);
+
+  const { data } = useQuery(createWaendeByHallenIdQueryOptions(selectedHalle!.id));
 
   if (!selectedHalle) {
     return null;
   }
-
-  const heimatHallen = JSON.parse(
-    localStorage.getItem("Heimathallen") || "[]",
-  ) as HalleResponseDTO[];
-
-  const [isHalleFavorit, setIsHalleFavorit] = useState(() => {
-    const heimatHallen = JSON.parse(
-      localStorage.getItem("Heimathallen") || "[]",
-    ) as HalleResponseDTO[];
-    return heimatHallen.some((halle) => halle.id === selectedHalle.id);
-  });
-
-  const { data } = useQuery(
-    getGetWaendeByHallenIdQueryOptions(selectedHalle!.id),
-  );
-
-  const handleFavoriteClick = () => {
-    if (isHalleFavorit) {
-      const updatedHallen = heimatHallen.filter(
-        (halle) => halle.id !== selectedHalle.id,
-      );
-      localStorage.setItem("Heimathallen", JSON.stringify(updatedHallen));
-    } else {
-      heimatHallen.push(selectedHalle);
-      localStorage.setItem("Heimathallen", JSON.stringify(heimatHallen));
-    }
-    setIsHalleFavorit(!isHalleFavorit);
-  };
 
   return (
     <>
@@ -76,15 +41,7 @@ const RoutenKarte = () => {
         setShowNeueRoute={setShowNeueRoute}
         setEditingRoute={setEditingRoute}
       />
-      <div className="halle-favorit-container top right">
-        <button
-          className={`halle-favorit ${isHalleFavorit ? "active" : ""}`}
-          title="Als Heimathalle markieren"
-          onClick={handleFavoriteClick}
-        >
-          ❤︎⁠
-        </button>
-      </div>
+      <SpeicherKnopfsis />
       <HallenInfoBox />
       <Knopfsis scale={scale} setScale={setScale} />
 
@@ -96,10 +53,7 @@ const RoutenKarte = () => {
         />
       )}
       {showNeueRoute && selectedWand && (
-        <NeueRoute
-          selectedWand={selectedWand}
-          setShowNeueRoute={setShowNeueRoute}
-        />
+        <NeueRoute selectedWand={selectedWand} setShowNeueRoute={setShowNeueRoute} />
       )}
       {editingRoute && selectedWand && (
         <RouteBearbeiten
