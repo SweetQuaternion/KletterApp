@@ -16,20 +16,16 @@ const networkFirst = async (request, event) => {
   try {
     const responseFromNetwork = await fetch(request);
     if (!responseFromNetwork || responseFromNetwork.status !== 200) {
-      throw new Error(
-        "Netzwerkantwort war ungültig: " + responseFromNetwork.status,
-      );
+      throw new Error("Netzwerkantwort war ungültig: " + responseFromNetwork.status);
     }
     await putInCache(request, responseFromNetwork.clone());
-    console.log("Ich liefere vom Netzwerk: " + event.request.url);
     return responseFromNetwork;
   } catch (error) {
     const responseFromCache = await caches.match(request);
     if (responseFromCache) {
-      console.log("Ich liefere aus dem Cache:" + event.request.url);
       return responseFromCache;
     }
-    return new Response("Halluuuu ich hab kein Internet, sorrii!", {
+    return new Response("Sorry, kein Internet verfügbar!", {
       status: 408,
       headers: { "Content-Type": "text/plain" },
     });
@@ -44,13 +40,11 @@ const networkFirst = async (request, event) => {
 self.addEventListener("install", (event) => {
   self.skipWaiting();
   event.waitUntil(addResourcesToCache(["/", "/index.html"]));
-  console.log("Halluuuu ich hab mich installiert");
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(clients.claim()); // Adoptiert alle Seiten, damit der Service Worker sofort aktiv ist
   event.waitUntil(self.registration?.navigationPreload.enable()); // Aktiviert die Navigation Preload API, damit die Seite schneller geladen wird, während der Service Worker aktiviert wird
-  console.log("Halluuuu ich bin aktiviert");
 });
 
 self.addEventListener("fetch", async (event) => {

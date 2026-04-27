@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import "../../styles/HallenFinder.css";
+import "../../styles/HallenSuche.css";
 import type { HalleResponseDTO } from "../../api/model";
 import { HalleContext } from "../../constants/context";
 import { useContext } from "react";
@@ -16,10 +16,7 @@ function HallenErgebnisFeld({ ergebnis }: Props) {
   };
   return (
     <Link to="/routenkarte">
-      <button
-        className="hallen-ergebnis-feld"
-        onClick={() => handleHallenSelection(ergebnis)}
-      >
+      <button className="hallen-ergebnis-feld" onClick={() => handleHallenSelection(ergebnis)}>
         <div className="mini-dot"></div>
         <p>{ergebnis.name}</p>
       </button>

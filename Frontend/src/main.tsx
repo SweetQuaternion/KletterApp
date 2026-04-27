@@ -33,7 +33,7 @@ if (navigator.onLine) {
     authenticated = false;
   }
 } else {
-  console.info("Offline erkannt: App startet ohne Keycloak-Initialisierung.");
+  console.info("Offline-Modus, kein Login verfügbar");
 }
 
 if (authenticated) {

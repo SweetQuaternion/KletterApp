@@ -14,9 +14,7 @@ interface Props {
 const NeueRoute = ({ selectedWand }: Props) => {
   const { selectedHalle } = useContext(HalleContext);
   const queryClient = useQueryClient();
-  const { mutate, isSuccess, isError } = useMutation(
-    createAddRouteMutationOptions(),
-  );
+  const { mutate, isSuccess, isError } = useMutation(createAddRouteMutationOptions());
 
   const handleRoutenSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,16 +24,13 @@ const NeueRoute = ({ selectedWand }: Props) => {
       wandNr: selectedWand.wandNr,
       name: formData.get("name") as string,
       farbe: formData.get("farbe") as string,
-      schwierigkeit: convertSchwierigkeitToNumber(
-        formData.get("schwierigkeit") as string,
-      ),
+      schwierigkeit: convertSchwierigkeitToNumber(formData.get("schwierigkeit") as string),
       isToprope: formData.get("is_toprope") === "on",
       isVorstieg: formData.get("is_vorstieg") === "on",
       schrauber: formData.get("schrauber") as string,
       schraubdatum: formData.get("schraubdatum") as string,
       beschreibung: formData.get("beschreibung") as string,
     } as RouteCreateDTO;
-    console.log("Submitting new route:", data);
     mutate(data);
     queryClient.invalidateQueries({ queryKey: ["waende", selectedHalle!.id] });
   };
@@ -54,12 +49,7 @@ const NeueRoute = ({ selectedWand }: Props) => {
         </div>
         <div className="form-group">
           <label htmlFor="schwierigkeit">Schwierigkeit:</label>
-          <input
-            type="text"
-            id="schwierigkeit"
-            name="schwierigkeit"
-            autoComplete="off"
-          />
+          <input type="text" id="schwierigkeit" name="schwierigkeit" autoComplete="off" />
         </div>
         <div className="form-group checkbox-container">
           <input type="checkbox" id="is_toprope" name="is_toprope" />
@@ -69,30 +59,15 @@ const NeueRoute = ({ selectedWand }: Props) => {
         </div>
         <div className="form-group">
           <label htmlFor="schrauber">Schrauber:</label>
-          <input
-            type="text"
-            id="schrauber"
-            name="schrauber"
-            autoComplete="off"
-          />
+          <input type="text" id="schrauber" name="schrauber" autoComplete="off" />
         </div>
         <div className="form-group">
           <label htmlFor="schraubdatum">Schraubdatum:</label>
-          <input
-            type="date"
-            id="schraubdatum"
-            name="schraubdatum"
-            autoComplete="off"
-          />
+          <input type="date" id="schraubdatum" name="schraubdatum" autoComplete="off" />
         </div>
         <div className="form-group">
           <label htmlFor="beschreibung">Beschreibung:</label>
-          <textarea
-            name="beschreibung"
-            id="beschreibung"
-            rows={5}
-            autoComplete="off"
-          ></textarea>
+          <textarea name="beschreibung" id="beschreibung" rows={5} autoComplete="off"></textarea>
         </div>
         <button type="submit">Route hinzufügen</button>
         {isSuccess && <p className="small">Route erfolgreich hinzugefügt!</p>}

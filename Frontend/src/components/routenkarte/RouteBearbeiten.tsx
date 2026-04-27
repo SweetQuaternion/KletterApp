@@ -1,10 +1,6 @@
 import { useContext, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import type {
-  RouteCreateDTO,
-  RouteResponseDTO,
-  WandResponseDTO,
-} from "../../api/model";
+import type { RouteCreateDTO, RouteResponseDTO, WandResponseDTO } from "../../api/model";
 import { convertSchwierigkeitToNumber } from "../../constants/conversions";
 import "../../styles/RoutenKarte.css";
 import {
@@ -19,17 +15,9 @@ interface Props {
   setEditingRoute: (route: RouteResponseDTO | null) => void;
 }
 
-const RouteBearbeiten = ({
-  selectedWand,
-  selectedRoute,
-  setEditingRoute,
-}: Props) => {
+const RouteBearbeiten = ({ selectedWand, selectedRoute, setEditingRoute }: Props) => {
   const { selectedHalle } = useContext(HalleContext);
-  const {
-    mutate: update,
-    isSuccess,
-    isError,
-  } = useMutation(createUpdateRouteMutationOptions());
+  const { mutate: update, isSuccess, isError } = useMutation(createUpdateRouteMutationOptions());
   const {
     mutate: deleteRoute,
     isSuccess: isDeleteSuccess,
@@ -45,16 +33,13 @@ const RouteBearbeiten = ({
       wandNr: selectedWand.wandNr,
       name: formData.get("name") as string,
       farbe: formData.get("farbe") as string,
-      schwierigkeit: convertSchwierigkeitToNumber(
-        formData.get("schwierigkeit") as string,
-      ),
+      schwierigkeit: convertSchwierigkeitToNumber(formData.get("schwierigkeit") as string),
       isToprope: formData.get("is_toprope") === "on",
       isVorstieg: formData.get("is_vorstieg") === "on",
       schrauber: formData.get("schrauber") as string,
       schraubdatum: formData.get("schraubdatum") as string,
       beschreibung: formData.get("beschreibung") as string,
     } as RouteCreateDTO;
-    console.log("Submitting new route:", data);
     update({ route: data, id: selectedRoute.id });
   };
 
@@ -131,9 +116,7 @@ const RouteBearbeiten = ({
             autoComplete="off"
             defaultValue={
               selectedRoute.schraubdatum
-                ? new Date(selectedRoute.schraubdatum)
-                    .toISOString()
-                    .split("T")[0]
+                ? new Date(selectedRoute.schraubdatum).toISOString().split("T")[0]
                 : ""
             }
           />
@@ -153,10 +136,7 @@ const RouteBearbeiten = ({
           <button type="button" onClick={() => setEditingRoute(null)}>
             Abbrechen
           </button>
-          <button
-            type="button"
-            onClick={() => setLöschenAttempted(!löschenAttempted)}
-          >
+          <button type="button" onClick={() => setLöschenAttempted(!löschenAttempted)}>
             Route deaktivieren
           </button>
         </div>
@@ -166,22 +146,15 @@ const RouteBearbeiten = ({
             <div className="bearbeiten sans-serif" onClick={handleLöschen}>
               ja
             </div>
-            <div
-              className="bearbeiten sans-serif"
-              onClick={() => setLöschenAttempted(false)}
-            >
+            <div className="bearbeiten sans-serif" onClick={() => setLöschenAttempted(false)}>
               nein
             </div>
           </div>
         )}
         {isSuccess && <p className="small">Route erfolgreich gespeichert!</p>}
         {isError && <p className="small">Fehler beim Speichern der Route</p>}
-        {isDeleteSuccess && (
-          <p className="small">Route erfolgreich deaktiviert!</p>
-        )}
-        {isDeleteError && (
-          <p className="small">Fehler beim Deaktivieren der Route</p>
-        )}
+        {isDeleteSuccess && <p className="small">Route erfolgreich deaktiviert!</p>}
+        {isDeleteError && <p className="small">Fehler beim Deaktivieren der Route</p>}
       </form>
     </div>
   );

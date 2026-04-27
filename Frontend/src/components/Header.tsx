@@ -91,8 +91,8 @@ function Header({ setSelectedHalle }: Props) {
                 </Link>
               </div>
             ))}
-            <Link to="/hallenfinder">
-              <button>Hallenfinder</button>
+            <Link to="/hallensuche">
+              <button>Hallensuche</button>
             </Link>
             {user && (
               <>

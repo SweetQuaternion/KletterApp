@@ -62,7 +62,6 @@ const SpeicherKnopfsis = () => {
   };
 
   const deleteHallenData = async () => {
-    console.log("deleting...");
     const db = await getDB();
     await db.delete("hallen", selectedHalle.id);
     await db.delete("waende", selectedHalle.id);
@@ -70,10 +69,8 @@ const SpeicherKnopfsis = () => {
     const ascentKeys = await txAscents.store.index("hallenId").getAllKeys(selectedHalle.id);
     for (const key of ascentKeys) {
       await txAscents.store.delete(key);
-      console.log("ascent with key", key, "deleted");
     }
     await txAscents.done;
-    console.log("ascents deleted");
 
     const txStatus = db.transaction("userRoutenStatus", "readwrite");
     const statusKeys = await txStatus.store.index("hallenId").getAllKeys(selectedHalle.id);

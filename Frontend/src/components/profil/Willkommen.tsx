@@ -12,7 +12,7 @@ function Willkommen() {
             <Link to="/profile">
               <button>Mein Profil</button>
             </Link>
-            <Link to="/hallenfinder">
+            <Link to="/hallensuche5%">
               <button>Startseite</button>
             </Link>
           </div>

@@ -4,11 +4,7 @@ import type { HalleResponseDTO } from "../../api/model";
 
 interface Props {
   selectedHalle: HalleResponseDTO | null | undefined;
-  setHalleData: (data: {
-    name: string;
-    adresse: string;
-    betreiber: string;
-  }) => void;
+  setHalleData: (data: { name: string; adresse: string; betreiber: string }) => void;
 }
 
 const NeueHalleBox = ({ selectedHalle, setHalleData }: Props) => {
@@ -22,11 +18,6 @@ const NeueHalleBox = ({ selectedHalle, setHalleData }: Props) => {
       adresse: (formData.get("adresse") as string) || "",
       betreiber: (formData.get("betreiber") as string) || "",
     });
-    console.log("Halle data updated:", {
-      name: (formData.get("name") as string) || "",
-      adresse: (formData.get("adresse") as string) || "",
-      betreiber: (formData.get("betreiber") as string) || "",
-    });
   }
 
   return (
@@ -34,9 +25,7 @@ const NeueHalleBox = ({ selectedHalle, setHalleData }: Props) => {
       <button className="menu" onClick={() => setHidden(false)}>
         ⌂
       </button>
-      <div
-        className={`white-box relative neue-halle-box top-left ${hidden ? "hidden" : ""}`}
-      >
+      <div className={`white-box relative neue-halle-box top-left ${hidden ? "hidden" : ""}`}>
         <button className="close-button">
           <div onClick={() => setHidden(true)}>×</div>
         </button>

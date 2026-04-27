@@ -88,7 +88,6 @@ const Profil = () => {
       const ascent = pending as AscentCreateDTO;
       ascent.userId = user?.keycloakId || "";
       const ascentResponse = await addAscent(ascent);
-      console.log("Syncing ascent:", ascent, "Response:", ascentResponse);
       if (ascentResponse) {
         await db.delete("ascentsPending", pending.id);
       }

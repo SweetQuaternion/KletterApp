@@ -1,6 +1,6 @@
 .routen-details {
   width: 20em;
-  overflow: scroll;
+  overflow: auto;
   z-index: 1000;
 }
 

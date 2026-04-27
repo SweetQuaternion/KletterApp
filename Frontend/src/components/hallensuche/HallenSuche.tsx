@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../../styles/HallenFinder.css";
+import "../../styles/HallenSuche.css";
 import "../../styles/Form.css";
 import HallenErgebnisFeld from "./HallenErgebnisFeld.tsx";
 import { useQuery } from "@tanstack/react-query";
@@ -27,12 +27,7 @@ function HallenSuche() {
           setSearch(name);
         }}
       >
-        <input
-          type="text"
-          name="name"
-          placeholder="Suche nach Halle..."
-          autoComplete="off"
-        />
+        <input type="text" name="name" placeholder="Suche nach Halle..." autoComplete="off" />
         <button type="submit">Suchen</button>
       </form>
       <div className="ergebnis-container">
@@ -40,14 +35,10 @@ function HallenSuche() {
           <HallenErgebnisFeld key={index} ergebnis={ergebnis} />
         ))}
         {!data ||
-          (data.length === 0 && (
-            <p className="sans-serif small">Keine Halle gefunden...</p>
-          ))}
-        {error !== null && (
-          <p className="sans-serif small">Ein Fehler ist aufgetreten</p>
-        )}
+          (data.length === 0 && <p className="sans-serif small">Keine Halle gefunden...</p>)}
+        {error !== null && <p className="sans-serif small">Ein Fehler ist aufgetreten</p>}
         {isAdmin() && (
-          <Link to="/hallenfinder/neu">
+          <Link to="/editor">
             <div className="hinzufügen">Halle hinzufügen</div>
           </Link>
         )}
