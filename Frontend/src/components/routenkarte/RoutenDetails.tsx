@@ -14,6 +14,7 @@ import {
 import { Link } from "react-router";
 import { isAdmin } from "../../constants/keycloak";
 import { UserContext } from "../../constants/context.ts";
+import { useOnline } from "../../constants/useOnline.ts";
 
 interface Props {
   selectedRoute: RouteResponseDTO;
@@ -23,6 +24,7 @@ interface Props {
 
 const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Props) => {
   const user = useContext(UserContext);
+  const isOnline = useOnline();
   const [ascentToggled, setAscentToggled] = useState(false);
 
   const { data: userRoutenStatus } = useQuery(
@@ -31,7 +33,10 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
 
   const { data: ascents } = useQuery(createAscentQueryOptions(selectedRoute.id, user));
 
-  const { data: kommentare } = useQuery(createKommentarQueryOptions(selectedRoute.id));
+  const { data: kommentare } = useQuery({
+    ...createKommentarQueryOptions(selectedRoute.id),
+    enabled: isOnline,
+  });
 
   const {
     mutate: updateStatus,

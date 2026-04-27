@@ -104,13 +104,15 @@ export function createAscentQueryOptions(routenId: number | null, user: UserResp
   };
 }
 
-export function createAllAscentsQueryOptions(user: UserResponseDTO, routenIdList: number[]) {
+export function createAllAscentsQueryOptions(user: UserResponseDTO | null, routenIdList: number[]) {
   return {
-    queryKey: ["allAscents", user.keycloakId, routenIdList],
-    queryFn: async () =>
-      findAllAscents({ userId: user.keycloakId, routenIdList: routenIdList }) as Promise<
+    queryKey: ["allAscents", user?.keycloakId, routenIdList],
+    queryFn: async () => {
+      if (!user) return [];
+      return findAllAscents({ userId: user.keycloakId, routenIdList: routenIdList }) as Promise<
         AscentResponseDTO[]
-      >,
+      >;
+    },
     enabled: routenIdList.length > 0,
   };
 }
@@ -170,15 +172,18 @@ export function createUserRoutenStatusQueryOptions(routenId: number, user: UserR
 }
 
 export function createAllUserRoutenStatusQueryOptions(
-  user: UserResponseDTO,
+  user: UserResponseDTO | null,
   routenIdList: number[],
 ) {
   return {
-    queryKey: ["allUserRoutenStatus", user.keycloakId, routenIdList],
-    queryFn: async () =>
-      getAllUserRoutenStatus({ userId: user.keycloakId, routenIdList: routenIdList }) as Promise<
-        UserRoutenStatus[]
-      >,
+    queryKey: ["allUserRoutenStatus", user?.keycloakId, routenIdList],
+    queryFn: async () => {
+      if (!user) return [];
+      return getAllUserRoutenStatus({
+        userId: user.keycloakId,
+        routenIdList: routenIdList,
+      }) as Promise<UserRoutenStatus[]>;
+    },
     enabled: routenIdList.length > 0,
   };
 }

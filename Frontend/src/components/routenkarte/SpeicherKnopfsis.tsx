@@ -25,10 +25,10 @@ const SpeicherKnopfsis = () => {
     waende?.flatMap((wand) => wand.routen?.map((route) => route.id!) ?? []) ?? [];
 
   const { data: userRoutenStatusList } = useQuery(
-    createAllUserRoutenStatusQueryOptions(user!, routenIdList),
+    createAllUserRoutenStatusQueryOptions(user, routenIdList),
   );
 
-  const { data: ascents } = useQuery(createAllAscentsQueryOptions(user!, routenIdList));
+  const { data: ascents } = useQuery(createAllAscentsQueryOptions(user, routenIdList));
 
   if (!selectedHalle) {
     return null;
