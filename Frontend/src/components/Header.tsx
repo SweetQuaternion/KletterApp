@@ -39,30 +39,35 @@ function Header({ setSelectedHalle }: Props) {
           />
           <h1>KletterApp</h1>
         </div>
-        {keycloak.didInitialize && isOnline && !user ? (
-          <div className="right-part">
-            <button className="login" onClick={() => login()}>
-              Anmelden
-            </button>
-            <button className="register" onClick={() => register()}>
-              Registrieren
-            </button>
-          </div>
+        {keycloak.didInitialize && isOnline ? (
+          <>
+            {user ? (
+              <div className="right-part">
+                <span className="username">Hallo {user.name}</span>
+                <button
+                  className="profile-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setProfileToggled(!profileToggled);
+                  }}
+                >
+                  {avatar && <img src={URL.createObjectURL(avatar)} alt="Profil" />}
+                </button>
+              </div>
+            ) : (
+              <div className="right-part">
+                <button className="login" onClick={() => login()}>
+                  Anmelden
+                </button>
+                <button className="register" onClick={() => register()}>
+                  Registrieren
+                </button>
+              </div>
+            )}
+          </>
         ) : (
-          <div className="right-part offline">offline</div>
-        )}
-        {user && (
           <div className="right-part">
-            <span className="username">Hallo {user.name}</span>
-            <button
-              className="profile-button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setProfileToggled(!profileToggled);
-              }}
-            >
-              {avatar && <img src={URL.createObjectURL(avatar)} alt="Profil" />}
-            </button>
+            <span className="offline">offline</span>
           </div>
         )}
       </header>

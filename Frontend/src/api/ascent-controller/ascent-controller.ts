@@ -27,6 +27,7 @@ import type {
   AscentCreateDTO,
   AscentResponseDTO,
   DeleteAscentParams,
+  FindAllAscentsParams,
   FindAscentsParams,
   UpdateAscentParams
 } from '../model';
@@ -343,4 +344,102 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
       return useMutation(getUpdateAscentMutationOptions(options), queryClient);
     }
+    export const getFindAllAscentsUrl = (params: FindAllAscentsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
     
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/ascents/all?${stringifiedParams}` : `/api/ascents/all`
+}
+
+export const findAllAscents = async (params: FindAllAscentsParams, options?: RequestInit): Promise<AscentResponseDTO[]> => {
+  
+  return customFetch<AscentResponseDTO[]>(getFindAllAscentsUrl(params),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+  
+
+
+
+
+export const getFindAllAscentsQueryKey = (params?: FindAllAscentsParams,) => {
+    return [
+    `/api/ascents/all`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+    
+export const getFindAllAscentsQueryOptions = <TData = Awaited<ReturnType<typeof findAllAscents>>, TError = void>(params: FindAllAscentsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAllAscents>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getFindAllAscentsQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof findAllAscents>>> = ({ signal }) => findAllAscents(params, { signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn,   retry: false, refetchOnReconnect: false,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof findAllAscents>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type FindAllAscentsQueryResult = NonNullable<Awaited<ReturnType<typeof findAllAscents>>>
+export type FindAllAscentsQueryError = void
+
+
+export function useFindAllAscents<TData = Awaited<ReturnType<typeof findAllAscents>>, TError = void>(
+ params: FindAllAscentsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAllAscents>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof findAllAscents>>,
+          TError,
+          Awaited<ReturnType<typeof findAllAscents>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useFindAllAscents<TData = Awaited<ReturnType<typeof findAllAscents>>, TError = void>(
+ params: FindAllAscentsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAllAscents>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof findAllAscents>>,
+          TError,
+          Awaited<ReturnType<typeof findAllAscents>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useFindAllAscents<TData = Awaited<ReturnType<typeof findAllAscents>>, TError = void>(
+ params: FindAllAscentsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAllAscents>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useFindAllAscents<TData = Awaited<ReturnType<typeof findAllAscents>>, TError = void>(
+ params: FindAllAscentsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findAllAscents>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getFindAllAscentsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+

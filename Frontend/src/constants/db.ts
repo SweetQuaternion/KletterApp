@@ -7,7 +7,19 @@ const getDB = async () => {
       db.createObjectStore("waende");
       db.createObjectStore("routen", { keyPath: "id" });
       db.createObjectStore("kommentare", { keyPath: "id" });
-      db.createObjectStore("userRoutenStatus");
+
+      const userRoutenStatusStore = db.createObjectStore("userRoutenStatus");
+      userRoutenStatusStore.createIndex("hallenId", "hallenId");
+
+      const ascentStore = db.createObjectStore("ascents", { keyPath: "id", autoIncrement: true });
+      ascentStore.createIndex("routenId", "routenId");
+      ascentStore.createIndex("hallenId", "hallenId");
+
+      db.createObjectStore("userRoutenStatusPending");
+      db.createObjectStore("ascentsPending", { keyPath: "id", autoIncrement: true }).createIndex(
+        "routenId",
+        "routenId",
+      );
     },
   });
 };

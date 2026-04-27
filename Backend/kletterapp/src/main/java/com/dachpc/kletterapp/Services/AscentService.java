@@ -1,6 +1,7 @@
 package com.dachpc.kletterapp.Services;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,14 @@ public class AscentService {
 
     public List<AscentResponseDTO> findAscents(String userId, Integer routenId) {
         List<Ascent> ascents = ascentRepository.search(userId, routenId);
+        return ascents.stream().map(ascentMapper::toResponseDTO).toList();
+    }
+
+    public List<AscentResponseDTO> findAllAscents(String userId, List<Integer> routenIdList) {
+        List<Ascent> ascents = new ArrayList<>();
+        for (Integer routenId : routenIdList) {
+            ascents.addAll(ascentRepository.search(userId, routenId));
+        }
         return ascents.stream().map(ascentMapper::toResponseDTO).toList();
     }
 

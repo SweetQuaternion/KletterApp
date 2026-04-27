@@ -108,7 +108,7 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
             {selectedRoute.isToprope && selectedRoute.isVorstieg ? " / " : ""}{" "}
             {selectedRoute.isVorstieg ? "Vorstieg" : ""}
           </p>
-          {user && ascents && ascents?.length !== 0 && (
+          {ascents && ascents?.length !== 0 && (
             <img src="/tick.svg" alt="geschafft" className="geschafft-haken" />
           )}
         </div>
@@ -119,66 +119,61 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
             : "irgendwann"}{" "}
           von {selectedRoute?.schrauber ? selectedRoute.schrauber : "irgendwem"}
         </p>
-        {user && (
-          <>
-            <div className="routen-details-badges">
-              <button
-                className={`favorit ${userRoutenStatus?.isFavorit ? "active" : ""}`}
-                title="Als Favorit markieren"
-                onClick={() =>
-                  updateStatus({
-                    ...userRoutenStatus,
-                    isFavorit: !userRoutenStatus?.isFavorit,
-                  })
-                }
-              >
-                <div className="icon-wrapper">
-                  <img src="/favorite.svg" />
-                </div>
-              </button>
-              <button
-                className={`projekt ${userRoutenStatus?.isProjekt ? "active" : ""}`}
-                title="Als Projekt markieren"
-                onClick={() =>
-                  updateStatus({
-                    ...userRoutenStatus,
-                    isProjekt: !userRoutenStatus?.isProjekt,
-                  })
-                }
-              >
-                <div className="icon-wrapper">
-                  <img src="/projekt.svg" />
-                </div>
-              </button>
-              <button
-                onClick={() => setAscentToggled(!ascentToggled)}
-                title="Als geschafft markieren"
-              >
-                Geschafft
-              </button>
+
+        <div className="routen-details-badges">
+          <button
+            className={`favorit ${userRoutenStatus?.isFavorit ? "active" : ""}`}
+            title="Als Favorit markieren"
+            onClick={() =>
+              updateStatus({
+                ...userRoutenStatus,
+                isFavorit: !userRoutenStatus?.isFavorit,
+              })
+            }
+          >
+            <div className="icon-wrapper">
+              <img src="/favorite.svg" />
             </div>
-            {ascentToggled && (
-              <>
-                <b>Glückwunsch!</b>
-                <form onSubmit={handleAscent}>
-                  <div className="form-group">
-                    <label htmlFor="style">Style</label>
-                    <select name="style" id="style">
-                      <option value="onsight">onsight</option>
-                      <option value="flash">flash</option>
-                      <option value="redpoint">redpoint</option>
-                      <option value="pinkpoint">pinkpoint</option>
-                      <option value="toprope">toprope</option>
-                      <option value="hangdog">hangdog</option>
-                      <option value="attempt">attempt</option>
-                    </select>
-                  </div>
-                  <button type="submit">Speichern</button>
-                </form>
-              </>
-            )}
+          </button>
+          <button
+            className={`projekt ${userRoutenStatus?.isProjekt ? "active" : ""}`}
+            title="Als Projekt markieren"
+            onClick={() =>
+              updateStatus({
+                ...userRoutenStatus,
+                isProjekt: !userRoutenStatus?.isProjekt,
+              })
+            }
+          >
+            <div className="icon-wrapper">
+              <img src="/projekt.svg" />
+            </div>
+          </button>
+          <button onClick={() => setAscentToggled(!ascentToggled)} title="Als geschafft markieren">
+            Geschafft
+          </button>
+        </div>
+        {ascentToggled && (
+          <>
+            <b>Glückwunsch!</b>
+            <form onSubmit={handleAscent}>
+              <div className="form-group">
+                <label htmlFor="style">Style</label>
+                <select name="style" id="style">
+                  <option value="onsight">onsight</option>
+                  <option value="flash">flash</option>
+                  <option value="redpoint">redpoint</option>
+                  <option value="pinkpoint">pinkpoint</option>
+                  <option value="toprope">toprope</option>
+                  <option value="hangdog">hangdog</option>
+                  <option value="attempt">attempt</option>
+                </select>
+              </div>
+              <button type="submit">Speichern</button>
+            </form>
           </>
         )}
+
         {!ascentToggled && (
           <>
             {isAscentSuccess && <p className="small">Gespeichert!</p>}

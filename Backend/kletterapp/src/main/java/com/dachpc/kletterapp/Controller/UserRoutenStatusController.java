@@ -1,5 +1,7 @@
 package com.dachpc.kletterapp.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +29,11 @@ public class UserRoutenStatusController {
     @GetMapping(produces = "application/json")
     public UserRoutenStatus getUserRoutenStatus(@RequestParam String userId, @RequestParam Integer routenId) {
         return userRoutenStatusService.getStatus(userId, routenId);
+    }
+
+    @GetMapping(path = "/all", produces = "application/json")
+    public List<UserRoutenStatus> getAllUserRoutenStatus(@RequestParam Integer[] routenIdList, @RequestParam String userId) {
+        return userRoutenStatusService.getAllStatus(routenIdList, userId);
     }
 
     @PostMapping(produces = "application/json")

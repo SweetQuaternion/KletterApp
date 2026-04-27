@@ -1,20 +1,34 @@
 import { useContext, useState } from "react";
-import { HalleContext } from "../../constants/context";
+import { HalleContext, UserContext } from "../../constants/context";
 import type { HalleResponseDTO } from "../../api/model";
 import getDB from "../../constants/db";
 import { useQuery } from "@tanstack/react-query";
-import { createWaendeByHallenIdQueryOptions } from "../../constants/queries";
+import {
+  createAllAscentsQueryOptions,
+  createAllUserRoutenStatusQueryOptions,
+  createWaendeByHallenIdQueryOptions,
+} from "../../constants/queries";
 import { useOnline } from "../../constants/useOnline";
 
 const SpeicherKnopfsis = () => {
   const { selectedHalle } = useContext(HalleContext);
   const isOnline = useOnline();
   const [isHalleSync, setIsHalleSync] = useState(false);
+  const user = useContext(UserContext);
 
   const { data: waende } = useQuery({
     ...createWaendeByHallenIdQueryOptions(selectedHalle!.id),
     enabled: isOnline,
   });
+
+  const routenIdList =
+    waende?.flatMap((wand) => wand.routen?.map((route) => route.id!) ?? []) ?? [];
+
+  const { data: userRoutenStatusList } = useQuery(
+    createAllUserRoutenStatusQueryOptions(user!, routenIdList),
+  );
+
+  const { data: ascents } = useQuery(createAllAscentsQueryOptions(user!, routenIdList));
 
   if (!selectedHalle) {
     return null;
@@ -47,18 +61,50 @@ const SpeicherKnopfsis = () => {
     setIsHalleFavorit(!isHalleFavorit);
   };
 
-  const handleOfflineClick = async () => {
+  const deleteHallenData = async () => {
+    console.log("deleting...");
     const db = await getDB();
+    await db.delete("hallen", selectedHalle.id);
+    await db.delete("waende", selectedHalle.id);
+    const txAscents = db.transaction("ascents", "readwrite");
+    const ascentKeys = await txAscents.store.index("hallenId").getAllKeys(selectedHalle.id);
+    for (const key of ascentKeys) {
+      await txAscents.store.delete(key);
+      console.log("ascent with key", key, "deleted");
+    }
+    await txAscents.done;
+    console.log("ascents deleted");
+
+    const txStatus = db.transaction("userRoutenStatus", "readwrite");
+    const statusKeys = await txStatus.store.index("hallenId").getAllKeys(selectedHalle.id);
+    for (const key of statusKeys) {
+      await txStatus.store.delete(key);
+    }
+    await txStatus.done;
+  };
+
+  const putHallenData = async () => {
+    const db = await getDB();
+    await db.put("hallen", selectedHalle);
+    await db.put("waende", waende || [], selectedHalle.id);
+
+    for (const status of userRoutenStatusList || []) {
+      await db.put("userRoutenStatus", { ...status, hallenId: selectedHalle.id }, status.routenId);
+    }
+    for (const ascent of ascents || []) {
+      await db.put("ascents", { ...ascent, hallenId: selectedHalle.id });
+    }
+  };
+
+  const handleOfflineClick = async () => {
     if (isHalleOffline) {
-      db.delete("hallen", selectedHalle.id);
-      db.delete("waende", selectedHalle.id);
+      await deleteHallenData();
       const updatedHallen = offlineHallen.filter((halle) => halle.id !== selectedHalle.id);
       localStorage.setItem("OfflineHallen", JSON.stringify(updatedHallen));
       setIsHalleOffline(false);
       return;
     } else {
-      await db.put("hallen", selectedHalle);
-      await db.put("waende", waende || [], selectedHalle.id);
+      await putHallenData();
       offlineHallen.push(selectedHalle);
       localStorage.setItem("OfflineHallen", JSON.stringify(offlineHallen));
       setIsHalleOffline(true);
@@ -66,10 +112,13 @@ const SpeicherKnopfsis = () => {
   };
 
   const handleSyncClick = async () => {
+    if (isHalleSync) {
+      return;
+    }
     setIsHalleSync(true);
-    const db = await getDB();
-    await db.put("hallen", selectedHalle);
-    await db.put("waende", waende || [], selectedHalle.id);
+    await deleteHallenData();
+    await putHallenData();
+
     setTimeout(() => {
       setIsHalleSync(false);
     }, 2000);
@@ -100,6 +149,7 @@ const SpeicherKnopfsis = () => {
                   className={"halle-favorit halle-offline sync active"}
                   title="in Sync"
                   onClick={handleSyncClick}
+                  disabled={isHalleSync}
                 >
                   ✓
                 </button>
@@ -108,6 +158,7 @@ const SpeicherKnopfsis = () => {
                   className={"halle-favorit halle-offline sync"}
                   title="Syncronisieren"
                   onClick={handleSyncClick}
+                  disabled={isHalleSync}
                 >
                   ⟲
                 </button>

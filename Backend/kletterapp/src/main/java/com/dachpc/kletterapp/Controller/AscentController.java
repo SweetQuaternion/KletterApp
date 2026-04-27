@@ -32,6 +32,11 @@ public class AscentController {
         return ascentService.findAscents(userId, routenId);
     }
 
+    @GetMapping(path = "/all", produces = "application/json")
+    public List<AscentResponseDTO> findAllAscents(@RequestParam String userId, @RequestParam List<Integer> routenIdList) {
+        return ascentService.findAllAscents(userId, routenIdList);
+    }
+
     @PostMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ROLE_ADMIN') or #ascent.userId == authentication.principal.subject")

@@ -14,13 +14,14 @@ import type {
 } from "../api/model";
 import { keycloak } from "./keycloak";
 import { changeUser, getUser, syncUser } from "../api/user-controller/user-controller";
-import { addAscent, findAscents } from "../api/ascent-controller/ascent-controller";
+import { addAscent, findAllAscents, findAscents } from "../api/ascent-controller/ascent-controller";
 import { addRoute, deleteRoute, updateRoute } from "../api/routen-controller/routen-controller";
 import {
   addKommentar,
   getKommentareByRouteID,
 } from "../api/kommentar-controller/kommentar-controller";
 import {
+  getAllUserRoutenStatus,
   getUserRoutenStatus,
   updateUserRoutenStatus,
 } from "../api/user-routen-status-controller/user-routen-status-controller";
@@ -39,16 +40,6 @@ export const queryClient = new QueryClient({
     },
   },
 });
-
-// This code is only for TypeScript
-declare global {
-  interface Window {
-    __TANSTACK_QUERY_CLIENT__: import("@tanstack/query-core").QueryClient;
-  }
-}
-
-// This code is for all users
-window.__TANSTACK_QUERY_CLIENT__ = queryClient;
 
 // ============= User Queries and Mutations =============
 
@@ -87,10 +78,21 @@ export function createUserSyncMutation() {
 
 export function createAscentQueryOptions(routenId: number | null, user: UserResponseDTO | null) {
   return {
-    queryKey: ["ascents", routenId, user?.keycloakId],
+    queryKey: ["ascents", routenId],
     queryFn: async () => {
       if (!user) {
-        return null;
+        const db = await getDB();
+        const ascents = await db
+          .transaction("ascents")
+          .objectStore("ascents")
+          .index("routenId")
+          .getAll(routenId);
+        const ascentsPending = await db
+          .transaction("ascentsPending")
+          .objectStore("ascentsPending")
+          .index("routenId")
+          .getAll(routenId);
+        return ascents.concat(ascentsPending) as AscentResponseDTO[];
       }
       const response = await findAscents({
         routenId: routenId || undefined,
@@ -102,9 +104,28 @@ export function createAscentQueryOptions(routenId: number | null, user: UserResp
   };
 }
 
+export function createAllAscentsQueryOptions(user: UserResponseDTO, routenIdList: number[]) {
+  return {
+    queryKey: ["allAscents", user.keycloakId, routenIdList],
+    queryFn: async () =>
+      findAllAscents({ userId: user.keycloakId, routenIdList: routenIdList }) as Promise<
+        AscentResponseDTO[]
+      >,
+    enabled: routenIdList.length > 0,
+  };
+}
+
 export function createAddAscentMutationOptions() {
   return mutationOptions({
-    mutationFn: (data: AscentCreateDTO) => addAscent(data),
+    mutationFn: async (data: AscentCreateDTO) => {
+      if (!data.userId) {
+        const db = await getDB();
+        await db.put("ascentsPending", data);
+        return null;
+      } else {
+        return addAscent(data);
+      }
+    },
     onSuccess: async (_) => {
       await queryClient.invalidateQueries({
         queryKey: ["ascents"],
@@ -120,7 +141,23 @@ export function createUserRoutenStatusQueryOptions(routenId: number, user: UserR
     queryKey: ["userRoutenStatus", routenId, user?.keycloakId],
     queryFn: async () => {
       if (!user) {
-        return null;
+        // lese Status aus IndexedDB
+        const db = await getDB();
+        const status = await db.get("userRoutenStatus", `${routenId}`);
+        const pendingStatus = await db.get("userRoutenStatusPending", `${routenId}`);
+        if (pendingStatus) {
+          return pendingStatus as UserRoutenStatus;
+        } else if (status) {
+          return status as UserRoutenStatus;
+        } else {
+          return {
+            userId: "",
+            routenId,
+            isFavorit: false,
+            isProjekt: false,
+            notiz: "",
+          } as UserRoutenStatus;
+        }
       }
       const response = await getUserRoutenStatus({
         routenId,
@@ -132,12 +169,32 @@ export function createUserRoutenStatusQueryOptions(routenId: number, user: UserR
   };
 }
 
+export function createAllUserRoutenStatusQueryOptions(
+  user: UserResponseDTO,
+  routenIdList: number[],
+) {
+  return {
+    queryKey: ["allUserRoutenStatus", user.keycloakId, routenIdList],
+    queryFn: async () =>
+      getAllUserRoutenStatus({ userId: user.keycloakId, routenIdList: routenIdList }) as Promise<
+        UserRoutenStatus[]
+      >,
+    enabled: routenIdList.length > 0,
+  };
+}
+
 export function createUserRoutenStatusMutationOptions() {
   return mutationOptions({
-    mutationFn: (data: UserRoutenStatus) => updateUserRoutenStatus(data),
+    mutationFn: async (data: UserRoutenStatus) => {
+      if (!data.userId) {
+        const db = await getDB();
+        return await db.put("userRoutenStatusPending", data, `${data.routenId}`);
+      }
+      return updateUserRoutenStatus(data);
+    },
     onSuccess: async (_, variables) => {
       await queryClient.invalidateQueries({
-        queryKey: ["userRoutenStatus", variables.routenId, variables.userId],
+        queryKey: ["userRoutenStatus", variables.routenId],
       });
     },
   });

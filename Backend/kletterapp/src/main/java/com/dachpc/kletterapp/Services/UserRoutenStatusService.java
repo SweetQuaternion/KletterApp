@@ -1,5 +1,8 @@
 package com.dachpc.kletterapp.Services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,16 @@ public class UserRoutenStatusService {
             return new UserRoutenStatus(userId, routenId);
         }
         return status;
+    }
+    public List<UserRoutenStatus> getAllStatus(Integer[] routenIdList, String userId) {
+        List<UserRoutenStatus> statusList = new ArrayList<>();
+        for (Integer routenId : routenIdList) {
+            UserRoutenStatus status = userRoutenStatusRepository.findByIdUserIdAndIdRouteId(userId, routenId);
+            if (status != null) {
+                statusList.add(status);
+            }
+        }
+        return statusList;
     }
 
     public UserRoutenStatus addStatus(UserRoutenStatus userRoutenStatus) {

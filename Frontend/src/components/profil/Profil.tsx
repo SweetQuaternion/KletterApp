@@ -1,15 +1,19 @@
 import "../../styles/App.css";
 import "../../styles/Profil.css";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
+  createAddAscentMutationOptions,
   createAvatarMutationOptions,
   createAvatarQueryOptions,
+  createUserRoutenStatusMutationOptions,
   createUserSyncMutation,
 } from "../../constants/queries.ts";
-import type { UserCreateDTO } from "../../api/model";
+import type { AscentCreateDTO, UserCreateDTO, UserRoutenStatus } from "../../api/model";
 import { pointsToLevel } from "../../constants/levels.ts";
 import { UserContext } from "../../constants/context.ts";
+import { useOnline } from "../../constants/useOnline.ts";
+import getDB from "../../constants/db.ts";
 
 const Profil = () => {
   const user = useContext(UserContext);
@@ -18,10 +22,12 @@ const Profil = () => {
   const [username, setUsername] = useState(user?.name || "");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [bio, setBio] = useState(user?.bio || "");
+  const isOnline = useOnline();
 
-  const { data: avatar } = useQuery(
-    createAvatarQueryOptions(user?.keycloakId || ""),
-  );
+  const { data: avatar } = useQuery(createAvatarQueryOptions(user?.keycloakId || ""));
+
+  const { mutateAsync: addAscent } = useMutation(createAddAscentMutationOptions());
+  const { mutateAsync: addUserRoutenStatus } = useMutation(createUserRoutenStatusMutationOptions());
 
   const {
     mutate: syncUser,
@@ -50,6 +56,56 @@ const Profil = () => {
     setIsEditing(false);
   };
 
+  const getAscentsPending = async () => {
+    const db = await getDB();
+    return await db.getAll("ascentsPending");
+  };
+
+  const getUserRoutenStatusPending = async () => {
+    const db = await getDB();
+    return await db.getAll("userRoutenStatusPending");
+  };
+
+  const [dataPending, setDataPending] = useState(false);
+
+  const isDataPending = async () => {
+    const ascentsPending = await getAscentsPending();
+    const userRoutenStatusPending = await getUserRoutenStatusPending();
+    return (
+      (ascentsPending && ascentsPending.length > 0) ||
+      (userRoutenStatusPending && userRoutenStatusPending.length > 0)
+    );
+  };
+
+  useEffect(() => {
+    isDataPending().then(setDataPending);
+  }, []);
+
+  const handleDataSync = async () => {
+    const db = await getDB();
+    const ascentsPending = await getAscentsPending();
+    for (const pending of ascentsPending) {
+      const ascent = pending as AscentCreateDTO;
+      ascent.userId = user?.keycloakId || "";
+      const ascentResponse = await addAscent(ascent);
+      console.log("Syncing ascent:", ascent, "Response:", ascentResponse);
+      if (ascentResponse) {
+        await db.delete("ascentsPending", pending.id);
+      }
+    }
+
+    const userRoutenStatusPending = await getUserRoutenStatusPending();
+    for (const pending of userRoutenStatusPending) {
+      const status = pending as UserRoutenStatus;
+      status.userId = user?.keycloakId || "";
+      const statusResponse = await addUserRoutenStatus(status);
+      if (statusResponse) {
+        await db.delete("userRoutenStatusPending", `${pending.routenId}`);
+      }
+    }
+    setDataPending(false);
+  };
+
   return (
     <>
       <div className="profil-container">
@@ -66,12 +122,7 @@ const Profil = () => {
                         alt="Profilbild"
                       />
                     )) ||
-                      (avatar && (
-                        <img
-                          src={URL.createObjectURL(avatar)}
-                          alt="Profilbild"
-                        />
-                      ))}
+                      (avatar && <img src={URL.createObjectURL(avatar)} alt="Profilbild" />)}
                   </div>
                   <div className="flex-column">
                     <h2>{username}</h2>
@@ -96,10 +147,7 @@ const Profil = () => {
                           alt="Profilbild"
                         />
                       ))}
-                    <label
-                      htmlFor={avatarInputId}
-                      className="avatar-overlay-button"
-                    >
+                    <label htmlFor={avatarInputId} className="avatar-overlay-button">
                       Bild auswählen
                     </label>
                     <input
@@ -142,6 +190,9 @@ const Profil = () => {
                     {user.ascentCount !== 1 ? "n" : ""} geklettert
                   </p>
                 </div>
+                {isOnline && dataPending && (
+                  <button onClick={handleDataSync}>Offline-Daten synchronisieren</button>
+                )}
               </div>
             </div>
             <div className="flex-row small-gap bottom-section">
@@ -151,11 +202,7 @@ const Profil = () => {
               {isEditing && <button onClick={handleSubmit}>Speichern</button>}
               {isPending && <p className="status">speichern...</p>}
               {isSuccess && <p className="status success">gespeichert!</p>}
-              {isError && (
-                <p className="status error">
-                  Fehler beim Speichern: {error?.message}
-                </p>
-              )}
+              {isError && <p className="status error">Fehler beim Speichern: {error?.message}</p>}
             </div>
           </div>
         )}
