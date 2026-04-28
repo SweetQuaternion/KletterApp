@@ -52,6 +52,7 @@ const WändeBox = ({
       startY: wand.endY,
       endX: wand.startX,
       endY: wand.startY,
+      position: wand.position === "indoor" ? "outdoor" : "indoor",
     };
     setWände(newWände);
   }
@@ -119,18 +120,10 @@ const WändeBox = ({
             ({wand.startX}, {wand.startY}) → ({wand.endX}, {wand.endY})
           </div>
 
-          <button
-            className="flip-button"
-            onClick={() => flipWand(index)}
-            title="flip"
-          >
+          <button className="flip-button" onClick={() => flipWand(index)} title="flip">
             ⟲
           </button>
-          <button
-            className="flip-button"
-            onClick={() => deleteWand(index)}
-            title="Wand löschen"
-          >
+          <button className="flip-button" onClick={() => deleteWand(index)} title="Wand löschen">
             ×
           </button>
           <div>

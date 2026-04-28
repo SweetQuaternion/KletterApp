@@ -17,6 +17,8 @@ services:
     restart: always
     ports:
       - "5050:80"
+    volumes:
+      - kletterapp-pgadmin-data:/backups
 
   Kletterapp-Keycloak:
     image: quay.io/keycloak/keycloak
@@ -31,3 +33,4 @@ services:
 
 volumes:
   kletterapp-db-data:
+  kletterapp-pgadmin-data:

@@ -5,7 +5,6 @@ target/
 .vscode/
 *.iml
 .env*
-uploads/
 .directory
 start.sh
 .gitattributes
