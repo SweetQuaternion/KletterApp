@@ -1,5 +1,5 @@
 import type { RouteResponseDTO } from "../../api/model";
-import { convertSchwierigkeitToString } from "../../constants/conversions";
+import { convertSchwierigkeitToString, getColor } from "../../constants/conversions";
 
 interface Props {
   route: RouteResponseDTO;
@@ -7,11 +7,7 @@ interface Props {
   setShowNeueRoute: (show: boolean) => void;
 }
 
-const RoutenErgebnisFeld = ({
-  route,
-  setSelectedRoute,
-  setShowNeueRoute,
-}: Props) => {
+const RoutenErgebnisFeld = ({ route, setSelectedRoute, setShowNeueRoute }: Props) => {
   return (
     <button
       className="routen-ergebnis-feld"
@@ -22,7 +18,7 @@ const RoutenErgebnisFeld = ({
       <div className="left">
         <div
           className="mini-dot-colour"
-          style={{ background: `var(--${route.farbe})` }}
+          style={{ background: getColor(route.farbe || "grau") }}
         ></div>
         {route.name ? <p>{route.name}</p> : <p>Route</p>}
       </div>

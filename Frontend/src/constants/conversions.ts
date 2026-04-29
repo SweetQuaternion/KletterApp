@@ -1,6 +1,4 @@
-export const convertSchwierigkeitToString = (
-  schwierigkeit: number | undefined,
-): string => {
+export const convertSchwierigkeitToString = (schwierigkeit: number | undefined): string => {
   if (schwierigkeit === 0) return "";
   if (schwierigkeit === undefined) return "?";
   if (schwierigkeit % 1 === 0) return schwierigkeit.toString();
@@ -10,9 +8,7 @@ export const convertSchwierigkeitToString = (
   return `${base}${modifier}`;
 };
 
-export const convertSchwierigkeitToNumber = (
-  schwierigkeit: string,
-): number | null => {
+export const convertSchwierigkeitToNumber = (schwierigkeit: string): number | null => {
   if (schwierigkeit === "") return null;
   const match = schwierigkeit.match(/^(\d+)([+-]?)$/);
   if (!match) throw new Error("Ungültiges Format");
@@ -21,4 +17,10 @@ export const convertSchwierigkeitToNumber = (
   if (modifier === "+") return base + 0.3;
   if (modifier === "-") return base - 0.3;
   return base;
+};
+
+export const getColor = (color: string): string => {
+  const colors = color.split("-");
+  if (colors.length === 1) return `var(--${color})`;
+  return `linear-gradient(to right, ${colors.map((color) => `var(--${color})`).join(", ")})`;
 };

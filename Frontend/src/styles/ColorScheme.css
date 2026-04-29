@@ -20,12 +20,15 @@
 :root {
   --rot: #d54444;
   --orange: #f5a97f;
+  --beige: #ffdfbd;
   --gelb: #ffcd2a;
   --grün: #a6d189;
   --mint: #81c8be;
-  --blau: #04a5e5;
+  --türkis: #04a5e5;
+  --blau: #2353ff;
   --lila: #8839ef;
+  --pink: #f175ff;
   --schwarz: #232634;
+  --grau: #bbbbbb;
   --weiß: #ffffff;
-  --rot-weiß: linear-gradient(90deg, #d54444 0%, #ffe3db 100%);
 }

@@ -17,13 +17,6 @@ services:
       retries: 5
       start_period: 10s
 
-  pgadmin:
-    image: dpage/pgadmin4
-    env_file: .env
-    restart: unless-stopped
-    ports:
-      - "5050:80"
-
   keycloak:
     image: quay.io/keycloak/keycloak
     command: start-dev --import-realm
@@ -42,7 +35,7 @@ services:
       test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo OK >&3"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 3
       start_period: 30s
 
   backend:

@@ -5,8 +5,6 @@ const getDB = async () => {
     upgrade(db) {
       db.createObjectStore("hallen", { keyPath: "id" });
       db.createObjectStore("waende");
-      db.createObjectStore("routen", { keyPath: "id" });
-      db.createObjectStore("kommentare", { keyPath: "id" });
 
       const userRoutenStatusStore = db.createObjectStore("userRoutenStatus");
       userRoutenStatusStore.createIndex("hallenId", "hallenId");

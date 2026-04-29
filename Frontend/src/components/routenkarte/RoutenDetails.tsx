@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { convertSchwierigkeitToString } from "../../constants/conversions";
+import { convertSchwierigkeitToString, getColor } from "../../constants/conversions";
 import "../../styles/RoutenDetails.css";
 import type { AscentResponseDTOStyle, RouteResponseDTO } from "../../api/model";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -100,7 +100,7 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
             <div
               className="tag-colour"
               style={{
-                background: `var(--${selectedRoute.farbe})`,
+                background: getColor(selectedRoute.farbe),
                 color: `${selectedRoute.farbe === "schwarz" ? "white" : "black"}`,
                 border: `${selectedRoute.farbe === "weiß" ? "1px solid grey" : "none"}`,
               }}
