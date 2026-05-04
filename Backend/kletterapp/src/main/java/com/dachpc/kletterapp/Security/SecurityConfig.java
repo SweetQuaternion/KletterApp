@@ -10,8 +10,10 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.core.OAuth2TokenValidator;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-// import org.springframework.security.oauth2.jwt.JwtDecoders;
+import org.springframework.security.oauth2.jwt.JwtValidators;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -48,27 +50,22 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // @Bean
-    // public JwtDecoder jwtDecoder() {
-    //     return JwtDecoders.fromIssuerLocation(issuerUri);
-    // }
-
-    // Müssen wir deaktivieren, da wir keinen Nginx Reverse Proxy nutzen
-    // Keycloak muss unter http://localhost:8080/ erreichbar sein, damit der Issuer-Check funktioniert
-    // aber auch unter http://localhost:8180/ erreichbar sein, damit das Frontend happy ist
-    // also deaktivieren und nur den JWK-Set-URI nutzen, damit die JWTs trotzdem validiert werden können
     @Bean
     public JwtDecoder jwtDecoder() {
         NimbusJwtDecoder decoder = NimbusJwtDecoder
-            .withJwkSetUri(jwkSetUri)
+            .withJwkSetUri(jwkSetUri) 
             .build();
-        return decoder; // kein Issuer-Check
+        
+        OAuth2TokenValidator<Jwt> issuerValidator = JwtValidators.createDefaultWithIssuer(issuerUri);
+        decoder.setJwtValidator(issuerValidator);
+        
+        return decoder;
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000"));
+        configuration.setAllowedOrigins(List.of("http://kletterapp.localhost", "http://localhost:5173", "http://localhost:3000")); // Später nur tatsächliche URL
         configuration.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

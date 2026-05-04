@@ -9,10 +9,10 @@ function Willkommen() {
         <p>Du bist nun erfolgreich registriert.</p>
         <div className="centering">
           <div className="button-container">
-            <Link to="/profile">
+            <Link to="/profil">
               <button>Mein Profil</button>
             </Link>
-            <Link to="/hallensuche5%">
+            <Link to="/hallensuche">
               <button>Startseite</button>
             </Link>
           </div>

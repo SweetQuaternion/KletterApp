@@ -38,11 +38,9 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
     enabled: isOnline,
   });
 
-  const {
-    mutate: updateStatus,
-    isSuccess: isStatusSuccess,
-    isError: isStatusError,
-  } = useMutation(createUserRoutenStatusMutationOptions());
+  const { mutate: updateStatus, isError: isStatusError } = useMutation(
+    createUserRoutenStatusMutationOptions(),
+  );
 
   const {
     mutate: addAscent,
@@ -219,7 +217,7 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
                   />
                   <button type="submit">Absenden</button>
                 </form>
-                {(isKommentarSuccess || isStatusSuccess) && <p className="small">Gespeichert!</p>}
+                {isKommentarSuccess && <p className="small">Gespeichert!</p>}
                 {(isKommentarError || isStatusError) && (
                   <p className="small">Etwas ist schiefgelaufen...</p>
                 )}

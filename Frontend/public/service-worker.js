@@ -50,7 +50,7 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", async (event) => {
   if (
     event.request.url.includes("extension") || // Ignoriere Anfragen an Browser Extensions
-    event.request.url.includes("openid-connect") || // Ignoriere Anfragen an Keycloak
+    event.request.url.includes("/auth") || // Ignoriere Anfragen an Keycloak
     event.request.url.includes("/api") // Ignoriere Anfragen an unsere API
   ) {
     return;

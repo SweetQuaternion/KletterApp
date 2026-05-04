@@ -6,15 +6,26 @@ import { useQuery } from "@tanstack/react-query";
 import { getFindHalleQueryOptions } from "../../api/hallen-controller/hallen-controller.ts";
 import { isAdmin } from "../../constants/keycloak.ts";
 import { Link } from "react-router";
+import { useOnline } from "../../constants/useOnline.ts";
+import type { HalleResponseDTO } from "../../api/model/halleResponseDTO.ts";
+
+// beim Laden der Seite wird die Suche mit leerem search ausgeführt (alle Ergebnisse)
+// diese alle Ergebnisse werden im Frontend durch getSuchergebnisse gefiltert mit dem aktuellen Wert des Feldes
+// bei Klick auf den Suchen-Knopf, updated sich search, das Backend lädt neue Daten
+// wenn offline oder Backend weg, werden die OfflineHallen angezeigt (todo)
 
 function HallenSuche() {
+  const isOnline = useOnline();
   const [search, setSearch] = useState<string | undefined>(undefined);
   const { data, error } = useQuery(
     getFindHalleQueryOptions(search ? { name: search } : undefined, {
-      query: { enabled: true },
+      query: { enabled: isOnline },
     }),
   );
-  const [ergebnisse, setErgebnisse] = useState(data || []);
+
+  const [ergebnisse, setErgebnisse] = useState(
+    data || (JSON.parse(localStorage.getItem("OfflineHallen") || "[]") as HalleResponseDTO[]),
+  );
 
   function getSucherergebnisse(prompt: string) {
     const tmp = data?.filter((halle) => halle.name.includes(prompt)) || [];
@@ -29,8 +40,7 @@ function HallenSuche() {
         onSubmit={async (e) => {
           e.preventDefault();
           const input = new FormData(e.target as HTMLFormElement); // Erstellt ein FormData-Objekt aus dem Formular
-          const name = input.get("name") as string;
-          setSearch(name);
+          setSearch(input.get("name") as string);
         }}
       >
         <input
@@ -61,10 +71,7 @@ function HallenSuche() {
           {ergebnisse?.map((ergebnis, index) => (
             <HallenErgebnisFeld key={index} ergebnis={ergebnis} />
           ))}
-          {!ergebnisse ||
-            (ergebnisse.length === 0 && (
-              <p className="sans-serif small">Keine Halle gefunden...</p>
-            ))}
+
           {error !== null && <p className="sans-serif small">Ein Fehler ist aufgetreten</p>}
           {isAdmin() && (
             <Link to="/editor">

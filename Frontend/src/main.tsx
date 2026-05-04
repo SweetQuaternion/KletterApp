@@ -37,7 +37,7 @@ if (navigator.onLine) {
 }
 
 if (authenticated) {
-  user = await fetchUser(keycloak.subject!, keycloak.tokenParsed?.name!);
+  user = await fetchUser(keycloak.subject!, keycloak.tokenParsed?.preferred_username!);
 }
 
 createRoot(document.getElementById("root")!).render(

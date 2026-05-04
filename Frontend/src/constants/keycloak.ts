@@ -1,6 +1,6 @@
 import Keycloak from "keycloak-js";
 
-export const KEYCLOAK_URL = "http://localhost:8180";
+export const KEYCLOAK_URL = import.meta.env.VITE_KEYCLOAK_URL;
 
 export const keycloak = new Keycloak({
   url: KEYCLOAK_URL,

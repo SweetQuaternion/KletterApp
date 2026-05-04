@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS wände(
     end_x FLOAT not null,
     end_y FLOAT not null,
     position text,
-    FOREIGN KEY (hallen_id) REFERENCES hallen(id),
+    FOREIGN KEY (hallen_id) REFERENCES hallen(id) ON DELETE CASCADE,
     PRIMARY KEY (hallen_id, wand_nr)
 );
 
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS routen(
     schraubdatum date,
     is_active boolean DEFAULT true,
     beschreibung text,
-    FOREIGN KEY (hallen_id, wand_nr) REFERENCES wände(hallen_id, wand_nr)
+    FOREIGN KEY (hallen_id, wand_nr) REFERENCES wände(hallen_id, wand_nr) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS users(
@@ -68,8 +68,8 @@ CREATE TABLE IF NOT EXISTS ascents(
     datum date NOT NULL,
     style VARCHAR(50),
     -- sicherung VARCHAR(50),
-    FOREIGN KEY (user_id) REFERENCES users(keycloak_id),
-    FOREIGN KEY (route_id) REFERENCES routen(id)
+    FOREIGN KEY (user_id) REFERENCES users(keycloak_id) ON DELETE CASCADE,
+    FOREIGN KEY (route_id) REFERENCES routen(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS user_routen_status(
@@ -79,8 +79,8 @@ CREATE TABLE IF NOT EXISTS user_routen_status(
     isProjekt boolean DEFAULT false,
     gesch_schwierigkeit FLOAT,
     notiz text,
-    FOREIGN KEY (user_id) REFERENCES users(keycloak_id),
-    FOREIGN KEY (route_id) REFERENCES routen(id)
+    FOREIGN KEY (user_id) REFERENCES users(keycloak_id) ON DELETE CASCADE,
+    FOREIGN KEY (route_id) REFERENCES routen(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS kommentare(
@@ -89,6 +89,6 @@ CREATE TABLE IF NOT EXISTS kommentare(
     route_id INT NOT NULL,
     datum timestamp NOT NULL,
     kommentar_text text NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(keycloak_id),
-    FOREIGN KEY (route_id) REFERENCES routen(id)
+    FOREIGN KEY (user_id) REFERENCES users(keycloak_id) ON DELETE CASCADE,
+    FOREIGN KEY (route_id) REFERENCES routen(id) ON DELETE CASCADE
 );
