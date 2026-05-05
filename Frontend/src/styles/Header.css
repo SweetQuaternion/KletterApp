@@ -18,6 +18,7 @@ header {
 header h1 {
   font-size: 2em;
   font-weight: bold;
+  cursor: pointer;
   /* margin-left: 0.5em; */
 }
 

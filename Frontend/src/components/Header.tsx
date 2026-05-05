@@ -29,15 +29,14 @@ function Header({ setSelectedHalle }: Props) {
   return (
     <>
       <header>
-        <div className="left-part">
-          <img
-            className="header-logo"
-            src={logo}
-            onClick={(e) => {
-              e.stopPropagation();
-              setNavigationToggled(!navigationToggled);
-            }}
-          />
+        <div
+          className="left-part"
+          onClick={(e) => {
+            e.stopPropagation();
+            setNavigationToggled(!navigationToggled);
+          }}
+        >
+          <img className="header-logo" src={logo} />
           <h1>KletterApp</h1>
         </div>
         {keycloak.didInitialize && isOnline ? (
