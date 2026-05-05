@@ -12,7 +12,7 @@ import type { HalleResponseDTO } from "../../api/model/halleResponseDTO.ts";
 // beim Laden der Seite wird die Suche mit leerem search ausgeführt (alle Ergebnisse)
 // diese alle Ergebnisse werden im Frontend durch getSuchergebnisse gefiltert mit dem aktuellen Wert des Feldes
 // bei Klick auf den Suchen-Knopf, updated sich search, das Backend lädt neue Daten
-// wenn offline oder Backend weg, werden die OfflineHallen angezeigt (todo)
+// wenn offline oder Backend weg, werden die OfflineHallen angezeigt
 
 function HallenSuche() {
   const isOnline = useOnline();
@@ -49,6 +49,7 @@ function HallenSuche() {
           placeholder="Suche nach Halle..."
           autoComplete="off"
           onInput={(e) => getSucherergebnisse(e.currentTarget.value)}
+          onSubmit={(e) => setSearch(e.currentTarget.value)}
         />
         <button type="submit">Suchen</button>
       </form>

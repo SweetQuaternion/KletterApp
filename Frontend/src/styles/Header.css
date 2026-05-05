@@ -36,6 +36,12 @@ header h1 {
   gap: 0.5em;
 }
 
+.header-logo {
+  width: 2.5em;
+  height: 2.5em;
+  cursor: pointer;
+}
+
 .profile-button {
   background: none;
   border: none;
@@ -106,5 +112,9 @@ header h1 {
   }
   header h1 {
     font-size: 1.3em;
+  }
+  .header-logo {
+    width: 2em;
+    height: 2em;
   }
 }

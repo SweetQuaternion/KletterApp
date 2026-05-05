@@ -1,6 +1,6 @@
 import "../styles/App.css";
 import "../styles/Header.css";
-import logo from "../assets/react.svg";
+import logo from "/kletterapp-logo.webp";
 import type { HalleResponseDTO } from "../api/model";
 import { login, register, logout, keycloak } from "../constants/keycloak";
 import { useContext, useState } from "react";
@@ -31,6 +31,7 @@ function Header({ setSelectedHalle }: Props) {
       <header>
         <div className="left-part">
           <img
+            className="header-logo"
             src={logo}
             onClick={(e) => {
               e.stopPropagation();
