@@ -126,6 +126,7 @@ const SpeicherKnopfsis = () => {
       <button
         className={`halle-favorit ${isHalleFavorit ? "active" : ""}`}
         title="Als Heimathalle markieren"
+        aria-label="Als Heimathalle markieren"
         onClick={handleFavoriteClick}
       >
         ❤︎⁠
@@ -135,9 +136,10 @@ const SpeicherKnopfsis = () => {
           <button
             className={`halle-favorit halle-offline ${isHalleOffline ? "active" : ""}`}
             title="Offline speichern"
+            aria-label="Offline speichern"
             onClick={handleOfflineClick}
           >
-            🡃
+            ↷
           </button>
           {isHalleOffline && (
             <>
@@ -145,6 +147,7 @@ const SpeicherKnopfsis = () => {
                 <button
                   className={"halle-favorit halle-offline sync active"}
                   title="in Sync"
+                  aria-label="in Sync"
                   onClick={handleSyncClick}
                   disabled={isHalleSync}
                 >
@@ -154,6 +157,7 @@ const SpeicherKnopfsis = () => {
                 <button
                   className={"halle-favorit halle-offline sync"}
                   title="Syncronisieren"
+                  aria-label="Syncronisieren"
                   onClick={handleSyncClick}
                   disabled={isHalleSync}
                 >

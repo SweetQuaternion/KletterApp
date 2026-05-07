@@ -15,11 +15,13 @@ function HallenErgebnisFeld({ ergebnis }: Props) {
     setSelectedHalle(ergebnis);
   };
   return (
-    <Link to="/routenkarte">
-      <button className="hallen-ergebnis-feld" onClick={() => handleHallenSelection(ergebnis)}>
-        <div className="mini-dot"></div>
-        <p>{ergebnis.name}</p>
-      </button>
+    <Link
+      to="/routenkarte"
+      className="hallen-ergebnis-feld"
+      onClick={() => handleHallenSelection(ergebnis)}
+    >
+      <div className="mini-dot"></div>
+      <p>{ergebnis.name}</p>
     </Link>
   );
 }

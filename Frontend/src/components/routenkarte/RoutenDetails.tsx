@@ -82,17 +82,17 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
   };
 
   return (
-    <div className="white-box top right bottom routen-details space-between">
+    <section className="white-box top right bottom routen-details space-between">
       <button className="close-button">
-        <div onClick={() => setSelectedRoute(null)}>×</div>
+        <button onClick={() => setSelectedRoute(null)}>×</button>
       </button>
       <div className="top-section">
-        <div className="routen-details-header">
+        <hgroup className="routen-details-header">
           <h2>{selectedRoute?.name || "Route"}</h2>
           <div className="routen-details-schwierigkeit">
             {convertSchwierigkeitToString(selectedRoute.schwierigkeit || undefined)}
           </div>
-        </div>
+        </hgroup>
         <div className="flex-row small-gap">
           {selectedRoute.farbe && (
             <div
@@ -125,8 +125,9 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
 
         <div className="routen-details-badges">
           <button
-            className={`favorit ${userRoutenStatus?.isFavorit ? "active" : ""}`}
+            className={`red-button favorit ${userRoutenStatus?.isFavorit ? "active" : ""}`}
             title="Als Favorit markieren"
+            aria-label="Als Favorit markieren"
             onClick={() =>
               updateStatus({
                 ...userRoutenStatus,
@@ -139,8 +140,9 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
             </div>
           </button>
           <button
-            className={`projekt ${userRoutenStatus?.isProjekt ? "active" : ""}`}
+            className={`red-button projekt ${userRoutenStatus?.isProjekt ? "active" : ""}`}
             title="Als Projekt markieren"
+            aria-label="Als Projekt markieren"
             onClick={() =>
               updateStatus({
                 ...userRoutenStatus,
@@ -152,7 +154,11 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
               <img src="/projekt.svg" />
             </div>
           </button>
-          <button onClick={() => setAscentToggled(!ascentToggled)} title="Als geschafft markieren">
+          <button
+            className="red-button"
+            onClick={() => setAscentToggled(!ascentToggled)}
+            title="Als geschafft markieren"
+          >
             Geschafft
           </button>
         </div>
@@ -172,7 +178,9 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
                   <option value="attempt">attempt</option>
                 </select>
               </div>
-              <button type="submit">Speichern</button>
+              <button className="red-button" type="submit">
+                Speichern
+              </button>
             </form>
           </>
         )}
@@ -184,11 +192,11 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
             <b>Beschreibung</b>
             <p className="small">{selectedRoute.beschreibung || "keine"}</p>
             {navigator.onLine && (
-              <>
+              <section>
                 <b>Kommentare</b>
                 {kommentare && kommentare.length > 0 ? (
                   kommentare.map((kommentar) => (
-                    <div key={kommentar.id} className="kommentar">
+                    <article key={kommentar.id} className="kommentar">
                       <Link to={`/user/${kommentar.username}`} className="kommentar-user">
                         <p className="kommentar-name">{kommentar.username}</p>
                       </Link>
@@ -197,12 +205,12 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
                     user?.keycloakId === kommentar.user.keycloakId) && (
                     <p className="bearbeiten">löschen</p>
                   )} */}
-                    </div>
+                    </article>
                   ))
                 ) : (
                   <p className="small">keine</p>
                 )}
-              </>
+              </section>
             )}
             {user && (
               <>
@@ -215,7 +223,9 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
                     rows={4}
                     required
                   />
-                  <button type="submit">Absenden</button>
+                  <button className="red-button" type="submit">
+                    Absenden
+                  </button>
                 </form>
                 {isKommentarSuccess && <p className="small">Gespeichert!</p>}
                 {(isKommentarError || isStatusError) && (
@@ -228,12 +238,12 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
       </div>
       {isAdmin() && (
         <div className="bottom-section">
-          <div className="hinzufügen" onClick={() => setEditingRoute(selectedRoute)}>
+          <div className="text-button" onClick={() => setEditingRoute(selectedRoute)}>
             Route bearbeiten
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

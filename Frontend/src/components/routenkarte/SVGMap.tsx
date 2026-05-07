@@ -103,29 +103,23 @@ function SVGMap({
                   style={{ cursor: "pointer" }}
                 />
                 {(wand.routen?.length || 0) > 0 || isAdmin() ? (
-                  <g>
+                  <g
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") handleWandClick(wand);
+                    }}
+                  >
                     <circle
-                      cx={
-                        (wand.startX + wand.endX) / 2 -
-                        (wand.endY - wand.startY) * 0.1
-                      }
-                      cy={
-                        (wand.startY + wand.endY) / 2 +
-                        (wand.endX - wand.startX) * 0.1
-                      }
+                      cx={(wand.startX + wand.endX) / 2 - (wand.endY - wand.startY) * 0.1}
+                      cy={(wand.startY + wand.endY) / 2 + (wand.endX - wand.startX) * 0.1}
                       r={20}
                       fill={"white"}
                       style={{ cursor: "pointer" }}
                     />
                     <text
-                      x={
-                        (wand.startX + wand.endX) / 2 -
-                        (wand.endY - wand.startY) * 0.1
-                      }
-                      y={
-                        (wand.startY + wand.endY) / 2 +
-                        (wand.endX - wand.startX) * 0.1
-                      }
+                      x={(wand.startX + wand.endX) / 2 - (wand.endY - wand.startY) * 0.1}
+                      y={(wand.startY + wand.endY) / 2 + (wand.endX - wand.startX) * 0.1}
                       fontSize={16}
                       fill="black"
                       textAnchor="middle"
@@ -133,36 +127,30 @@ function SVGMap({
                     >
                       {wand.routen?.length || 0}
                     </text>
+
+                    {selectedWand && selectedWandBox && selectedWand.wandNr === wand.wandNr ? (
+                      <foreignObject
+                        x={selectedWandBox.boxX}
+                        y={selectedWandBox.boxY}
+                        width="370"
+                        height={
+                          (selectedWand.routen?.length || 0) * 40 + (isAdmin() ? 40 : 0) + 160
+                        }
+                      >
+                        <div className="embedded">
+                          <WandInfoBox
+                            selectedWand={selectedWand}
+                            routen={selectedWand.routen || []}
+                            setSelectedRoute={setSelectedRoute}
+                            setShowNeueRoute={setShowNeueRoute}
+                          />
+                        </div>
+                      </foreignObject>
+                    ) : null}
                   </g>
                 ) : null}
               </g>
             ))}
-
-            {selectedWand && selectedWandBox && (
-              <g
-                onPointerDown={(e) => e.stopPropagation()}
-                onClick={(e) => e.stopPropagation()}
-                transform={`translate(${selectedWandBox.boxX}, ${selectedWandBox.boxY}) scale(${1 / scale}) translate(${-selectedWandBox.boxX}, ${-selectedWandBox.boxY})`}
-              >
-                <foreignObject
-                  x={selectedWandBox.boxX}
-                  y={selectedWandBox.boxY}
-                  width="370"
-                  height={
-                    (selectedWand.routen?.length || 0) * 40 +
-                    (isAdmin() ? 40 : 0) +
-                    160
-                  }
-                >
-                  <WandInfoBox
-                    selectedWand={selectedWand}
-                    routen={selectedWand.routen || []}
-                    setSelectedRoute={setSelectedRoute}
-                    setShowNeueRoute={setShowNeueRoute}
-                  />
-                </foreignObject>
-              </g>
-            )}
           </g>
         </svg>
       </div>

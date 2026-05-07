@@ -48,7 +48,7 @@ const RouteBearbeiten = ({ selectedWand, selectedRoute, setEditingRoute }: Props
   };
 
   return (
-    <div className="white-box top right bottom routen-details">
+    <section className="white-box top right bottom routen-details">
       <h2>Route bearbeiten</h2>
       <form onSubmit={handleRoutenSubmit}>
         <div className="form-group">
@@ -156,7 +156,7 @@ const RouteBearbeiten = ({ selectedWand, selectedRoute, setEditingRoute }: Props
         {isDeleteSuccess && <p className="small">Route erfolgreich deaktiviert!</p>}
         {isDeleteError && <p className="small">Fehler beim Deaktivieren der Route</p>}
       </form>
-    </div>
+    </section>
   );
 };
 

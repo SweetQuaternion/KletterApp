@@ -1,3 +1,10 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -32,6 +39,8 @@ body,
 body {
   margin: 0;
   place-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   min-height: 100vh;
 }
@@ -50,6 +59,8 @@ button {
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
+  -webkit-transition: border-color 0.25s;
+  -o-transition: border-color 0.25s;
   transition: border-color 0.25s;
 }
 button:hover {

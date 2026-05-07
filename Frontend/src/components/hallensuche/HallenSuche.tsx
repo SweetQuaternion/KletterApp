@@ -33,55 +33,54 @@ function HallenSuche() {
   }
 
   return (
-    <div className="hallensuche white-box center">
+    <section className="hallensuche white-box center">
       <h2>Wähle deine Halle aus</h2>
-      <form
-        className="flex-row"
-        onSubmit={async (e) => {
-          e.preventDefault();
-          const input = new FormData(e.target as HTMLFormElement); // Erstellt ein FormData-Objekt aus dem Formular
-          setSearch(input.get("name") as string);
-        }}
-      >
-        <input
-          type="text"
-          name="name"
-          placeholder="Suche nach Halle..."
-          autoComplete="off"
-          onInput={(e) => getSucherergebnisse(e.currentTarget.value)}
-          onSubmit={(e) => setSearch(e.currentTarget.value)}
-        />
-        <button type="submit">Suchen</button>
-      </form>
-      {search ? (
-        <div className="ergebnis-container">
-          {data?.map((ergebnis, index) => (
-            <HallenErgebnisFeld key={index} ergebnis={ergebnis} />
-          ))}
-          {!data ||
-            (data.length === 0 && <p className="sans-serif small">Keine Halle gefunden...</p>)}
-          {error !== null && <p className="sans-serif small">Ein Fehler ist aufgetreten</p>}
-          {isAdmin() && (
-            <Link to="/editor">
-              <div className="hinzufügen">Halle hinzufügen</div>
-            </Link>
-          )}
-        </div>
-      ) : (
-        <div className="ergebnis-container">
-          {ergebnisse?.map((ergebnis, index) => (
-            <HallenErgebnisFeld key={index} ergebnis={ergebnis} />
-          ))}
+      <search>
+        <form
+          className="flex-row"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const input = new FormData(e.target as HTMLFormElement); // Erstellt ein FormData-Objekt aus dem Formular
+            setSearch(input.get("name") as string);
+          }}
+        >
+          <label className="sr-only" htmlFor="hallensuche">
+            Hallenname
+          </label>
+          <input
+            type="text"
+            name="name"
+            placeholder="Suche nach Halle..."
+            autoComplete="off"
+            onInput={(e) => getSucherergebnisse(e.currentTarget.value)}
+            onSubmit={(e) => setSearch(e.currentTarget.value)}
+            autoFocus
+          />
+          <button type="submit" className="red-button">
+            Suchen
+          </button>
+        </form>
+      </search>
 
-          {error !== null && <p className="sans-serif small">Ein Fehler ist aufgetreten</p>}
-          {isAdmin() && (
-            <Link to="/editor">
-              <div className="hinzufügen">Halle hinzufügen</div>
-            </Link>
-          )}
-        </div>
+      <ul className="ergebnis-container">
+        {ergebnisse?.map((ergebnis, index) => (
+          <li key={index}>
+            <HallenErgebnisFeld ergebnis={ergebnis} />
+          </li>
+        ))}
+      </ul>
+
+      {search && (!data || data.length === 0) && (
+        <p className="sans-serif small">Keine Halle gefunden...</p>
       )}
-    </div>
+      {error !== null && <p className="sans-serif small">Ein Fehler ist aufgetreten</p>}
+
+      {isAdmin() && (
+        <Link to="/editor" className="text-button">
+          Halle hinzufügen
+        </Link>
+      )}
+    </section>
   );
 }
 

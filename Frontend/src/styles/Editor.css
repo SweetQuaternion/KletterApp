@@ -1,9 +1,23 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
 .speichern-knopfsi {
   position: absolute;
   bottom: 1em;
   right: 1em;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   gap: 0.5em;
 }
@@ -13,7 +27,12 @@
   top: 4.5em;
   left: 1em;
   min-width: 25em;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   gap: 1em;
   pointer-events: none;
@@ -21,7 +40,12 @@
 
 .details-subcontainer {
   position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
 }
 
@@ -35,9 +59,16 @@
   max-height: 2em;
   aspect-ratio: 1/1;
   border-radius: 8px;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-shadow: 0px 0px 20px -6px var(--mokka);
   box-shadow: 0px 0px 20px -6px var(--mokka);
   font-size: 1em;
   color: var(--espresso);
@@ -50,8 +81,16 @@
 }
 
 .white-box.hidden {
+  -webkit-transform: translateX(-120%);
+  -ms-transform: translateX(-120%);
   transform: translateX(-120%);
+  -webkit-transition: -webkit-transform 1s ease-in-out;
+  transition: -webkit-transform 1s ease-in-out;
+  -o-transition: transform 1s ease-in-out;
   transition: transform 1s ease-in-out;
+  transition:
+    transform 1s ease-in-out,
+    -webkit-transform 1s ease-in-out;
 }
 
 .erklärung {
@@ -71,11 +110,21 @@
   position: absolute;
   width: 100vw;
   height: 100vh;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
   transform: translateY(-50%);
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   overflow: hidden;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -95,15 +144,29 @@ line.selected {
 }
 
 .wände-liste {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   gap: 0.5em;
 }
 
 .wand-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   width: 100%;
   padding: 0.3em;
@@ -122,14 +185,26 @@ line.selected {
 }
 
 .wand-left {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   gap: 0.5em;
 }
 
 .wand-right {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
   gap: 0.5em;
   padding-right: 0.5em;
@@ -142,6 +217,7 @@ line.selected {
   cursor: pointer;
   font-size: 1.2em;
   color: var(--espresso);
+  -webkit-box-shadow: none;
   box-shadow: none;
 }
 

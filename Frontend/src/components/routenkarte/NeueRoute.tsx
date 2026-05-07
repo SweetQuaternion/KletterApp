@@ -36,7 +36,7 @@ const NeueRoute = ({ selectedWand }: Props) => {
   };
 
   return (
-    <div className="white-box top right bottom routen-details">
+    <section className="white-box top right bottom routen-details">
       <h2>Neue Route</h2>
       <form onSubmit={handleRoutenSubmit}>
         <div className="form-group">
@@ -69,11 +69,13 @@ const NeueRoute = ({ selectedWand }: Props) => {
           <label htmlFor="beschreibung">Beschreibung:</label>
           <textarea name="beschreibung" id="beschreibung" rows={5} autoComplete="off"></textarea>
         </div>
-        <button type="submit">Route hinzufügen</button>
+        <button className="red-button" type="submit">
+          Route hinzufügen
+        </button>
         {isSuccess && <p className="small">Route erfolgreich hinzugefügt!</p>}
         {isError && <p className="small">Fehler beim Hinzufügen der Route</p>}
       </form>
-    </div>
+    </section>
   );
 };
 

@@ -25,6 +25,7 @@ services:
       - ./kctheme/kletterapp:/opt/keycloak/themes/kletterapp
     env_file: .env
     environment:
+      KC_HTTP_ENABLED: "true"
       KC_HEALTH_ENABLED: "true"
     restart: unless-stopped
     expose:
@@ -82,6 +83,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "192.168.178.193:3456:80"
     depends_on:
       backend:
         condition: service_healthy

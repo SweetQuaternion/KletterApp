@@ -1,13 +1,26 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
 @import "ColorScheme.css";
 
 * {
   margin: 0;
   padding: 0;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
 body {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
   min-height: 100vh;
   background-color: var(--abendsonne);
@@ -18,29 +31,74 @@ body {
 }
 
 button {
+  background-color: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  border: none;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:focus-visible {
+  outline: 1px solid var(--mokka);
+  outline-offset: 2px;
+}
+
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 1px solid var(--mokka);
+  outline-offset: 2px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.red-button {
   background-color: var(--terrakotta);
   color: var(--abendsonne);
   border: none;
   margin: 0;
   padding: 0.4em 1em;
-  cursor: pointer;
   border-radius: 999px;
   font-size: small;
+  -webkit-box-shadow: 0px 0px 10px -4px var(--mokka);
   box-shadow: 0px 0px 10px -4px var(--mokka);
+  font-weight: 500;
 }
 
-button:hover {
+.red-button:hover {
   background-color: var(--kaminrot);
+  color: var(--abendsonne);
 }
 
 .flex-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
   width: 100%;
 }
 
 .flex-column {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   width: 100%;
 }
@@ -76,7 +134,12 @@ h2 {
 }
 
 .white-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   position: absolute;
   margin: 0;
@@ -84,9 +147,18 @@ h2 {
   background-color: white;
   border-radius: 15px;
   color: var(--espresso);
+  -webkit-box-shadow: 0px 0px 20px -5px var(--mokka);
   box-shadow: 0px 0px 20px -5px var(--mokka);
+  -webkit-transform: translateX(0%);
+  -ms-transform: translateX(0%);
   transform: translateX(0%);
+  -webkit-transition: -webkit-transform 1s ease-in-out;
+  transition: -webkit-transform 1s ease-in-out;
+  -o-transition: transform 1s ease-in-out;
   transition: transform 1s ease-in-out;
+  transition:
+    transform 1s ease-in-out,
+    -webkit-transform 1s ease-in-out;
   pointer-events: all;
   scrollbar-color: transparent transparent;
 }
@@ -98,6 +170,8 @@ h2 {
 .center {
   top: 50%;
   left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
 
@@ -118,20 +192,31 @@ h2 {
 }
 
 .centering {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
 }
 
 .space-between {
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
 }
 
 .wrap {
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
 
 .button-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   gap: 0.5em;
   margin-top: 1em;
@@ -159,9 +244,12 @@ a:hover {
   font-size: 3em;
   color: #00000015;
   opacity: 0;
+  -webkit-transition: opacity 0.2s ease-in-out;
+  -o-transition: opacity 0.2s ease-in-out;
   transition: opacity 0.2s ease-in-out;
   background: none;
   border: none;
+  -webkit-box-shadow: none;
   box-shadow: none;
 }
 
@@ -172,7 +260,19 @@ a:hover {
 
 .white-box:hover .close-button {
   opacity: 1;
+  -webkit-transition: opacity 0.2s ease-in-out;
+  -o-transition: opacity 0.2s ease-in-out;
   transition: opacity 0.2s ease-in-out;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
 }
 
 @media (max-width: 500px) {

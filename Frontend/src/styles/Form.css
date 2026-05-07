@@ -1,6 +1,18 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
 form {
   margin-top: 0.5em;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   gap: 1em;
 }
@@ -10,6 +22,8 @@ form {
 }
 
 .hallensuche input {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
   flex: 1;
   background-color: white;
   color: var(--espresso);
@@ -61,7 +75,12 @@ label {
 }
 
 .form-group {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   gap: 0.2em; /* kleiner Abstand zwischen label und input */
 }
@@ -75,7 +94,12 @@ label {
 }
 
 .checkbox-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
   gap: 0.5em;
 }

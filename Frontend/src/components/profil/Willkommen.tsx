@@ -4,20 +4,20 @@ import "../../styles/App.css";
 function Willkommen() {
   return (
     <>
-      <div className="white-box center">
+      <section className="white-box center">
         <h2>Willkommen bei der KletterApp!</h2>
         <p>Du bist nun erfolgreich registriert.</p>
         <div className="centering">
           <div className="button-container">
-            <Link to="/profil">
-              <button>Mein Profil</button>
+            <Link to="/profil" className="red-button">
+              Mein Profil
             </Link>
-            <Link to="/hallensuche">
-              <button>Startseite</button>
+            <Link to="/hallensuche" className="red-button">
+              Startseite
             </Link>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 }

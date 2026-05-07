@@ -1,3 +1,10 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
 .routen-details {
   width: 20em;
   overflow: auto;
@@ -5,11 +12,21 @@
 }
 
 .routen-details-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
   align-items: baseline;
   margin-top: -0.5em;
+  margin-bottom: 0.5em;
 }
 
 .routen-details-schwierigkeit {
@@ -29,6 +46,8 @@
   font-family:
     DM Sans,
     sans-serif;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
   width: fit-content;
 }
 
@@ -57,11 +76,17 @@ img.geschafft-haken {
 }
 
 .routen-details-badges {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
   gap: 0.5em;
   margin-top: 1em;
   margin-bottom: 1.5em;
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
 
@@ -73,24 +98,38 @@ b {
 }
 
 .favorit {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
   background-color: var(--goldgelb);
 }
 
 .favorit:hover {
   background-color: var(--goldgelb);
+  -webkit-box-shadow: 0px 0px 10px 2px var(--goldgelb);
   box-shadow: 0px 0px 10px 2px var(--goldgelb);
 }
 
 .favorit.active {
+  -webkit-box-shadow: 0px 0px 10px 5px var(--goldgelb);
   box-shadow: 0px 0px 10px 5px var(--goldgelb);
 }
 
 .projekt {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
   background-color: var(--pfirsichorange);
   margin-right: 1.5em;
@@ -98,16 +137,24 @@ b {
 
 .projekt:hover {
   background-color: var(--pfirsichorange);
+  -webkit-box-shadow: 0px 0px 10px 2px var(--pfirsichorange);
   box-shadow: 0px 0px 10px 2px var(--pfirsichorange);
 }
 
 .projekt.active {
+  -webkit-box-shadow: 0px 0px 10px 5px var(--pfirsichorange);
   box-shadow: 0px 0px 10px 5px var(--pfirsichorange);
 }
 
 .icon-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
   min-width: 1em;
   max-width: 1em;

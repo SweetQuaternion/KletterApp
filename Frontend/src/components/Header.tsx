@@ -29,37 +29,39 @@ function Header({ setSelectedHalle }: Props) {
   return (
     <>
       <header>
-        <div
+        <button
           className="left-part"
           onClick={(e) => {
             e.stopPropagation();
             setNavigationToggled(!navigationToggled);
           }}
+          aria-label="Menü"
         >
-          <img className="header-logo" src={logo} />
+          <img className="header-logo" src={logo} alt="Karabiner-Logo" />
           <h1>KletterApp</h1>
-        </div>
+        </button>
         {keycloak.didInitialize && isOnline ? (
           <>
             {user ? (
               <div className="right-part">
                 <span className="username">Hallo {user.name}</span>
                 <button
-                  className="profile-button"
+                  className="red-button profile-button"
                   onClick={(e) => {
                     e.stopPropagation();
                     setProfileToggled(!profileToggled);
                   }}
+                  aria-label="Profil"
                 >
-                  {avatar && <img src={URL.createObjectURL(avatar)} alt="Profil" />}
+                  {avatar && <img src={URL.createObjectURL(avatar)} alt="Profilbild" />}
                 </button>
               </div>
             ) : (
               <div className="right-part">
-                <button className="login" onClick={() => login()}>
+                <button className="red-button login" onClick={() => login()}>
                   Anmelden
                 </button>
-                <button className="register" onClick={() => register()}>
+                <button className="red-button register" onClick={() => register()}>
                   Registrieren
                 </button>
               </div>
@@ -72,36 +74,44 @@ function Header({ setSelectedHalle }: Props) {
         )}
       </header>
       {profileToggled && (
-        <div className="overlay" onClick={() => setProfileToggled(false)}>
+        <nav className="overlay" onClick={() => setProfileToggled(false)}>
           <div className="profile-menu">
-            <Link to="/profil">
-              <button>Mein Profil</button>
+            <Link to="/profil" className="red-button">
+              Mein Profil
             </Link>
-            <button onClick={() => logout()}>Abmelden</button>
+            <button className="red-button" onClick={() => logout()}>
+              Abmelden
+            </button>
           </div>
-        </div>
+        </nav>
       )}
       {navigationToggled && (
         <div className="overlay" onClick={() => setNavigationToggled(false)}>
-          <div className="navigation-menu">
+          <nav className="navigation-menu">
             {heimatHallen.map((halle) => (
               <div key={halle.id}>
-                <Link to="/routenkarte/">
-                  <button onClick={() => setSelectedHalle(halle)}>{halle.name}</button>
+                <Link
+                  to="/routenkarte/"
+                  className="red-button"
+                  onClick={() => setSelectedHalle(halle)}
+                >
+                  {halle.name}
                 </Link>
               </div>
             ))}
-            <Link to="/hallensuche">
-              <button>Hallensuche</button>
-            </Link>
+            <div>
+              <Link to="/hallensuche" className="red-button">
+                Hallensuche
+              </Link>
+            </div>
             {user && (
-              <>
-                <Link to="/profil">
-                  <button>Mein Profil</button>
+              <div>
+                <Link to="/profil" className="red-button">
+                  Mein Profil
                 </Link>
-              </>
+              </div>
             )}
-          </div>
+          </nav>
         </div>
       )}
     </>

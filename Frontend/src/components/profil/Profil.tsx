@@ -190,15 +190,21 @@ const Profil = () => {
                   </p>
                 </div>
                 {isOnline && dataPending && (
-                  <button onClick={handleDataSync}>Offline-Daten synchronisieren</button>
+                  <button className="red-button" onClick={handleDataSync}>
+                    Offline-Daten synchronisieren
+                  </button>
                 )}
               </div>
             </div>
             <div className="flex-row small-gap bottom-section">
-              <button onClick={() => setIsEditing(!isEditing)}>
+              <button className="red-button" onClick={() => setIsEditing(!isEditing)}>
                 {isEditing ? "Abbrechen" : "Bearbeiten"}
               </button>
-              {isEditing && <button onClick={handleSubmit}>Speichern</button>}
+              {isEditing && (
+                <button className="red-button" onClick={handleSubmit}>
+                  Speichern
+                </button>
+              )}
               {isPending && <p className="status">speichern...</p>}
               {isSuccess && <p className="status success">gespeichert!</p>}
               {isError && <p className="status error">Fehler beim Speichern: {error?.message}</p>}

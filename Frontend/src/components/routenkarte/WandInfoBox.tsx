@@ -9,46 +9,40 @@ interface Props {
   setShowNeueRoute: (show: boolean) => void;
 }
 
-const WandInfoBox = ({
-  selectedWand,
-  routen,
-  setSelectedRoute,
-  setShowNeueRoute,
-}: Props) => {
+const WandInfoBox = ({ selectedWand, routen, setSelectedRoute, setShowNeueRoute }: Props) => {
   return (
-    <div className="wand-infobox">
+    <article className="wand-infobox">
       <div className="wand-infobox-header">
         <h3>Wand {selectedWand?.wandNr}</h3>
         <div
           className="position-tag"
           style={{
             backgroundColor:
-              selectedWand?.position === "outdoor"
-                ? "var(--himmelsblau)"
-                : "var(--pfirsichorange)",
+              selectedWand?.position === "outdoor" ? "var(--himmelsblau)" : "var(--pfirsichorange)",
           }}
         >
           {selectedWand?.position}
         </div>
       </div>
-      <div className="routen-container">
+      <ul className="routen-container">
         {routen
           .sort((a, b) => (b.schwierigkeit || 0) - (a.schwierigkeit || 0))
           .map((route) => (
-            <RoutenErgebnisFeld
-              key={route.id}
-              route={route}
-              setSelectedRoute={setSelectedRoute}
-              setShowNeueRoute={setShowNeueRoute}
-            />
+            <li key={route.id}>
+              <RoutenErgebnisFeld
+                route={route}
+                setSelectedRoute={setSelectedRoute}
+                setShowNeueRoute={setShowNeueRoute}
+              />
+            </li>
           ))}
-      </div>
+      </ul>
       {isAdmin() && (
-        <div className="hinzufügen" onClick={() => setShowNeueRoute(true)}>
+        <div className="text-button" onClick={() => setShowNeueRoute(true)}>
           Route hinzufügen
         </div>
       )}
-    </div>
+    </article>
   );
 };
 

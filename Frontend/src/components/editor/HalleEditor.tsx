@@ -1,8 +1,4 @@
-import type {
-  HalleCreateDTO,
-  HalleResponseDTO,
-  WandCreateDTO,
-} from "../../api/model";
+import type { HalleCreateDTO, HalleResponseDTO, WandCreateDTO } from "../../api/model";
 import NeueHalleBox from "./NeueHalleBox";
 import "../../styles/Editor.css";
 import Canvas from "./Canvas";
@@ -56,9 +52,7 @@ const HalleEditor = ({ selectedHalle }: Props) => {
   }
 
   function redo() {
-    setHistoryIndex((currentIndex) =>
-      Math.min(wändeHistory.length - 1, currentIndex + 1),
-    );
+    setHistoryIndex((currentIndex) => Math.min(wändeHistory.length - 1, currentIndex + 1));
   }
 
   const {
@@ -115,10 +109,7 @@ const HalleEditor = ({ selectedHalle }: Props) => {
             <p>Drücke Shift zum Einrasten an Gitterlinien</p>
           </div>
           <div className="details-container">
-            <NeueHalleBox
-              selectedHalle={selectedHalle}
-              setHalleData={setHalleData}
-            />
+            <NeueHalleBox selectedHalle={selectedHalle} setHalleData={setHalleData} />
             <WändeBox
               wände={wände}
               setWände={setWände}
@@ -133,21 +124,13 @@ const HalleEditor = ({ selectedHalle }: Props) => {
             {isHalleSaved && isWändeSaved && (
               <p className="small">Halle erfolgreich gespeichert!</p>
             )}
-            {isHalleError && (
-              <p className="small">Fehler beim Speichern der Halle.</p>
-            )}
+            {isHalleError && <p className="small">Fehler beim Speichern der Halle.</p>}
             {isWändeError && (
-              <p className="small">
-                Halle erstellt. Fehler beim Speichern der Wände.
-              </p>
+              <p className="small">Halle erstellt. Fehler beim Speichern der Wände.</p>
             )}
             <button
               onClick={submit}
-              disabled={
-                isHallePending ||
-                isWändePending ||
-                (isHalleSaved && isWändeError)
-              }
+              disabled={isHallePending || isWändePending || (isHalleSaved && isWändeError)}
             >
               Halle speichern
             </button>

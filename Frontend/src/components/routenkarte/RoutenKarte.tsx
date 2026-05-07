@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import RouteBearbeiten from "./RouteBearbeiten";
 import { HalleContext } from "../../constants/context";
 import SpeicherKnopfsis from "./SpeicherKnopfsis";
+import WandInfoBox from "./WandInfoBox";
 
 const RoutenKarte = () => {
   const { selectedHalle } = useContext(HalleContext);
@@ -44,6 +45,16 @@ const RoutenKarte = () => {
       <SpeicherKnopfsis />
       <HallenInfoBox />
       <Knopfsis scale={scale} setScale={setScale} />
+      <div className="standalone">
+        {selectedWand && (
+          <WandInfoBox
+            selectedWand={selectedWand}
+            routen={selectedWand.routen || []}
+            setSelectedRoute={setSelectedRoute}
+            setShowNeueRoute={setShowNeueRoute}
+          />
+        )}
+      </div>
 
       {selectedRoute && (
         <RoutenDetails
@@ -63,10 +74,8 @@ const RoutenKarte = () => {
         />
       )}
       {isAdmin() && (
-        <Link to="/routenkarte/edit">
-          <div className="speichern-knopfsi">
-            <button>Bearbeiten</button>
-          </div>
+        <Link to="/routenkarte/edit" className="red-button bottom right">
+          Bearbeiten
         </Link>
       )}
     </>
