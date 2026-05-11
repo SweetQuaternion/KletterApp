@@ -31,6 +31,9 @@ public class SecurityConfig {
     @Value("${JWT_JWK_SET_URI}")
     private String jwkSetUri;
 
+    @Value("${DOMAIN}")
+    private String domain;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -42,6 +45,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/routen/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/kommentare/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/v3/*").permitAll() // Swagger UI und API-Dokumentation
+                .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll() // Health Endpoint für Docker-Healthcheck
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // REST-API, also keine Sessions
@@ -65,7 +69,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://kletterapp.localhost", "http://localhost:5173", "http://localhost:3000")); // Später nur tatsächliche URL
+        configuration.setAllowedOrigins(List.of("http://" + domain, "http://localhost:5173", "http://localhost:3000")); // Später nur tatsächliche URL
         configuration.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

@@ -32,30 +32,20 @@ RUN npm run build
 # generell baut Docker immer nur die letzte Stage als Image
 
  
-# ==================================================
-# Stage 2: Serve static files with Node.js + `serve`
-# ==================================================
+# ======================================
+# Stage 2: Serve static files with nginx
+# ======================================
 
-FROM node:${NODE_VERSION} AS runner
+FROM nginx:1.30.0-alpine AS runner
  
-# Set the environment to production for smaller + optimized installs
-ENV NODE_ENV=production
- 
-# Set the working directory inside the container
-WORKDIR /app
- 
-# Wir sammeln den Dist-Ordner aus der "builder" Stage und kopieren ihn in die aktuelle Stage
-COPY --link --from=builder /app/dist ./dist
- 
-# Install only the `serve` package (no global install, pinned version)
-RUN --mount=type=cache,target=/root/.npm npm install serve@^14.2.6 --omit=dev
- 
-# Run the container as a non-root user for security best practices
-USER node
- 
-# Expose port 3000 (the same port configured in "serve -l 3000")
-EXPOSE 3000
- 
-# Run `serve` directly to serve the built app
-CMD ["npx", "serve", "-s", "dist", "-l", "3000"]
- 
+# Kopiere dist-Ordner aus der builder stage in den nginx html Ordner
+COPY --link --from=builder /app/dist /usr/share/nginx/html
+
+# Kopiere die angepasste nginx Konfiguration, damit nginx die statischen Dateien korrekt serviert
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port 80 to the outside world
+EXPOSE 80
+
+# Start nginx when the container launches
+CMD ["nginx", "-g", "daemon off;"]

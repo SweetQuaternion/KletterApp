@@ -19,7 +19,7 @@ RUN mvn clean package -DskipTests
 # Stage 2: Run the application
 # ============================
 
-FROM eclipse-temurin:25-jre AS runner
+FROM eclipse-temurin:25-jre-alpine AS runner
 
 WORKDIR /app
 

@@ -8,8 +8,8 @@ import RoutenDetails from "./RoutenDetails";
 import NeueRoute from "./NeueRoute";
 import { useQuery } from "@tanstack/react-query";
 import { createWaendeByHallenIdQueryOptions } from "../../constants/queries";
-import { isAdmin } from "../../constants/keycloak";
-import { Link } from "react-router-dom";
+// import { isAdmin } from "../../constants/keycloak";
+// import { Link } from "react-router-dom";
 import RouteBearbeiten from "./RouteBearbeiten";
 import { HalleContext } from "../../constants/context";
 import SpeicherKnopfsis from "./SpeicherKnopfsis";
@@ -73,11 +73,11 @@ const RoutenKarte = () => {
           setEditingRoute={setEditingRoute}
         />
       )}
-      {isAdmin() && (
+      {/* {isAdmin() && (
         <Link to="/routenkarte/edit" className="red-button bottom right">
           Bearbeiten
         </Link>
-      )}
+      )} */}
     </>
   );
 };
