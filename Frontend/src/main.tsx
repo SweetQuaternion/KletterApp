@@ -8,6 +8,8 @@ import { fetchUser, queryClient } from "./constants/queries.ts";
 import type { UserResponseDTO } from "./api/model";
 import { UserContext } from "./constants/context.ts";
 
+// Test Kommentar
+
 if ("serviceWorker" in navigator) {
   // nicht alle Browser unterstützen Service Worker, besonders ältere nicht
   try {
