@@ -27,5 +27,5 @@ jobs:
           file: ./Backend/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner | lowercase }}/kletterapp-backend:latest
-            ghcr.io/${{ github.repository_owner | lowercase }}/kletterapp-backend:${{ github.sha }}
+            ghcr.io/sweetquaternion/kletterapp-backend:latest
+            ghcr.io/sweetquaternion/kletterapp-backend:${{ github.sha }}

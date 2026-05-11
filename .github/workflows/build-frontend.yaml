@@ -27,5 +27,5 @@ jobs:
           file: ./Frontend/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner | lowercase }}/kletterapp-frontend:latest
-            ghcr.io/${{ github.repository_owner | lowercase }}/kletterapp-frontend:${{ github.sha }}
+            ghcr.io/sweetquaternion/kletterapp-frontend:latest
+            ghcr.io/sweetquaternion/kletterapp-frontend:${{ github.sha }}
