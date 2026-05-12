@@ -22,15 +22,6 @@ docker volume create kletterapp_data
 docker volume create kletterapp_uploads
 echo "✳️ Docker-Volumes wurden erstellt."
 
- # Docker Images pullen
-echo "⤵️ Docker-Dateien werden heruntergeladen. Das kann einen Moment dauern..."
-docker pull postgres:18.2
-docker pull quay.io/keycloak/keycloak:26.5.5
-docker pull kletterapp/backend:latest # hier noch Github einfügen
-docker pull kletterapp/frontend:latest # hier auch noch Github einfügen
-docker pull nginx:1.30.0-alpine
-echo "✳️ Docker-Dateien wurden heruntergeladen."
-
 echo "😊 Alle Voraussetzungen wurden erfüllt!"
 echo ""
 
@@ -108,5 +99,9 @@ EOF
 
 chmod 600 .env
 
-echo "✳️ .env-Datei wurde erstellt."
+echo "✳️ .env-Datei wurde erstellt. Du kannst sie jederzeit anpassen."
+echo "Los gehts!"
 
+docker compose up -d
+
+echo "Die KletterApp ist jetzt gestartet und unter http://$DOMAIN erreichbar. Viel Spaß beim Klettern! 🧗‍♂️"

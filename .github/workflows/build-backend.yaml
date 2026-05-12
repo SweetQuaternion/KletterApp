@@ -1,10 +1,10 @@
+# Baut das Backend-Docker-Image und pusht es zu GHCR bei einem versionierten Tag.
 name: Build Backend
 
 on:
   push:
-    branches: [main]
-    paths:
-      - "Backend/**"
+    tags:
+      - "v*.*.*"
 
 jobs:
   build-backend:
@@ -12,6 +12,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ghcr.io/sweetquaternion/kletterapp-backend
+          tags: type=semver,pattern={{version}}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v4
@@ -26,6 +33,5 @@ jobs:
           context: ./Backend
           file: ./Backend/Dockerfile
           push: true
-          tags: |
-            ghcr.io/sweetquaternion/kletterapp-backend:latest
-            ghcr.io/sweetquaternion/kletterapp-backend:${{ github.sha }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
