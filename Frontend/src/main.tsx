@@ -27,6 +27,7 @@ if (navigator.onLine) {
   try {
     authenticated = await keycloak.init({
       onLoad: "check-sso",
+      pkceMethod: false,
       checkLoginIframe: false,
       silentCheckSsoRedirectUri: window.location.origin + "/silent-check-sso.html",
     });

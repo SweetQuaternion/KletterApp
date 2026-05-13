@@ -9,7 +9,7 @@ else
     echo "✳️ Docker ist installiert."
 fi
 
-if ! command -v docker-compose &> /dev/null
+if ! command -v docker compose &> /dev/null
 then
     echo "❌ Wir brauchen auch Docker-Compose. Bitte installiere Docker-Compose um fortzufahren."
     exit 1
@@ -18,8 +18,8 @@ else
 fi
 
 # Volumes erstellen
-docker volume create kletterapp_data
-docker volume create kletterapp_uploads
+docker volume create kletterapp-data
+docker volume create kletterapp-uploads
 echo "✳️ Docker-Volumes wurden erstellt."
 
 echo "😊 Alle Voraussetzungen wurden erfüllt!"
