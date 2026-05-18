@@ -9,6 +9,10 @@
   "resetPasswordAllowed": true,
   "editUsernameAllowed": false,
   "bruteForceProtected": true,
+  "loginTheme": "kletterapp",
+  "accountTheme": "keycloak",
+  "adminTheme": "keycloak.v2",
+  "emailTheme": "keycloak",
   "accessTokenLifespan": 3000,
   "clients": [
     {

@@ -1,6 +1,19 @@
 services:
+  watchtower:
+    image: nickfedor/watchtower:1.17.0
+    container_name: kletterapp-watchtower
+    restart: unless-stopped
+    command:
+      - "--label-enable"
+      - "--interval"
+      - "60"
+      - "--rolling-restart"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
   database:
     image: postgres:18.2
+    container_name: kletterapp-database
     env_file: .env
     restart: unless-stopped
     expose:
@@ -19,6 +32,7 @@ services:
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.5.5
+    container_name: kletterapp-keycloak
     command: start --import-realm --health-enabled=true
     volumes:
       - ./KletterApp-realm.json:/opt/keycloak/data/import/KletterApp-realm.json
@@ -46,6 +60,9 @@ services:
 
   backend:
     image: ghcr.io/sweetquaternion/kletterapp-backend:latest
+    container_name: kletterapp-backend
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     env_file: .env
     restart: unless-stopped
     expose:
@@ -69,7 +86,10 @@ services:
       start_period: 40s
 
   frontend:
-    image: kletterapp-frontend
+    image: ghcr.io/sweetquaternion/kletterapp-frontend:latest
+    container_name: kletterapp-frontend
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     env_file: .env
     restart: unless-stopped
     expose:
@@ -86,6 +106,7 @@ services:
 
   nginx:
     image: nginx:1.30.0-alpine
+    container_name: kletterapp-nginx
     restart: unless-stopped
     env_file: .env
     hostname: ${DOMAIN}
@@ -93,8 +114,7 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
       - "80:80"
-      - "443:443"
-      - "192.168.178.193:3456:80"
+      - "3456:80"
     depends_on:
       backend:
         condition: service_healthy

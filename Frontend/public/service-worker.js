@@ -51,7 +51,8 @@ self.addEventListener("fetch", async (event) => {
   if (
     event.request.url.includes("extension") || // Ignoriere Anfragen an Browser Extensions
     event.request.url.includes("/auth") || // Ignoriere Anfragen an Keycloak
-    event.request.url.includes("/api") // Ignoriere Anfragen an unsere API
+    event.request.url.includes("/api") || // Ignoriere Anfragen an unsere API
+    event.request.url.includes("localhost:8180") // Ignoriere Anfragen an Keycloak, die über localhost laufen
   ) {
     return;
   }

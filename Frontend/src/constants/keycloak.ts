@@ -20,6 +20,15 @@ export const register = () =>
     redirectUri: window.location.origin + "/willkommen",
   });
 
+export async function initKeycloak(): Promise<void> {
+  await keycloak.init({
+    onLoad: "check-sso",
+    pkceMethod: false,
+    checkLoginIframe: false,
+    silentCheckSsoRedirectUri: window.location.origin + "/silent-check-sso.html",
+  });
+}
+
 export async function getAccessToken(): Promise<string | undefined> {
   if (!keycloak.authenticated) {
     return undefined;
