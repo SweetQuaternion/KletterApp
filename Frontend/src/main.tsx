@@ -25,7 +25,7 @@ let authenticated = false;
 
 if (navigator.onLine) {
   try {
-    await initKeycloak();
+    authenticated = await initKeycloak();
   } catch (error) {
     console.error("Fehler bei der Keycloak-Initialisierung:", error);
     authenticated = false;
