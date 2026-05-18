@@ -2,7 +2,7 @@ import "../styles/App.css";
 import "../styles/Header.css";
 import logo from "/kletterapp-logo.webp";
 import type { HalleResponseDTO } from "../api/model";
-import { login, register, logout, keycloak } from "../constants/keycloak";
+import { login, register, logout } from "../constants/keycloak";
 import { useContext, useState } from "react";
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
@@ -40,7 +40,7 @@ function Header({ setSelectedHalle }: Props) {
           <img className="header-logo" src={logo} alt="Karabiner-Logo" />
           <h1>KletterApp</h1>
         </button>
-        {keycloak.didInitialize && isOnline ? (
+        {isOnline ? (
           <>
             {user ? (
               <div className="right-part">
@@ -53,7 +53,10 @@ function Header({ setSelectedHalle }: Props) {
                   }}
                   aria-label="Profil"
                 >
-                  {avatar && <img src={URL.createObjectURL(avatar)} alt="Profilbild" />}
+                  <img
+                    src={avatar ? URL.createObjectURL(avatar) : "/default-pic.png"}
+                    alt="Profilbild"
+                  />
                 </button>
               </div>
             ) : (

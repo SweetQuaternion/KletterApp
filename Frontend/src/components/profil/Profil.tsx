@@ -139,11 +139,17 @@ const Profil = () => {
                         alt="Profilbild"
                       />
                     )) ||
-                      (avatar && (
+                      (avatar ? (
                         <img
                           src={URL.createObjectURL(avatar)}
                           className="editable"
                           alt="Profilbild"
+                        />
+                      ) : (
+                        <img
+                          src="/default-pic.png"
+                          className="editable"
+                          alt="Standard-Profilbild"
                         />
                       ))}
                     <label htmlFor={avatarInputId} className="avatar-overlay-button">

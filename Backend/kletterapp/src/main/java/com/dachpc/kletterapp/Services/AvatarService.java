@@ -35,12 +35,7 @@ public class AvatarService {
     public AvatarData getAvatar(String userId) {
         String bildUrl = userRepository.getReferenceById(userId).getBildUrl();
         if (bildUrl == null || bildUrl.isBlank()) {
-            try {
-                byte[] defaultBytes = Files.readAllBytes(getUploadRoot().resolve("default-pic.png"));
-                return new AvatarData(defaultBytes, "image/png");
-            } catch (IOException e) {
-                throw new RuntimeException("Fehler beim Laden des Standard-Avatars", e);
-            }
+            return null;
         }
         try {
             Path avatarPath = getUploadRoot().resolve(bildUrl).normalize();

@@ -21,7 +21,10 @@ const Profil = () => {
           <section className="white-box large profile">
             <div className="flex-row wide-gap">
               <div className="profile-picture-container">
-                <img src={avatar ? URL.createObjectURL(avatar) : undefined} alt="Profilbild" />
+                <img
+                  src={avatar ? URL.createObjectURL(avatar) : "/default-pic.png"}
+                  alt="Profilbild"
+                />
               </div>
               <div className="flex-column">
                 <h2>{params.username}</h2>
