@@ -8,7 +8,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Userpage from "./components/profil/Userpage";
 import HalleEditor from "./components/editor/HalleEditor";
 import Header from "./components/Header";
-import { HalleContext } from "./constants/context";
+import { HalleContext } from "./utils/context";
 import HallenSuche from "./components/hallensuche/HallenSuche";
 
 function App() {

@@ -2,11 +2,11 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
-import { initKeycloak, keycloak } from "./constants/keycloak.ts";
+import { initKeycloak, keycloak } from "./utils/keycloak.ts";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { fetchUser, queryClient } from "./constants/queries.ts";
+import { fetchUser, queryClient } from "./utils/queries.ts";
 import type { UserResponseDTO } from "./api/model";
-import { UserContext } from "./constants/context.ts";
+import { UserContext } from "./utils/context.ts";
 
 // Test Kommentar
 

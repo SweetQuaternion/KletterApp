@@ -7,11 +7,11 @@ import { useContext, useState } from "react";
 import RoutenDetails from "./RoutenDetails";
 import NeueRoute from "./NeueRoute";
 import { useQuery } from "@tanstack/react-query";
-import { createWaendeByHallenIdQueryOptions } from "../../constants/queries";
+import { createWaendeByHallenIdQueryOptions } from "../../utils/queries";
 // import { isAdmin } from "../../constants/keycloak";
 // import { Link } from "react-router-dom";
 import RouteBearbeiten from "./RouteBearbeiten";
-import { HalleContext } from "../../constants/context";
+import { HalleContext } from "../../utils/context";
 import SpeicherKnopfsis from "./SpeicherKnopfsis";
 import WandInfoBox from "./WandInfoBox";
 

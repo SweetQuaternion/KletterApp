@@ -2,13 +2,13 @@ import "../styles/App.css";
 import "../styles/Header.css";
 import logo from "/kletterapp-logo.webp";
 import type { HalleResponseDTO } from "../api/model";
-import { login, register, logout } from "../constants/keycloak";
+import { login, register, logout } from "../utils/keycloak.ts";
 import { useContext, useState } from "react";
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { createAvatarQueryOptions } from "../constants/queries";
-import { UserContext } from "../constants/context.ts";
-import { useOnline } from "../constants/useOnline.ts";
+import { createAvatarQueryOptions } from "../utils/queries.ts";
+import { UserContext } from "../utils/context.ts";
+import { useOnline } from "../utils/useOnline.ts";
 
 interface Props {
   setSelectedHalle: (halle: HalleResponseDTO) => void;

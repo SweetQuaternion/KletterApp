@@ -4,10 +4,7 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
-import {
-  useMutation,
-  useQuery
-} from '@tanstack/react-query';
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -20,325 +17,395 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult
-} from '@tanstack/react-query';
+  UseQueryResult,
+} from "@tanstack/react-query";
 
 import type {
   DeleteKommentarParams,
   GetKommentareByRouteIDParams,
   KommentarCreateDTO,
   KommentarResponseDTO,
-  UpdateKommentarParams
-} from '../model';
+  UpdateKommentarParams,
+} from "../model";
 
-import { customFetch } from '../../constants/fetcher';
-
+import { customFetch } from "../../utils/fetcher";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-
-
-export const getGetKommentareByRouteIDUrl = (params: GetKommentareByRouteIDParams,) => {
+export const getGetKommentareByRouteIDUrl = (params: GetKommentareByRouteIDParams) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-    
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? "null" : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/kommentare?${stringifiedParams}` : `/api/kommentare`
-}
+  return stringifiedParams.length > 0 ? `/api/kommentare?${stringifiedParams}` : `/api/kommentare`;
+};
 
-export const getKommentareByRouteID = async (params: GetKommentareByRouteIDParams, options?: RequestInit): Promise<KommentarResponseDTO[]> => {
-  
-  return customFetch<KommentarResponseDTO[]>(getGetKommentareByRouteIDUrl(params),
-  {      
+export const getKommentareByRouteID = async (
+  params: GetKommentareByRouteIDParams,
+  options?: RequestInit,
+): Promise<KommentarResponseDTO[]> => {
+  return customFetch<KommentarResponseDTO[]>(getGetKommentareByRouteIDUrl(params), {
     ...options,
-    method: 'GET'
-    
-    
-  }
-);}
-  
+    method: "GET",
+  });
+};
 
+export const getGetKommentareByRouteIDQueryKey = (params?: GetKommentareByRouteIDParams) => {
+  return [`/api/kommentare`, ...(params ? [params] : [])] as const;
+};
 
-
-
-export const getGetKommentareByRouteIDQueryKey = (params?: GetKommentareByRouteIDParams,) => {
-    return [
-    `/api/kommentare`, ...(params ? [params] : [])
-    ] as const;
-    }
-
-    
-export const getGetKommentareByRouteIDQueryOptions = <TData = Awaited<ReturnType<typeof getKommentareByRouteID>>, TError = void>(params: GetKommentareByRouteIDParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+export const getGetKommentareByRouteIDQueryOptions = <
+  TData = Awaited<ReturnType<typeof getKommentareByRouteID>>,
+  TError = void,
+>(
+  params: GetKommentareByRouteIDParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
 ) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetKommentareByRouteIDQueryKey(params);
 
-  const queryKey =  queryOptions?.queryKey ?? getGetKommentareByRouteIDQueryKey(params);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getKommentareByRouteID>>> = ({ signal }) =>
+    getKommentareByRouteID(params, { signal, ...requestOptions });
 
-  
+  return {
+    queryKey,
+    queryFn,
+    retry: false,
+    refetchOnReconnect: false,
+    ...queryOptions,
+  } as UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getKommentareByRouteID>>> = ({ signal }) => getKommentareByRouteID(params, { signal, ...requestOptions });
+export type GetKommentareByRouteIDQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getKommentareByRouteID>>
+>;
+export type GetKommentareByRouteIDQueryError = void;
 
-      
-
-      
-
-   return  { queryKey, queryFn,   retry: false, refetchOnReconnect: false,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type GetKommentareByRouteIDQueryResult = NonNullable<Awaited<ReturnType<typeof getKommentareByRouteID>>>
-export type GetKommentareByRouteIDQueryError = void
-
-
-export function useGetKommentareByRouteID<TData = Awaited<ReturnType<typeof getKommentareByRouteID>>, TError = void>(
- params: GetKommentareByRouteIDParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>> & Pick<
+export function useGetKommentareByRouteID<
+  TData = Awaited<ReturnType<typeof getKommentareByRouteID>>,
+  TError = void,
+>(
+  params: GetKommentareByRouteIDParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getKommentareByRouteID>>,
           TError,
           Awaited<ReturnType<typeof getKommentareByRouteID>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customFetch>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetKommentareByRouteID<TData = Awaited<ReturnType<typeof getKommentareByRouteID>>, TError = void>(
- params: GetKommentareByRouteIDParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetKommentareByRouteID<
+  TData = Awaited<ReturnType<typeof getKommentareByRouteID>>,
+  TError = void,
+>(
+  params: GetKommentareByRouteIDParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getKommentareByRouteID>>,
           TError,
           Awaited<ReturnType<typeof getKommentareByRouteID>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customFetch>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetKommentareByRouteID<TData = Awaited<ReturnType<typeof getKommentareByRouteID>>, TError = void>(
- params: GetKommentareByRouteIDParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetKommentareByRouteID<
+  TData = Awaited<ReturnType<typeof getKommentareByRouteID>>,
+  TError = void,
+>(
+  params: GetKommentareByRouteIDParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-export function useGetKommentareByRouteID<TData = Awaited<ReturnType<typeof getKommentareByRouteID>>, TError = void>(
- params: GetKommentareByRouteIDParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useGetKommentareByRouteID<
+  TData = Awaited<ReturnType<typeof getKommentareByRouteID>>,
+  TError = void,
+>(
+  params: GetKommentareByRouteIDParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getKommentareByRouteID>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getGetKommentareByRouteIDQueryOptions(params, options);
 
-  const queryOptions = getGetKommentareByRouteIDQueryOptions(params,options)
-
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
-
-
-
 export const getAddKommentarUrl = () => {
+  return `/api/kommentare`;
+};
 
-
-  
-
-  return `/api/kommentare`
-}
-
-export const addKommentar = async (kommentarCreateDTO: KommentarCreateDTO, options?: RequestInit): Promise<KommentarResponseDTO> => {
-  
-  return customFetch<KommentarResponseDTO>(getAddKommentarUrl(),
-  {      
+export const addKommentar = async (
+  kommentarCreateDTO: KommentarCreateDTO,
+  options?: RequestInit,
+): Promise<KommentarResponseDTO> => {
+  return customFetch<KommentarResponseDTO>(getAddKommentarUrl(), {
     ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      kommentarCreateDTO,)
-  }
-);}
-  
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(kommentarCreateDTO),
+  });
+};
 
+export const getAddKommentarMutationOptions = <TError = void, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof addKommentar>>,
+    TError,
+    { data: KommentarCreateDTO },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof addKommentar>>,
+  TError,
+  { data: KommentarCreateDTO },
+  TContext
+> => {
+  const mutationKey = ["addKommentar"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof addKommentar>>,
+    { data: KommentarCreateDTO }
+  > = (props) => {
+    const { data } = props ?? {};
 
-export const getAddKommentarMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addKommentar>>, TError,{data: KommentarCreateDTO}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof addKommentar>>, TError,{data: KommentarCreateDTO}, TContext> => {
+    return addKommentar(data, requestOptions);
+  };
 
-const mutationKey = ['addKommentar'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+  return { mutationFn, ...mutationOptions };
+};
 
-      
+export type AddKommentarMutationResult = NonNullable<Awaited<ReturnType<typeof addKommentar>>>;
+export type AddKommentarMutationBody = KommentarCreateDTO;
+export type AddKommentarMutationError = void;
 
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addKommentar>>, {data: KommentarCreateDTO}> = (props) => {
-          const {data} = props ?? {};
-
-          return  addKommentar(data,requestOptions)
-        }
-
-
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type AddKommentarMutationResult = NonNullable<Awaited<ReturnType<typeof addKommentar>>>
-    export type AddKommentarMutationBody = KommentarCreateDTO
-    export type AddKommentarMutationError = void
-
-    export const useAddKommentar = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addKommentar>>, TError,{data: KommentarCreateDTO}, TContext>, request?: SecondParameter<typeof customFetch>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof addKommentar>>,
-        TError,
-        {data: KommentarCreateDTO},
-        TContext
-      > => {
-      return useMutation(getAddKommentarMutationOptions(options), queryClient);
-    }
-    export const getDeleteKommentarUrl = (params: DeleteKommentarParams,) => {
+export const useAddKommentar = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof addKommentar>>,
+      TError,
+      { data: KommentarCreateDTO },
+      TContext
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof addKommentar>>,
+  TError,
+  { data: KommentarCreateDTO },
+  TContext
+> => {
+  return useMutation(getAddKommentarMutationOptions(options), queryClient);
+};
+export const getDeleteKommentarUrl = (params: DeleteKommentarParams) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-    
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? "null" : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/kommentare?${stringifiedParams}` : `/api/kommentare`
-}
+  return stringifiedParams.length > 0 ? `/api/kommentare?${stringifiedParams}` : `/api/kommentare`;
+};
 
-export const deleteKommentar = async (params: DeleteKommentarParams, options?: RequestInit): Promise<void> => {
-  
-  return customFetch<void>(getDeleteKommentarUrl(params),
-  {      
+export const deleteKommentar = async (
+  params: DeleteKommentarParams,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getDeleteKommentarUrl(params), {
     ...options,
-    method: 'DELETE'
-    
-    
-  }
-);}
-  
+    method: "DELETE",
+  });
+};
 
+export const getDeleteKommentarMutationOptions = <TError = void, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteKommentar>>,
+    TError,
+    { params: DeleteKommentarParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteKommentar>>,
+  TError,
+  { params: DeleteKommentarParams },
+  TContext
+> => {
+  const mutationKey = ["deleteKommentar"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteKommentar>>,
+    { params: DeleteKommentarParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-export const getDeleteKommentarMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteKommentar>>, TError,{params: DeleteKommentarParams}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteKommentar>>, TError,{params: DeleteKommentarParams}, TContext> => {
+    return deleteKommentar(params, requestOptions);
+  };
 
-const mutationKey = ['deleteKommentar'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+  return { mutationFn, ...mutationOptions };
+};
 
-      
+export type DeleteKommentarMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteKommentar>>
+>;
 
+export type DeleteKommentarMutationError = void;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteKommentar>>, {params: DeleteKommentarParams}> = (props) => {
-          const {params} = props ?? {};
-
-          return  deleteKommentar(params,requestOptions)
-        }
-
-
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type DeleteKommentarMutationResult = NonNullable<Awaited<ReturnType<typeof deleteKommentar>>>
-    
-    export type DeleteKommentarMutationError = void
-
-    export const useDeleteKommentar = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteKommentar>>, TError,{params: DeleteKommentarParams}, TContext>, request?: SecondParameter<typeof customFetch>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteKommentar>>,
-        TError,
-        {params: DeleteKommentarParams},
-        TContext
-      > => {
-      return useMutation(getDeleteKommentarMutationOptions(options), queryClient);
-    }
-    export const getUpdateKommentarUrl = (params: UpdateKommentarParams,) => {
+export const useDeleteKommentar = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteKommentar>>,
+      TError,
+      { params: DeleteKommentarParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteKommentar>>,
+  TError,
+  { params: DeleteKommentarParams },
+  TContext
+> => {
+  return useMutation(getDeleteKommentarMutationOptions(options), queryClient);
+};
+export const getUpdateKommentarUrl = (params: UpdateKommentarParams) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-    
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? "null" : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/kommentare?${stringifiedParams}` : `/api/kommentare`
-}
+  return stringifiedParams.length > 0 ? `/api/kommentare?${stringifiedParams}` : `/api/kommentare`;
+};
 
-export const updateKommentar = async (params: UpdateKommentarParams, options?: RequestInit): Promise<KommentarResponseDTO> => {
-  
-  return customFetch<KommentarResponseDTO>(getUpdateKommentarUrl(params),
-  {      
+export const updateKommentar = async (
+  params: UpdateKommentarParams,
+  options?: RequestInit,
+): Promise<KommentarResponseDTO> => {
+  return customFetch<KommentarResponseDTO>(getUpdateKommentarUrl(params), {
     ...options,
-    method: 'PATCH'
-    
-    
-  }
-);}
-  
+    method: "PATCH",
+  });
+};
 
+export const getUpdateKommentarMutationOptions = <TError = void, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateKommentar>>,
+    TError,
+    { params: UpdateKommentarParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateKommentar>>,
+  TError,
+  { params: UpdateKommentarParams },
+  TContext
+> => {
+  const mutationKey = ["updateKommentar"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateKommentar>>,
+    { params: UpdateKommentarParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-export const getUpdateKommentarMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateKommentar>>, TError,{params: UpdateKommentarParams}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof updateKommentar>>, TError,{params: UpdateKommentarParams}, TContext> => {
+    return updateKommentar(params, requestOptions);
+  };
 
-const mutationKey = ['updateKommentar'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+  return { mutationFn, ...mutationOptions };
+};
 
-      
+export type UpdateKommentarMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateKommentar>>
+>;
 
+export type UpdateKommentarMutationError = void;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateKommentar>>, {params: UpdateKommentarParams}> = (props) => {
-          const {params} = props ?? {};
-
-          return  updateKommentar(params,requestOptions)
-        }
-
-
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type UpdateKommentarMutationResult = NonNullable<Awaited<ReturnType<typeof updateKommentar>>>
-    
-    export type UpdateKommentarMutationError = void
-
-    export const useUpdateKommentar = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateKommentar>>, TError,{params: UpdateKommentarParams}, TContext>, request?: SecondParameter<typeof customFetch>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof updateKommentar>>,
-        TError,
-        {params: UpdateKommentarParams},
-        TContext
-      > => {
-      return useMutation(getUpdateKommentarMutationOptions(options), queryClient);
-    }
-    
+export const useUpdateKommentar = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof updateKommentar>>,
+      TError,
+      { params: UpdateKommentarParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof updateKommentar>>,
+  TError,
+  { params: UpdateKommentarParams },
+  TContext
+> => {
+  return useMutation(getUpdateKommentarMutationOptions(options), queryClient);
+};

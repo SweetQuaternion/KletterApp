@@ -1,13 +1,13 @@
 import { useContext, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import type { RouteCreateDTO, RouteResponseDTO, WandResponseDTO } from "../../api/model";
-import { convertSchwierigkeitToNumber } from "../../constants/conversions";
+import { convertSchwierigkeitToNumber } from "../../utils/conversions";
 import "../../styles/RoutenKarte.css";
 import {
   createUpdateRouteMutationOptions,
   createDeleteRouteMutationOptions,
-} from "../../constants/queries";
-import { HalleContext } from "../../constants/context";
+} from "../../utils/queries";
+import { HalleContext } from "../../utils/context";
 
 interface Props {
   selectedWand: WandResponseDTO;

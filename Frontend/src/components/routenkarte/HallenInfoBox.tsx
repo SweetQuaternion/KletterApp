@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { HalleContext } from "../../constants/context";
+import { HalleContext } from "../../utils/context";
 
 const HallenInfoBox = () => {
   const { selectedHalle } = useContext(HalleContext);

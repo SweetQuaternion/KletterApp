@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import "../../styles/HallenSuche.css";
 import type { HalleResponseDTO } from "../../api/model";
-import { HalleContext } from "../../constants/context";
+import { HalleContext } from "../../utils/context";
 import { useContext } from "react";
 
 interface Props {

@@ -1,14 +1,14 @@
 import { useContext, useState } from "react";
-import { HalleContext, UserContext } from "../../constants/context";
+import { HalleContext, UserContext } from "../../utils/context";
 import type { HalleResponseDTO } from "../../api/model";
-import getDB from "../../constants/db";
+import getDB from "../../utils/db";
 import { useQuery } from "@tanstack/react-query";
 import {
   createAllAscentsQueryOptions,
   createAllUserRoutenStatusQueryOptions,
   createWaendeByHallenIdQueryOptions,
-} from "../../constants/queries";
-import { useOnline } from "../../constants/useOnline";
+} from "../../utils/queries";
+import { useOnline } from "../../utils/useOnline";
 
 const SpeicherKnopfsis = () => {
   const { selectedHalle } = useContext(HalleContext);

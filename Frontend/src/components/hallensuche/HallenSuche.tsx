@@ -4,9 +4,9 @@ import "../../styles/Form.css";
 import HallenErgebnisFeld from "./HallenErgebnisFeld.tsx";
 import { useQuery } from "@tanstack/react-query";
 import { getFindHalleQueryOptions } from "../../api/hallen-controller/hallen-controller.ts";
-import { isAdmin } from "../../constants/keycloak.ts";
+import { isAdmin } from "../../utils/keycloak.ts";
 import { Link } from "react-router";
-import { useOnline } from "../../constants/useOnline.ts";
+import { useOnline } from "../../utils/useOnline.ts";
 import type { HalleResponseDTO } from "../../api/model/halleResponseDTO.ts";
 
 // beim Laden der Seite wird die Suche mit leerem search ausgeführt (alle Ergebnisse)

@@ -5,9 +5,9 @@ import Canvas from "./Canvas";
 import WändeBox from "./WändeBox";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createHalleMutationOptions } from "../../constants/queries";
-import { createWandMutationOptions } from "../../constants/queries";
-import { isAdmin } from "../../constants/keycloak";
+import { createHalleMutationOptions } from "../../utils/queries";
+import { createWandMutationOptions } from "../../utils/queries";
+import { isAdmin } from "../../utils/keycloak";
 import { getGetWaendeByHallenIdQueryOptions } from "../../api/wand-controller/wand-controller";
 import { updateHalle } from "../../api/hallen-controller/hallen-controller";
 

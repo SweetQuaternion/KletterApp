@@ -4,10 +4,7 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
-import {
-  useMutation,
-  useQuery
-} from '@tanstack/react-query';
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -20,327 +17,370 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult
-} from '@tanstack/react-query';
+  UseQueryResult,
+} from "@tanstack/react-query";
 
 import type {
   DeleteHalleParams,
   FindHalleParams,
   HalleCreateDTO,
   HalleResponseDTO,
-  UpdateHalleParams
-} from '../model';
+  UpdateHalleParams,
+} from "../model";
 
-import { customFetch } from '../../constants/fetcher';
-
+import { customFetch } from "../../utils/fetcher";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-
-
-export const getFindHalleUrl = (params?: FindHalleParams,) => {
+export const getFindHalleUrl = (params?: FindHalleParams) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-    
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? "null" : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/hallen?${stringifiedParams}` : `/api/hallen`
-}
+  return stringifiedParams.length > 0 ? `/api/hallen?${stringifiedParams}` : `/api/hallen`;
+};
 
-export const findHalle = async (params?: FindHalleParams, options?: RequestInit): Promise<HalleResponseDTO[]> => {
-  
-  return customFetch<HalleResponseDTO[]>(getFindHalleUrl(params),
-  {      
+export const findHalle = async (
+  params?: FindHalleParams,
+  options?: RequestInit,
+): Promise<HalleResponseDTO[]> => {
+  return customFetch<HalleResponseDTO[]>(getFindHalleUrl(params), {
     ...options,
-    method: 'GET'
-    
-    
-  }
-);}
-  
+    method: "GET",
+  });
+};
 
+export const getFindHalleQueryKey = (params?: FindHalleParams) => {
+  return [`/api/hallen`, ...(params ? [params] : [])] as const;
+};
 
-
-
-export const getFindHalleQueryKey = (params?: FindHalleParams,) => {
-    return [
-    `/api/hallen`, ...(params ? [params] : [])
-    ] as const;
-    }
-
-    
-export const getFindHalleQueryOptions = <TData = Awaited<ReturnType<typeof findHalle>>, TError = void>(params?: FindHalleParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+export const getFindHalleQueryOptions = <
+  TData = Awaited<ReturnType<typeof findHalle>>,
+  TError = void,
+>(
+  params?: FindHalleParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
 ) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getFindHalleQueryKey(params);
 
-  const queryKey =  queryOptions?.queryKey ?? getFindHalleQueryKey(params);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof findHalle>>> = ({ signal }) =>
+    findHalle(params, { signal, ...requestOptions });
 
-  
+  return {
+    queryKey,
+    queryFn,
+    retry: false,
+    refetchOnReconnect: false,
+    ...queryOptions,
+  } as UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof findHalle>>> = ({ signal }) => findHalle(params, { signal, ...requestOptions });
-
-      
-
-      
-
-   return  { queryKey, queryFn,   retry: false, refetchOnReconnect: false,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type FindHalleQueryResult = NonNullable<Awaited<ReturnType<typeof findHalle>>>
-export type FindHalleQueryError = void
-
+export type FindHalleQueryResult = NonNullable<Awaited<ReturnType<typeof findHalle>>>;
+export type FindHalleQueryError = void;
 
 export function useFindHalle<TData = Awaited<ReturnType<typeof findHalle>>, TError = void>(
- params: undefined |  FindHalleParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>> & Pick<
+  params: undefined | FindHalleParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>> &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof findHalle>>,
           TError,
           Awaited<ReturnType<typeof findHalle>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customFetch>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useFindHalle<TData = Awaited<ReturnType<typeof findHalle>>, TError = void>(
- params?: FindHalleParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>> & Pick<
+  params?: FindHalleParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>> &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof findHalle>>,
           TError,
           Awaited<ReturnType<typeof findHalle>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customFetch>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useFindHalle<TData = Awaited<ReturnType<typeof findHalle>>, TError = void>(
- params?: FindHalleParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+  params?: FindHalleParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
 export function useFindHalle<TData = Awaited<ReturnType<typeof findHalle>>, TError = void>(
- params?: FindHalleParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  params?: FindHalleParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof findHalle>>, TError, TData>>;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  const queryOptions = getFindHalleQueryOptions(params, options);
 
-  const queryOptions = getFindHalleQueryOptions(params,options)
-
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
-
-
-
 export const getAddHalleUrl = () => {
+  return `/api/hallen`;
+};
 
-
-  
-
-  return `/api/hallen`
-}
-
-export const addHalle = async (halleCreateDTO: HalleCreateDTO, options?: RequestInit): Promise<HalleResponseDTO> => {
-  
-  return customFetch<HalleResponseDTO>(getAddHalleUrl(),
-  {      
+export const addHalle = async (
+  halleCreateDTO: HalleCreateDTO,
+  options?: RequestInit,
+): Promise<HalleResponseDTO> => {
+  return customFetch<HalleResponseDTO>(getAddHalleUrl(), {
     ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      halleCreateDTO,)
-  }
-);}
-  
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(halleCreateDTO),
+  });
+};
 
+export const getAddHalleMutationOptions = <TError = void, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof addHalle>>,
+    TError,
+    { data: HalleCreateDTO },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof addHalle>>,
+  TError,
+  { data: HalleCreateDTO },
+  TContext
+> => {
+  const mutationKey = ["addHalle"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof addHalle>>,
+    { data: HalleCreateDTO }
+  > = (props) => {
+    const { data } = props ?? {};
 
-export const getAddHalleMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addHalle>>, TError,{data: HalleCreateDTO}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof addHalle>>, TError,{data: HalleCreateDTO}, TContext> => {
+    return addHalle(data, requestOptions);
+  };
 
-const mutationKey = ['addHalle'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+  return { mutationFn, ...mutationOptions };
+};
 
-      
+export type AddHalleMutationResult = NonNullable<Awaited<ReturnType<typeof addHalle>>>;
+export type AddHalleMutationBody = HalleCreateDTO;
+export type AddHalleMutationError = void;
 
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addHalle>>, {data: HalleCreateDTO}> = (props) => {
-          const {data} = props ?? {};
-
-          return  addHalle(data,requestOptions)
-        }
-
-
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type AddHalleMutationResult = NonNullable<Awaited<ReturnType<typeof addHalle>>>
-    export type AddHalleMutationBody = HalleCreateDTO
-    export type AddHalleMutationError = void
-
-    export const useAddHalle = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addHalle>>, TError,{data: HalleCreateDTO}, TContext>, request?: SecondParameter<typeof customFetch>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof addHalle>>,
-        TError,
-        {data: HalleCreateDTO},
-        TContext
-      > => {
-      return useMutation(getAddHalleMutationOptions(options), queryClient);
-    }
-    export const getDeleteHalleUrl = (params: DeleteHalleParams,) => {
+export const useAddHalle = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof addHalle>>,
+      TError,
+      { data: HalleCreateDTO },
+      TContext
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof addHalle>>,
+  TError,
+  { data: HalleCreateDTO },
+  TContext
+> => {
+  return useMutation(getAddHalleMutationOptions(options), queryClient);
+};
+export const getDeleteHalleUrl = (params: DeleteHalleParams) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-    
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? "null" : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/hallen?${stringifiedParams}` : `/api/hallen`
-}
+  return stringifiedParams.length > 0 ? `/api/hallen?${stringifiedParams}` : `/api/hallen`;
+};
 
-export const deleteHalle = async (params: DeleteHalleParams, options?: RequestInit): Promise<void> => {
-  
-  return customFetch<void>(getDeleteHalleUrl(params),
-  {      
+export const deleteHalle = async (
+  params: DeleteHalleParams,
+  options?: RequestInit,
+): Promise<void> => {
+  return customFetch<void>(getDeleteHalleUrl(params), {
     ...options,
-    method: 'DELETE'
-    
-    
-  }
-);}
-  
+    method: "DELETE",
+  });
+};
 
+export const getDeleteHalleMutationOptions = <TError = void, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteHalle>>,
+    TError,
+    { params: DeleteHalleParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteHalle>>,
+  TError,
+  { params: DeleteHalleParams },
+  TContext
+> => {
+  const mutationKey = ["deleteHalle"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteHalle>>,
+    { params: DeleteHalleParams }
+  > = (props) => {
+    const { params } = props ?? {};
 
-export const getDeleteHalleMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteHalle>>, TError,{params: DeleteHalleParams}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteHalle>>, TError,{params: DeleteHalleParams}, TContext> => {
+    return deleteHalle(params, requestOptions);
+  };
 
-const mutationKey = ['deleteHalle'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+  return { mutationFn, ...mutationOptions };
+};
 
-      
+export type DeleteHalleMutationResult = NonNullable<Awaited<ReturnType<typeof deleteHalle>>>;
 
+export type DeleteHalleMutationError = void;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteHalle>>, {params: DeleteHalleParams}> = (props) => {
-          const {params} = props ?? {};
-
-          return  deleteHalle(params,requestOptions)
-        }
-
-
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type DeleteHalleMutationResult = NonNullable<Awaited<ReturnType<typeof deleteHalle>>>
-    
-    export type DeleteHalleMutationError = void
-
-    export const useDeleteHalle = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteHalle>>, TError,{params: DeleteHalleParams}, TContext>, request?: SecondParameter<typeof customFetch>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteHalle>>,
-        TError,
-        {params: DeleteHalleParams},
-        TContext
-      > => {
-      return useMutation(getDeleteHalleMutationOptions(options), queryClient);
-    }
-    export const getUpdateHalleUrl = (params: UpdateHalleParams,) => {
+export const useDeleteHalle = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteHalle>>,
+      TError,
+      { params: DeleteHalleParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteHalle>>,
+  TError,
+  { params: DeleteHalleParams },
+  TContext
+> => {
+  return useMutation(getDeleteHalleMutationOptions(options), queryClient);
+};
+export const getUpdateHalleUrl = (params: UpdateHalleParams) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-    
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? "null" : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/hallen?${stringifiedParams}` : `/api/hallen`
-}
+  return stringifiedParams.length > 0 ? `/api/hallen?${stringifiedParams}` : `/api/hallen`;
+};
 
-export const updateHalle = async (halleCreateDTO: HalleCreateDTO,
-    params: UpdateHalleParams, options?: RequestInit): Promise<HalleResponseDTO> => {
-  
-  return customFetch<HalleResponseDTO>(getUpdateHalleUrl(params),
-  {      
+export const updateHalle = async (
+  halleCreateDTO: HalleCreateDTO,
+  params: UpdateHalleParams,
+  options?: RequestInit,
+): Promise<HalleResponseDTO> => {
+  return customFetch<HalleResponseDTO>(getUpdateHalleUrl(params), {
     ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      halleCreateDTO,)
-  }
-);}
-  
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(halleCreateDTO),
+  });
+};
 
+export const getUpdateHalleMutationOptions = <TError = void, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateHalle>>,
+    TError,
+    { data: HalleCreateDTO; params: UpdateHalleParams },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateHalle>>,
+  TError,
+  { data: HalleCreateDTO; params: UpdateHalleParams },
+  TContext
+> => {
+  const mutationKey = ["updateHalle"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateHalle>>,
+    { data: HalleCreateDTO; params: UpdateHalleParams }
+  > = (props) => {
+    const { data, params } = props ?? {};
 
-export const getUpdateHalleMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHalle>>, TError,{data: HalleCreateDTO;params: UpdateHalleParams}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof updateHalle>>, TError,{data: HalleCreateDTO;params: UpdateHalleParams}, TContext> => {
+    return updateHalle(data, params, requestOptions);
+  };
 
-const mutationKey = ['updateHalle'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+  return { mutationFn, ...mutationOptions };
+};
 
-      
+export type UpdateHalleMutationResult = NonNullable<Awaited<ReturnType<typeof updateHalle>>>;
+export type UpdateHalleMutationBody = HalleCreateDTO;
+export type UpdateHalleMutationError = void;
 
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateHalle>>, {data: HalleCreateDTO;params: UpdateHalleParams}> = (props) => {
-          const {data,params} = props ?? {};
-
-          return  updateHalle(data,params,requestOptions)
-        }
-
-
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type UpdateHalleMutationResult = NonNullable<Awaited<ReturnType<typeof updateHalle>>>
-    export type UpdateHalleMutationBody = HalleCreateDTO
-    export type UpdateHalleMutationError = void
-
-    export const useUpdateHalle = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHalle>>, TError,{data: HalleCreateDTO;params: UpdateHalleParams}, TContext>, request?: SecondParameter<typeof customFetch>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof updateHalle>>,
-        TError,
-        {data: HalleCreateDTO;params: UpdateHalleParams},
-        TContext
-      > => {
-      return useMutation(getUpdateHalleMutationOptions(options), queryClient);
-    }
-    
+export const useUpdateHalle = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof updateHalle>>,
+      TError,
+      { data: HalleCreateDTO; params: UpdateHalleParams },
+      TContext
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof updateHalle>>,
+  TError,
+  { data: HalleCreateDTO; params: UpdateHalleParams },
+  TContext
+> => {
+  return useMutation(getUpdateHalleMutationOptions(options), queryClient);
+};

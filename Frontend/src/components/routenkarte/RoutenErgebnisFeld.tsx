@@ -1,5 +1,5 @@
 import type { RouteResponseDTO } from "../../api/model";
-import { convertSchwierigkeitToString, getColor } from "../../constants/conversions";
+import { convertSchwierigkeitToString, getColor } from "../../utils/conversions";
 
 interface Props {
   route: RouteResponseDTO;

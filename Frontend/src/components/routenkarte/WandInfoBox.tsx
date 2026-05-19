@@ -1,5 +1,5 @@
 import RoutenErgebnisFeld from "./RoutenErgebnisFeld";
-import { isAdmin } from "../../constants/keycloak.ts";
+import { isAdmin } from "../../utils/keycloak.ts";
 import type { RouteResponseDTO, WandResponseDTO } from "../../api/model";
 
 interface Props {

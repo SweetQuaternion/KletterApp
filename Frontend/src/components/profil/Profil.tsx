@@ -8,12 +8,12 @@ import {
   createAvatarQueryOptions,
   createUserRoutenStatusMutationOptions,
   createUserSyncMutation,
-} from "../../constants/queries.ts";
+} from "../../utils/queries.ts";
 import type { AscentCreateDTO, UserCreateDTO, UserRoutenStatus } from "../../api/model";
-import { pointsToLevel } from "../../constants/levels.ts";
-import { UserContext } from "../../constants/context.ts";
-import { useOnline } from "../../constants/useOnline.ts";
-import getDB from "../../constants/db.ts";
+import { pointsToLevel } from "../../utils/levels.ts";
+import { UserContext } from "../../utils/context.ts";
+import { useOnline } from "../../utils/useOnline.ts";
+import getDB from "../../utils/db.ts";
 
 const Profil = () => {
   const user = useContext(UserContext);

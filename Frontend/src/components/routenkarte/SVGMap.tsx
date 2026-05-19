@@ -1,6 +1,6 @@
 import { useState } from "react";
 import WandInfoBox from "./WandInfoBox";
-import { isAdmin } from "../../constants/keycloak";
+import { isAdmin } from "../../utils/keycloak";
 import type { RouteResponseDTO, WandResponseDTO } from "../../api/model";
 import TouchTracker from "../touch/TouchTracker";
 

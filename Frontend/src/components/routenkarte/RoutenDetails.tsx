@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { convertSchwierigkeitToString, getColor } from "../../constants/conversions";
+import { convertSchwierigkeitToString, getColor } from "../../utils/conversions.ts";
 import "../../styles/RoutenDetails.css";
 import type { AscentResponseDTOStyle, RouteResponseDTO } from "../../api/model";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -10,11 +10,11 @@ import {
   createKommentarQueryOptions,
   createUserRoutenStatusMutationOptions,
   createUserRoutenStatusQueryOptions,
-} from "../../constants/queries";
+} from "../../utils/queries.ts";
 import { Link } from "react-router";
-import { isAdmin } from "../../constants/keycloak";
-import { UserContext } from "../../constants/context.ts";
-import { useOnline } from "../../constants/useOnline.ts";
+import { isAdmin } from "../../utils/keycloak.ts";
+import { UserContext } from "../../utils/context.ts";
+import { useOnline } from "../../utils/useOnline.ts";
 
 interface Props {
   selectedRoute: RouteResponseDTO;
