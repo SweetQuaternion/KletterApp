@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 1.5em;
   margin-top: 3em;
+  min-height: 29em;
 }
 
 .stats-chart-wrap {
@@ -71,15 +72,22 @@
   box-shadow: none;
 }
 
-@media (max-width: 500px) {
-  .stats-card {
-    padding: 1rem;
-    border-radius: 1rem;
-  }
+.switch.btn-timeframe-switch.switch-bottom {
+  display: none;
+}
 
+@media (max-width: 500px) {
   .stats-chart-wrap,
   .stats-empty {
     height: 260px;
+  }
+
+  .switch.btn-timeframe-switch.switch-top {
+    display: none;
+  }
+  .switch.btn-timeframe-switch.switch-bottom {
+    display: block;
+    margin-top: 1em;
   }
 }
 

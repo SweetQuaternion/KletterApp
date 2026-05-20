@@ -215,7 +215,7 @@ const Profil = () => {
 
             <div className="flex-row small-gap bottom-section">
               <button className="red-button" onClick={() => setIsEditing(!isEditing)}>
-                {isEditing ? "Abbrechen" : "Bearbeiten"}
+                {isEditing ? "Abbrechen" : "Profil bearbeiten"}
               </button>
               {isEditing && (
                 <button className="red-button" onClick={handleSubmit}>

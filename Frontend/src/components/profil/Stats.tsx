@@ -47,7 +47,7 @@ function Stats({ ascents }: Props) {
       <div>
         <div className="stats-header">
           <h3>{title}</h3>
-          <label className="switch btn-timeframe-switch">
+          <label className="switch btn-timeframe-switch switch-top">
             <input
               type="checkbox"
               name="time_frame"
@@ -118,6 +118,16 @@ function Stats({ ascents }: Props) {
               />
             </LineChart>
           </ResponsiveContainer>
+          <label className="switch btn-timeframe-switch switch-bottom">
+            <input
+              type="checkbox"
+              name="time_frame"
+              id="time_frame"
+              value="1"
+              onChange={() => setTimeFrame(timeFrame === "month" ? "week" : "month")}
+            />
+            <label data-on="Monat" data-off="Woche" className="btn-timeframe-switch-inner"></label>
+          </label>
         </div>
       ) : (
         <div className="stats-empty sans-serif">

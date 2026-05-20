@@ -18,7 +18,6 @@
 .white-box.large {
   top: 5em;
   width: 50%;
-  min-height: 85%;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
@@ -28,7 +27,6 @@
   -ms-flex-pack: justify;
   justify-content: space-between;
   gap: 1em;
-  min-height: calc(100vh - 7em);
 }
 
 .profile h2 {
