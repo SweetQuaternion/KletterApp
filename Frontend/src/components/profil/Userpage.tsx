@@ -51,7 +51,7 @@ const Profil = () => {
                   </p>
                 </div>
               </div>
-              <Stats ascents={ascents || []} timeFrame="week" />
+              <Stats ascents={ascents || []} />
             </div>
           </section>
         )}

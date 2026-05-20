@@ -13,12 +13,12 @@ Eine Web-App für Kletterer – entdecke Routen in deiner Halle oder am Outdoor-
 
 ## 🛠️ Tech Stack
 
-| Bereich | Technologie |
-|---|---|
-| Frontend | React |
-| Backend | Spring Boot |
-| Datenbank | PostgreSQL |
-| Auth | Keycloak |
+| Bereich   | Technologie |
+| --------- | ----------- |
+| Frontend  | React       |
+| Backend   | Spring Boot |
+| Datenbank | PostgreSQL  |
+| Auth      | Keycloak    |
 
 ## 🧗🏼 Getting Started
 
@@ -47,9 +47,8 @@ Das Skript richtet alles ein – Volumes, Konfiguration und startet die App auto
 
 ## 📸 Screenshots
 
-*Coming soon*
+_Coming soon_
 
 ## 🗺️ Roadmap
 
-- [ ] Profilstatistiken (Begehungen, Punkte, Fortschritt über Zeit)
 - [ ] Verbessertes Admin-Interface

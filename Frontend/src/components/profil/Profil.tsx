@@ -14,6 +14,8 @@ import { pointsToLevel } from "../../utils/levels.ts";
 import { UserContext } from "../../utils/context.ts";
 import { useOnline } from "../../utils/useOnline.ts";
 import getDB from "../../utils/db.ts";
+import Stats from "./Stats.tsx";
+import { getFindAscentsQueryOptions } from "../../api/ascent-controller/ascent-controller.ts";
 
 const Profil = () => {
   const user = useContext(UserContext);
@@ -25,6 +27,10 @@ const Profil = () => {
   const isOnline = useOnline();
 
   const { data: avatar } = useQuery(createAvatarQueryOptions(user?.keycloakId || ""));
+
+  const { data: ascents } = useQuery(
+    getFindAscentsQueryOptions({ userId: user?.keycloakId || "" }),
+  );
 
   const { mutateAsync: addAscent } = useMutation(createAddAscentMutationOptions());
   const { mutateAsync: addUserRoutenStatus } = useMutation(createUserRoutenStatusMutationOptions());
@@ -109,7 +115,7 @@ const Profil = () => {
     <>
       <div className="profil-container">
         {user && (
-          <div className="white-box large profile">
+          <section className="white-box large profile">
             <div className="top-section">
               {!isEditing && (
                 <div className="flex-row wide-gap">
@@ -129,6 +135,7 @@ const Profil = () => {
                   </div>
                 </div>
               )}
+
               {isEditing && (
                 <div className="flex-row wide-gap">
                   <div className="profile-picture-container avatar-edit">
@@ -183,6 +190,7 @@ const Profil = () => {
                   </div>
                 </div>
               )}
+
               <div className="flex-row small-gap level-container">
                 <div className="highlight-feld">
                   <div className="mini-dot"></div>
@@ -201,7 +209,10 @@ const Profil = () => {
                   </button>
                 )}
               </div>
+
+              <Stats ascents={ascents || []} />
             </div>
+
             <div className="flex-row small-gap bottom-section">
               <button className="red-button" onClick={() => setIsEditing(!isEditing)}>
                 {isEditing ? "Abbrechen" : "Bearbeiten"}
@@ -215,8 +226,9 @@ const Profil = () => {
               {isSuccess && <p className="status success">gespeichert!</p>}
               {isError && <p className="status error">Fehler beim Speichern: {error?.message}</p>}
             </div>
-          </div>
+          </section>
         )}
+
         {!user && (
           <div className="white-box large">
             <h2>Hey sorry.</h2>

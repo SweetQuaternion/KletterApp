@@ -1,13 +1,28 @@
 .stats-card {
   display: flex;
   flex-direction: column;
-  gap: 1em;
-  margin-top: 2em;
+  gap: 1.5em;
+  margin-top: 3em;
 }
 
 .stats-chart-wrap {
   width: 100%;
   height: 20em;
+}
+
+.stats-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stats-subtitle {
+  font-size: small;
+  font-family:
+    DM Sans,
+    sans serif;
+  margin-top: 0.3em;
 }
 
 .recharts-cartesian-axis-tick-value {
@@ -66,4 +81,69 @@
   .stats-empty {
     height: 260px;
   }
+}
+
+/* Toggle switch */
+
+.btn-timeframe-switch {
+  display: inline-block;
+  margin: 0px;
+  position: relative;
+}
+
+.btn-timeframe-switch > label.btn-timeframe-switch-inner {
+  margin: 0px;
+  width: 140px;
+  height: 30px;
+  background: var(--blassblau);
+  border-radius: 26px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+  /* box-shadow: 0px 0px 8px 0px rgba(17, 17, 17, 0.34) inset; */
+  display: block;
+}
+
+.btn-timeframe-switch > label.btn-timeframe-switch-inner:before {
+  content: attr(data-on);
+  position: absolute;
+  top: 7px;
+  right: 20px;
+}
+
+.btn-timeframe-switch > label.btn-timeframe-switch-inner:after {
+  content: attr(data-off);
+  width: 70px;
+  height: 16px;
+  background: #fff;
+  border-radius: 26px;
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0px 0px 6px -2px var(--mokka);
+  padding: 5px 0px;
+}
+
+.btn-timeframe-switch input[type="checkbox"] {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  margin: 0px;
+}
+
+.btn-timeframe-switch input[type="checkbox"]:checked + label.btn-timeframe-switch-inner:after {
+  content: attr(data-on);
+  left: 68px;
+}
+
+.btn-timeframe-switch input[type="checkbox"]:checked + label.btn-timeframe-switch-inner:before {
+  content: attr(data-off);
+  right: auto;
+  left: 20px;
 }
