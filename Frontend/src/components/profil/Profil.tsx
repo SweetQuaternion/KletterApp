@@ -154,7 +154,7 @@ const Profil = () => {
                         />
                       ) : (
                         <img
-                          src="/default-pic.png"
+                          src="/images/default-pic.png"
                           className="editable"
                           alt="Standard-Profilbild"
                         />

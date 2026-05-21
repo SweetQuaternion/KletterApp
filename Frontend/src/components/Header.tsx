@@ -1,6 +1,6 @@
 import "../styles/App.css";
 import "../styles/Header.css";
-import logo from "/kletterapp-logo.webp";
+import logo from "/images/kletterapp-logo.webp";
 import type { HalleResponseDTO } from "../api/model";
 import { login, register, logout } from "../utils/keycloak.ts";
 import { useContext, useState } from "react";
@@ -20,9 +20,9 @@ function Header({ setSelectedHalle }: Props) {
   const [navigationToggled, setNavigationToggled] = useState(false);
   const isOnline = useOnline();
 
-  const heimatHallen = JSON.parse(
-    localStorage.getItem("Heimathallen") || "[]",
-  ) as HalleResponseDTO[];
+  const heimatHalle = JSON.parse(
+    localStorage.getItem("Heimathalle") || "null",
+  ) as HalleResponseDTO | null;
 
   const { data: avatar } = useQuery(createAvatarQueryOptions(user?.keycloakId || ""));
 
@@ -54,7 +54,7 @@ function Header({ setSelectedHalle }: Props) {
                   aria-label="Profil"
                 >
                   <img
-                    src={avatar ? URL.createObjectURL(avatar) : "/default-pic.png"}
+                    src={avatar ? URL.createObjectURL(avatar) : "/images/default-pic.png"}
                     alt="Profilbild"
                   />
                 </button>
@@ -91,17 +91,17 @@ function Header({ setSelectedHalle }: Props) {
       {navigationToggled && (
         <div className="overlay" onClick={() => setNavigationToggled(false)}>
           <nav className="navigation-menu">
-            {heimatHallen.map((halle) => (
-              <div key={halle.id}>
+            {heimatHalle && (
+              <div key={heimatHalle.id}>
                 <Link
                   to="/routenkarte/"
                   className="red-button"
-                  onClick={() => setSelectedHalle(halle)}
+                  onClick={() => setSelectedHalle(heimatHalle)}
                 >
-                  {halle.name}
+                  {heimatHalle.name}
                 </Link>
               </div>
-            ))}
+            )}
             <div>
               <Link to="/hallensuche" className="red-button">
                 Hallensuche

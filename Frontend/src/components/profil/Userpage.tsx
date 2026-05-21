@@ -29,7 +29,7 @@ const Profil = () => {
               <div className="flex-row wide-gap">
                 <div className="profile-picture-container">
                   <img
-                    src={avatar ? URL.createObjectURL(avatar) : "/default-pic.png"}
+                    src={avatar ? URL.createObjectURL(avatar) : "/images/default-pic.png"}
                     alt="Profilbild"
                   />
                 </div>

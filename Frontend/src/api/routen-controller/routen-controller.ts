@@ -4,7 +4,10 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -17,391 +20,324 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
+  UseQueryResult
+} from '@tanstack/react-query';
 
 import type {
   DeleteRouteParams,
   RouteCreateDTO,
   RouteResponseDTO,
-  UpdateRouteParams,
-} from "../model";
+  UpdateRouteParams
+} from '../model';
 
-import { customFetch } from "../../utils/fetcher";
+import { customFetch } from '../../utils/fetcher';
+
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-export const getGetRoutenByHallenIdUrl = (hallenId: number) => {
-  return `/api/hallen/${hallenId}/routen`;
-};
 
-export const getRoutenByHallenId = async (
-  hallenId: number,
-  options?: RequestInit,
-): Promise<RouteResponseDTO[]> => {
-  return customFetch<RouteResponseDTO[]>(getGetRoutenByHallenIdUrl(hallenId), {
+
+export const getGetRoutenByHallenIdUrl = (hallenId: number,) => {
+
+
+  
+
+  return `/api/hallen/${hallenId}/routen`
+}
+
+export const getRoutenByHallenId = async (hallenId: number, options?: RequestInit): Promise<RouteResponseDTO[]> => {
+  
+  return customFetch<RouteResponseDTO[]>(getGetRoutenByHallenIdUrl(hallenId),
+  {      
     ...options,
-    method: "GET",
-  });
-};
+    method: 'GET'
+    
+    
+  }
+);}
+  
 
-export const getGetRoutenByHallenIdQueryKey = (hallenId: number) => {
-  return [`/api/hallen/${hallenId}/routen`] as const;
-};
 
-export const getGetRoutenByHallenIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getRoutenByHallenId>>,
-  TError = void,
->(
-  hallenId: number,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getRoutenByHallenId>>, TError, TData>
-    >;
-    request?: SecondParameter<typeof customFetch>;
-  },
+
+
+export const getGetRoutenByHallenIdQueryKey = (hallenId: number,) => {
+    return [
+    `/api/hallen/${hallenId}/routen`
+    ] as const;
+    }
+
+    
+export const getGetRoutenByHallenIdQueryOptions = <TData = Awaited<ReturnType<typeof getRoutenByHallenId>>, TError = void>(hallenId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoutenByHallenId>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
 ) => {
-  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetRoutenByHallenIdQueryKey(hallenId);
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getRoutenByHallenId>>> = ({ signal }) =>
-    getRoutenByHallenId(hallenId, { signal, ...requestOptions });
+  const queryKey =  queryOptions?.queryKey ?? getGetRoutenByHallenIdQueryKey(hallenId);
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!hallenId,
-    retry: false,
-    refetchOnReconnect: false,
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getRoutenByHallenId>>, TError, TData> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
-};
+  
 
-export type GetRoutenByHallenIdQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getRoutenByHallenId>>
->;
-export type GetRoutenByHallenIdQueryError = void;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRoutenByHallenId>>> = ({ signal }) => getRoutenByHallenId(hallenId, { signal, ...requestOptions });
 
-export function useGetRoutenByHallenId<
-  TData = Awaited<ReturnType<typeof getRoutenByHallenId>>,
-  TError = void,
->(
-  hallenId: number,
-  options: {
-    query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getRoutenByHallenId>>, TError, TData>
-    > &
-      Pick<
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(hallenId),  retry: false, refetchOnReconnect: false,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRoutenByHallenId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetRoutenByHallenIdQueryResult = NonNullable<Awaited<ReturnType<typeof getRoutenByHallenId>>>
+export type GetRoutenByHallenIdQueryError = void
+
+
+export function useGetRoutenByHallenId<TData = Awaited<ReturnType<typeof getRoutenByHallenId>>, TError = void>(
+ hallenId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoutenByHallenId>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getRoutenByHallenId>>,
           TError,
           Awaited<ReturnType<typeof getRoutenByHallenId>>
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof customFetch>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetRoutenByHallenId<
-  TData = Awaited<ReturnType<typeof getRoutenByHallenId>>,
-  TError = void,
->(
-  hallenId: number,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getRoutenByHallenId>>, TError, TData>
-    > &
-      Pick<
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRoutenByHallenId<TData = Awaited<ReturnType<typeof getRoutenByHallenId>>, TError = void>(
+ hallenId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoutenByHallenId>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getRoutenByHallenId>>,
           TError,
           Awaited<ReturnType<typeof getRoutenByHallenId>>
-        >,
-        "initialData"
-      >;
-    request?: SecondParameter<typeof customFetch>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetRoutenByHallenId<
-  TData = Awaited<ReturnType<typeof getRoutenByHallenId>>,
-  TError = void,
->(
-  hallenId: number,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getRoutenByHallenId>>, TError, TData>
-    >;
-    request?: SecondParameter<typeof customFetch>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRoutenByHallenId<TData = Awaited<ReturnType<typeof getRoutenByHallenId>>, TError = void>(
+ hallenId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoutenByHallenId>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetRoutenByHallenId<
-  TData = Awaited<ReturnType<typeof getRoutenByHallenId>>,
-  TError = void,
->(
-  hallenId: number,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getRoutenByHallenId>>, TError, TData>
-    >;
-    request?: SecondParameter<typeof customFetch>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-  const queryOptions = getGetRoutenByHallenIdQueryOptions(hallenId, options);
+export function useGetRoutenByHallenId<TData = Awaited<ReturnType<typeof getRoutenByHallenId>>, TError = void>(
+ hallenId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoutenByHallenId>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
+  const queryOptions = getGetRoutenByHallenIdQueryOptions(hallenId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
-export const getAddRouteUrl = (hallenId: number) => {
-  return `/api/hallen/${hallenId}/routen`;
-};
 
-export const addRoute = async (
-  hallenId: number,
-  routeCreateDTO: RouteCreateDTO,
-  options?: RequestInit,
-): Promise<RouteResponseDTO> => {
-  return customFetch<RouteResponseDTO>(getAddRouteUrl(hallenId), {
+
+
+export const getAddRouteUrl = (hallenId: number,) => {
+
+
+  
+
+  return `/api/hallen/${hallenId}/routen`
+}
+
+export const addRoute = async (hallenId: number,
+    routeCreateDTO: RouteCreateDTO, options?: RequestInit): Promise<RouteResponseDTO> => {
+  
+  return customFetch<RouteResponseDTO>(getAddRouteUrl(hallenId),
+  {      
     ...options,
-    method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(routeCreateDTO),
-  });
-};
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      routeCreateDTO,)
+  }
+);}
+  
 
-export const getAddRouteMutationOptions = <TError = void, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof addRoute>>,
-    TError,
-    { hallenId: number; data: RouteCreateDTO },
-    TContext
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof addRoute>>,
-  TError,
-  { hallenId: number; data: RouteCreateDTO },
-  TContext
-> => {
-  const mutationKey = ["addRoute"];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, request: undefined };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof addRoute>>,
-    { hallenId: number; data: RouteCreateDTO }
-  > = (props) => {
-    const { hallenId, data } = props ?? {};
 
-    return addRoute(hallenId, data, requestOptions);
-  };
+export const getAddRouteMutationOptions = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addRoute>>, TError,{hallenId: number;data: RouteCreateDTO}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof addRoute>>, TError,{hallenId: number;data: RouteCreateDTO}, TContext> => {
 
-  return { mutationFn, ...mutationOptions };
-};
+const mutationKey = ['addRoute'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
 
-export type AddRouteMutationResult = NonNullable<Awaited<ReturnType<typeof addRoute>>>;
-export type AddRouteMutationBody = RouteCreateDTO;
-export type AddRouteMutationError = void;
+      
 
-export const useAddRoute = <TError = void, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof addRoute>>,
-      TError,
-      { hallenId: number; data: RouteCreateDTO },
-      TContext
-    >;
-    request?: SecondParameter<typeof customFetch>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof addRoute>>,
-  TError,
-  { hallenId: number; data: RouteCreateDTO },
-  TContext
-> => {
-  return useMutation(getAddRouteMutationOptions(options), queryClient);
-};
-export const getDeleteRouteUrl = (hallenId: number, params: DeleteRouteParams) => {
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addRoute>>, {hallenId: number;data: RouteCreateDTO}> = (props) => {
+          const {hallenId,data} = props ?? {};
+
+          return  addRoute(hallenId,data,requestOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AddRouteMutationResult = NonNullable<Awaited<ReturnType<typeof addRoute>>>
+    export type AddRouteMutationBody = RouteCreateDTO
+    export type AddRouteMutationError = void
+
+    export const useAddRoute = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addRoute>>, TError,{hallenId: number;data: RouteCreateDTO}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof addRoute>>,
+        TError,
+        {hallenId: number;data: RouteCreateDTO},
+        TContext
+      > => {
+      return useMutation(getAddRouteMutationOptions(options), queryClient);
+    }
+    export const getDeleteRouteUrl = (hallenId: number,
+    params: DeleteRouteParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
+    
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? "null" : value.toString());
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0
-    ? `/api/hallen/${hallenId}/routen?${stringifiedParams}`
-    : `/api/hallen/${hallenId}/routen`;
-};
+  return stringifiedParams.length > 0 ? `/api/hallen/${hallenId}/routen?${stringifiedParams}` : `/api/hallen/${hallenId}/routen`
+}
 
-export const deleteRoute = async (
-  hallenId: number,
-  params: DeleteRouteParams,
-  options?: RequestInit,
-): Promise<void> => {
-  return customFetch<void>(getDeleteRouteUrl(hallenId, params), {
+export const deleteRoute = async (hallenId: number,
+    params: DeleteRouteParams, options?: RequestInit): Promise<void> => {
+  
+  return customFetch<void>(getDeleteRouteUrl(hallenId,params),
+  {      
     ...options,
-    method: "DELETE",
-  });
-};
+    method: 'DELETE'
+    
+    
+  }
+);}
+  
 
-export const getDeleteRouteMutationOptions = <TError = void, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteRoute>>,
-    TError,
-    { hallenId: number; params: DeleteRouteParams },
-    TContext
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteRoute>>,
-  TError,
-  { hallenId: number; params: DeleteRouteParams },
-  TContext
-> => {
-  const mutationKey = ["deleteRoute"];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, request: undefined };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deleteRoute>>,
-    { hallenId: number; params: DeleteRouteParams }
-  > = (props) => {
-    const { hallenId, params } = props ?? {};
 
-    return deleteRoute(hallenId, params, requestOptions);
-  };
+export const getDeleteRouteMutationOptions = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteRoute>>, TError,{hallenId: number;params: DeleteRouteParams}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteRoute>>, TError,{hallenId: number;params: DeleteRouteParams}, TContext> => {
 
-  return { mutationFn, ...mutationOptions };
-};
+const mutationKey = ['deleteRoute'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
 
-export type DeleteRouteMutationResult = NonNullable<Awaited<ReturnType<typeof deleteRoute>>>;
+      
 
-export type DeleteRouteMutationError = void;
 
-export const useDeleteRoute = <TError = void, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deleteRoute>>,
-      TError,
-      { hallenId: number; params: DeleteRouteParams },
-      TContext
-    >;
-    request?: SecondParameter<typeof customFetch>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof deleteRoute>>,
-  TError,
-  { hallenId: number; params: DeleteRouteParams },
-  TContext
-> => {
-  return useMutation(getDeleteRouteMutationOptions(options), queryClient);
-};
-export const getUpdateRouteUrl = (hallenId: number, params: UpdateRouteParams) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteRoute>>, {hallenId: number;params: DeleteRouteParams}> = (props) => {
+          const {hallenId,params} = props ?? {};
+
+          return  deleteRoute(hallenId,params,requestOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteRouteMutationResult = NonNullable<Awaited<ReturnType<typeof deleteRoute>>>
+    
+    export type DeleteRouteMutationError = void
+
+    export const useDeleteRoute = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteRoute>>, TError,{hallenId: number;params: DeleteRouteParams}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteRoute>>,
+        TError,
+        {hallenId: number;params: DeleteRouteParams},
+        TContext
+      > => {
+      return useMutation(getDeleteRouteMutationOptions(options), queryClient);
+    }
+    export const getUpdateRouteUrl = (hallenId: number,
+    params: UpdateRouteParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
+    
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? "null" : value.toString());
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0
-    ? `/api/hallen/${hallenId}/routen?${stringifiedParams}`
-    : `/api/hallen/${hallenId}/routen`;
-};
+  return stringifiedParams.length > 0 ? `/api/hallen/${hallenId}/routen?${stringifiedParams}` : `/api/hallen/${hallenId}/routen`
+}
 
-export const updateRoute = async (
-  hallenId: number,
-  routeCreateDTO: RouteCreateDTO,
-  params: UpdateRouteParams,
-  options?: RequestInit,
-): Promise<RouteResponseDTO> => {
-  return customFetch<RouteResponseDTO>(getUpdateRouteUrl(hallenId, params), {
+export const updateRoute = async (hallenId: number,
+    routeCreateDTO: RouteCreateDTO,
+    params: UpdateRouteParams, options?: RequestInit): Promise<RouteResponseDTO> => {
+  
+  return customFetch<RouteResponseDTO>(getUpdateRouteUrl(hallenId,params),
+  {      
     ...options,
-    method: "PATCH",
-    headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(routeCreateDTO),
-  });
-};
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      routeCreateDTO,)
+  }
+);}
+  
 
-export const getUpdateRouteMutationOptions = <TError = void, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateRoute>>,
-    TError,
-    { hallenId: number; data: RouteCreateDTO; params: UpdateRouteParams },
-    TContext
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateRoute>>,
-  TError,
-  { hallenId: number; data: RouteCreateDTO; params: UpdateRouteParams },
-  TContext
-> => {
-  const mutationKey = ["updateRoute"];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, request: undefined };
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateRoute>>,
-    { hallenId: number; data: RouteCreateDTO; params: UpdateRouteParams }
-  > = (props) => {
-    const { hallenId, data, params } = props ?? {};
 
-    return updateRoute(hallenId, data, params, requestOptions);
-  };
+export const getUpdateRouteMutationOptions = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateRoute>>, TError,{hallenId: number;data: RouteCreateDTO;params: UpdateRouteParams}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateRoute>>, TError,{hallenId: number;data: RouteCreateDTO;params: UpdateRouteParams}, TContext> => {
 
-  return { mutationFn, ...mutationOptions };
-};
+const mutationKey = ['updateRoute'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
 
-export type UpdateRouteMutationResult = NonNullable<Awaited<ReturnType<typeof updateRoute>>>;
-export type UpdateRouteMutationBody = RouteCreateDTO;
-export type UpdateRouteMutationError = void;
+      
 
-export const useUpdateRoute = <TError = void, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof updateRoute>>,
-      TError,
-      { hallenId: number; data: RouteCreateDTO; params: UpdateRouteParams },
-      TContext
-    >;
-    request?: SecondParameter<typeof customFetch>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof updateRoute>>,
-  TError,
-  { hallenId: number; data: RouteCreateDTO; params: UpdateRouteParams },
-  TContext
-> => {
-  return useMutation(getUpdateRouteMutationOptions(options), queryClient);
-};
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateRoute>>, {hallenId: number;data: RouteCreateDTO;params: UpdateRouteParams}> = (props) => {
+          const {hallenId,data,params} = props ?? {};
+
+          return  updateRoute(hallenId,data,params,requestOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateRouteMutationResult = NonNullable<Awaited<ReturnType<typeof updateRoute>>>
+    export type UpdateRouteMutationBody = RouteCreateDTO
+    export type UpdateRouteMutationError = void
+
+    export const useUpdateRoute = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateRoute>>, TError,{hallenId: number;data: RouteCreateDTO;params: UpdateRouteParams}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateRoute>>,
+        TError,
+        {hallenId: number;data: RouteCreateDTO;params: UpdateRouteParams},
+        TContext
+      > => {
+      return useMutation(getUpdateRouteMutationOptions(options), queryClient);
+    }
+    

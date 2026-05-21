@@ -44,6 +44,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/waende/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/routen/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/kommentare/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/flachwitz/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/v3/*").permitAll() // Swagger UI und API-Dokumentation
                 .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll() // Health Endpoint für Docker-Healthcheck
                 .anyRequest().authenticated()

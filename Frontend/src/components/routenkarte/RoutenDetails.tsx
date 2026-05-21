@@ -112,7 +112,7 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
             {selectedRoute.isVorstieg ? "Vorstieg" : ""}
           </p>
           {ascents && ascents?.length !== 0 && (
-            <img src="/tick.svg" alt="geschafft" className="geschafft-haken" />
+            <img src="/images/tick.svg" alt="geschafft" className="geschafft-haken" />
           )}
         </div>
         <p className="small">
@@ -136,7 +136,7 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
             }
           >
             <div className="icon-wrapper">
-              <img src="/favorite.svg" />
+              <img src="/images/favorite.svg" />
             </div>
           </button>
           <button
@@ -151,7 +151,7 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
             }
           >
             <div className="icon-wrapper">
-              <img src="/projekt.svg" />
+              <img src="/images/projekt.svg" />
             </div>
           </button>
           <button

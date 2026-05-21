@@ -22,7 +22,7 @@ export default defineConfig({
           includeHttpResponseReturnType: false,
         },
         mutator: {
-          path: "src/constants/fetcher.ts",
+          path: "src/utils/fetcher.ts",
           name: "customFetch",
         },
       },

@@ -1,0 +1,352 @@
+[
+  {
+    "id": 0,
+    "setup": "Warum war die Route beleidigt?",
+    "punchline": "Weil sie ständig gecrusht wurde."
+  },
+  {
+    "id": 1,
+    "setup": "Warum war der Klettergurt traurig?",
+    "punchline": "Er fühlte sich ständig hängen gelassen."
+  },
+  {
+    "id": 2,
+    "setup": "Warum schauen Kletterer so gerne Filme?",
+    "punchline": "Wegen der Cliffhanger."
+  },
+  {
+    "id": 3,
+    "setup": "Warum sind Kletterer schlechte Geheimagenten?",
+    "punchline": "Sie hinterlassen überall Chalk-Spuren."
+  },
+  {
+    "id": 4,
+    "setup": "Warum mögen Kletterer keine glatten Wände?",
+    "punchline": "Da fehlt einfach der Halt im Leben."
+  },
+  {
+    "id": 5,
+    "setup": "Warum können Kletterer schlecht loslassen?",
+    "punchline": "Emotionale Überhang-Probleme."
+  },
+  {
+    "id": 6,
+    "setup": "Warum war die Route so beliebt?",
+    "punchline": "Sie hatte Charakterzüge."
+  },
+  {
+    "id": 7,
+    "setup": "Wie nennt man einen Kletterer ohne Chalk?",
+    "punchline": "Rutschgefährdet."
+  },
+  {
+    "id": 8,
+    "setup": "Warum machen Kletterer nie Schluss?",
+    "punchline": "Sie hängen zu sehr aneinander."
+  },
+  {
+    "id": 9,
+    "setup": "Wie nennt man einen arroganten Klettergriff?",
+    "punchline": "Einen Übergriff."
+  },
+  {
+    "id": 10,
+    "setup": "Was macht ein Kletterer im Büro?",
+    "punchline": "Er arbeitet an seinem Aufstieg."
+  },
+  {
+    "id": 11,
+    "setup": "Warum hat der Kletterer den Bus verpasst?",
+    "punchline": "Er hing noch im Startzug."
+  },
+  {
+    "id": 12,
+    "setup": "Warum sind Dynos wie Beziehungen?",
+    "punchline": "Entweder du commitest — oder du fällst."
+  },
+  {
+    "id": 13,
+    "setup": "Wie viele Kletterer braucht man um eine Glühbirne zu wechseln?",
+    "punchline": "Einen – aber er schaut sich vorher noch drei Alternativen an und meint dann, die Original-Route war eh schöner."
+  },
+  {
+    "id": 14,
+    "setup": "Warum sind Kletterer so entspannt?",
+    "punchline": "Die hängen immer irgendwo ab."
+  },
+  {
+    "id": 15,
+    "setup": "Was ist das Lieblingsgetränk von Kletterern?",
+    "punchline": "Chalk-olate Milk. 🍫"
+  },
+  {
+    "id": 16,
+    "setup": "Was haben Kletterer und Philosophen gemeinsam?",
+    "punchline": "Beide fragen sich ständig: Warum bin ich hier? 🤔"
+  },
+  {
+    "id": 17,
+    "setup": "Was ist der Unterschied zwischen einem Kletterer und einem Zombie?",
+    "punchline": "Der Zombie hat bessere Fingerkuppen."
+  },
+  {
+    "id": 18,
+    "setup": "Was ist ein Kletterer ohne Seil? Was ist ein Kletterer ohne Sicherungspartner?",
+    "punchline": "Ohne Seil: Mutig. Ohne Sicherungspartner: Einsam."
+  },
+  {
+    "id": 19,
+    "setup": "Warum haben Kletterer immer leere Kühlschränke?",
+    "punchline": "Alles Budget geht für Kletterschuhe drauf – das fünfte Paar war aber wirklich nötig."
+  },
+  {
+    "id": 20,
+    "setup": "Was haben ein Computer und Klettern gemeinsam?",
+    "punchline": "Abstürzen ist bei beidem tragisch."
+  },
+  {
+    "id": 21,
+    "setup": "Warum haben Kletterer keine Möbel?",
+    "punchline": "Alles Geld steckt im Jahresabo der Kletterhalle."
+  },
+  {
+    "id": 22,
+    "setup": "Wie nennt man einen Kletterer mit Freund/Freundin?",
+    "punchline": "Einen, der seinen Sicherungspartner geheiratet hat."
+  },
+  {
+    "id": 23,
+    "setup": "Was ist die Lieblingsausrede eines Kletterers?",
+    "punchline": "Ich bin noch nicht richtig warm. – nach 3 Stunden."
+  },
+  {
+    "id": 24,
+    "setup": "Was ist das romantischste das ein Kletterer sagen kann?",
+    "punchline": "Ich sichere dich – immer. 🥺🪨"
+  },
+  {
+    "id": 25,
+    "setup": "Was sagt der Griff zum Kletterer?",
+    "punchline": "Du klammerst."
+  },
+  {
+    "id": 26,
+    "setup": "Warum war die Route so emotional?",
+    "punchline": "Viele Ups und Downs."
+  },
+  {
+    "id": 27,
+    "setup": "Warum hat der Kletterer seinen Job gekündigt?",
+    "punchline": "Keine Aufstiegsmöglichkeiten."
+  },
+  {
+    "id": 28,
+    "setup": "Was ist der Lieblingssnack von Kletterern?",
+    "punchline": "Chalk-o-lade."
+  },
+  {
+    "id": 29,
+    "setup": "Warum war der Überhang so beliebt?",
+    "punchline": "Er hatte Tiefgang."
+  },
+  {
+    "id": 30,
+    "setup": "Was macht ein Kletterer beim Dating?",
+    "punchline": "Erstmal vorsichtig rantasten."
+  },
+  {
+    "id": 31,
+    "setup": "Wie nennt man einen sehr kleinen Griff?",
+    "punchline": "Fingerfood."
+  },
+  {
+    "id": 32,
+    "setup": "Warum trainieren Kletterer Fingerkraft?",
+    "punchline": "Damit sie sich an ihren letzten Hoffnungen festhalten können."
+  },
+  {
+    "id": 33,
+    "setup": "Warum haben Kletterer immer Schwielen?",
+    "punchline": "Das sind keine Schwielen, das ist Textur."
+  },
+  {
+    "id": 34,
+    "setup": "Was sagt ein Kletterer beim Aufwachen?",
+    "punchline": "Heute wird der Zug sitzen. – Spoiler: Er sitzt nicht."
+  },
+  {
+    "id": 35,
+    "setup": "Was ist das schlimmste was einem Kletterer passieren kann?",
+    "punchline": "Schlechtes Wetter am Fels. Oder dass jemand anderes seine Projektroute flasht."
+  },
+  {
+    "id": 36,
+    "setup": "Wie heißt die Lieblingsjahreszeit eines Kletterers?",
+    "punchline": "Kletterseison. Also eigentlich immer, außer wenn's zu heiß, zu kalt, zu feucht oder zu windig ist."
+  },
+  {
+    "id": 37,
+    "setup": "Was macht ein Kletterer im Urlaub am Strand?",
+    "punchline": "Er googelt Klettergebiete in der Nähe von + Urlaubsort."
+  },
+  {
+    "id": 38,
+    "setup": "Wie erkennst du einen Kletterer im Winter?",
+    "punchline": "Er redet über Kraftraum-Training bis die Saison wieder losgeht – und ist trotzdem jedes Wochenende an der Wand."
+  },
+  {
+    "id": 39,
+    "setup": "Warum sind Kletterer so schlechte Zeitschätzer?",
+    "punchline": "Nur noch eine Route dauert bei ihnen 2 Stunden."
+  },
+  {
+    "id": 40,
+    "setup": "Was ist die häufigste Lüge im Klettern?",
+    "punchline": "Ich mach nur noch eine Route, dann gehen wir."
+  },
+  {
+    "id": 41,
+    "setup": "Was ist der Unterschied zwischen Kletterern und Computern?",
+    "punchline": "Kletterer stürzen nicht ab."
+  },
+  {
+    "id": 42,
+    "setup": "Chuck Norris klettert nicht auf Berge.",
+    "punchline": "Die Berge klettern unter Chuck Norris!"
+  },
+  {
+    "id": 43,
+    "setup": "Chuck Norris braucht kein Magnesia.",
+    "punchline": "Der Fels schwitzt."
+  },
+  {
+    "id": 44,
+    "setup": "Chuck Norris ist noch nie gestürzt.",
+    "punchline": "Die Schwerkraft traut sich nicht."
+  },
+  {
+    "id": 45,
+    "setup": "Was ist der Unterschied zwischen einem Kletterer und einem Rucksack?",
+    "punchline": "Der Rucksack kommt irgendwann runter."
+  },
+  {
+    "id": 46,
+    "setup": "Was haben Kletterer und WLAN gemeinsam?",
+    "punchline": "In der Halle top, draußen am Fels bricht beides zusammen."
+  },
+  {
+    "id": 47,
+    "setup": "Wie viele Kletterer braucht man um eine Glühbirne zu wechseln?",
+    "punchline": "Sechs. Einen zum Wechseln und fünf die dabei stehen und erklären wie man es eigentlich machen müsste."
+  },
+  {
+    "id": 48,
+    "setup": "Ich wollte heute pausieren …",
+    "punchline": "aber die Wand hat mich hochgezogen."
+  },
+  {
+    "id": 49,
+    "setup": "Beim Bouldern zählt nicht der Fall,",
+    "punchline": "sondern wie cool du danach aufstehst."
+  },
+  {
+    "id": 50,
+    "setup": "Mein Lieblingsgerät in der Halle?",
+    "punchline": "Der Chalk-Beutel – staubtrocken, aber zuverlässig."
+  },
+  {
+    "id": 51,
+    "setup": "Warum war der Kletterer im Büro so beliebt?",
+    "punchline": "Er konnte mit jedem gut abhängen."
+  },
+  {
+    "id": 52,
+    "setup": "Warum lachen Kletterer so viel?",
+    "punchline": "Weil sie ständig high sind."
+  },
+  {
+    "id": 53,
+    "setup": "Ich hab einen Witz über Sloper.",
+    "punchline": "Der rutscht dir aber sicher durch."
+  },
+  {
+    "id": 54,
+    "setup": "Ich wollte heute Toprope machen.",
+    "punchline": "Die Motivation war aber nicht eingehängt."
+  },
+  {
+    "id": 55,
+    "setup": "Mein Projekt dauert schon Monate.",
+    "punchline": "Ich nenne es jetzt Langzeitbeziehung."
+  },
+  {
+    "id": 56,
+    "setup": "Ich liebe Sloper.",
+    "punchline": "Sie lieben mich nur nicht zurück."
+  },
+  {
+    "id": 57,
+    "setup": "Ich bin kein Angsthase.",
+    "punchline": "Ich nenne es kontrolliertes Absteigen."
+  },
+  {
+    "id": 58,
+    "setup": "Warum nehme ich so viel Chalk?",
+    "punchline": "Für besseren Halt und schlechtere Hosen."
+  },
+  {
+    "id": 59,
+    "setup": "Mein Projekt läuft super.",
+    "punchline": "Seit 8 Monaten exakt gleich schwer."
+  },
+  {
+    "id": 60,
+    "setup": "Leichte Route, haben sie gesagt.",
+    "punchline": "Für wen genau war unklar."
+  },
+  {
+    "id": 61,
+    "setup": "Ich mach heute Techniktraining.",
+    "punchline": "Also elegant scheitern statt hektisch."
+  },
+  {
+    "id": 62,
+    "setup": "Ich habe einen Beta-Tipp bekommen.",
+    "punchline": "Jetzt habe ich zwei neue Probleme."
+  },
+  {
+    "id": 63,
+    "setup": "Ich bin top motiviert.",
+    "punchline": "Bis ich unter der Route stehe."
+  },
+  {
+    "id": 64,
+    "setup": "Mein bester Move?",
+    "punchline": "Der Rückzug mit Würde."
+  },
+  {
+    "id": 65,
+    "setup": "Beim Klettern bin ich sehr konsequent:",
+    "punchline": "Ich falle immer an derselben Stelle."
+  },
+  {
+    "id": 66,
+    "setup": "Warum klettere ich mit Stirnlampe?",
+    "punchline": "Damit ich auch im Dunkeln den Griff verliere."
+  },
+  {
+    "id": 67,
+    "setup": "Ich und Überhänge?",
+    "punchline": "Kompliziert, aber wir hängen noch zusammen."
+  },
+  {
+    "id": 68,
+    "setup": "Ich wollte locker klettern.",
+    "punchline": "Dann wurde es eine feste Beziehung zur Wand."
+  },
+  {
+    "id": 69,
+    "setup": "Was machen Kletterer miteinander?",
+    "punchline": "Abhängen!"
+  }
+]

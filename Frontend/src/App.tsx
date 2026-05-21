@@ -10,6 +10,7 @@ import HalleEditor from "./components/editor/HalleEditor";
 import Header from "./components/Header";
 import { HalleContext } from "./utils/context";
 import HallenSuche from "./components/hallensuche/HallenSuche";
+import Home from "./components/home/Home";
 
 function App() {
   const [selectedHalle, setSelectedHalle] = useState<HalleResponseDTO | null>(() => {
@@ -26,7 +27,8 @@ function App() {
         <Header setSelectedHalle={setSelectedHalle} />
         <main id="main-content">
           <Routes>
-            <Route path="/" element={<Navigate to="/hallensuche" replace />} />
+            <Route path="/" element={<Navigate to="/home" replace />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/hallensuche" element={<HallenSuche />} />
             <Route path="/editor" element={<HalleEditor />} />
             <Route path="/willkommen" element={<Willkommen />} />

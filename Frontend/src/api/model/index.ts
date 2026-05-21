@@ -19,6 +19,7 @@ export * from './deleteWandParams';
 export * from './findAllAscentsParams';
 export * from './findAscentsParams';
 export * from './findHalleParams';
+export * from './flachwitzData';
 export * from './getAllUserRoutenStatusParams';
 export * from './getAvatarParams';
 export * from './getKommentareByRouteIDParams';

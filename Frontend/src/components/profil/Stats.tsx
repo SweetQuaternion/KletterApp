@@ -61,7 +61,7 @@ function Stats({ ascents }: Props) {
         <p className="stats-subtitle">Schwierigkeiten der gekletterten Routen</p>
       </div>
 
-      {data.length > 0 ? (
+      {ascents.length > 0 ? (
         <div className="stats-chart-wrap">
           <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={320}>
             <LineChart data={data} margin={{ top: 8, right: 8, bottom: 8, left: 0 }}>
@@ -71,7 +71,7 @@ function Stats({ ascents }: Props) {
                 stroke="var(--mokka)"
                 tickLine={false}
                 axisLine={false}
-                tickMargin={4}
+                tickMargin={8}
                 tickFormatter={formatPeriodLabel}
                 interval="preserveStartEnd"
               />

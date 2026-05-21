@@ -34,16 +34,17 @@ const SpeicherKnopfsis = () => {
     return null;
   }
 
-  const heimatHallen = JSON.parse(
-    localStorage.getItem("Heimathallen") || "[]",
-  ) as HalleResponseDTO[];
+  const heimatHalle = JSON.parse(localStorage.getItem("Heimathalle") || "null") as HalleResponseDTO;
 
   const offlineHallen = JSON.parse(
     localStorage.getItem("OfflineHallen") || "[]",
   ) as HalleResponseDTO[];
 
-  const [isHalleFavorit, setIsHalleFavorit] = useState(() => {
-    return heimatHallen.some((halle) => halle.id === selectedHalle.id);
+  const [isHeimathalle, setIsHeimathalle] = useState(() => {
+    if (heimatHalle === null) {
+      return false;
+    }
+    return heimatHalle.id === selectedHalle.id;
   });
 
   const [isHalleOffline, setIsHalleOffline] = useState(() => {
@@ -51,14 +52,12 @@ const SpeicherKnopfsis = () => {
   });
 
   const handleFavoriteClick = () => {
-    if (isHalleFavorit) {
-      const updatedHallen = heimatHallen.filter((halle) => halle.id !== selectedHalle.id);
-      localStorage.setItem("Heimathallen", JSON.stringify(updatedHallen));
+    if (isHeimathalle) {
+      localStorage.removeItem("Heimathalle");
     } else {
-      heimatHallen.push(selectedHalle);
-      localStorage.setItem("Heimathallen", JSON.stringify(heimatHallen));
+      localStorage.setItem("Heimathalle", JSON.stringify(selectedHalle));
     }
-    setIsHalleFavorit(!isHalleFavorit);
+    setIsHeimathalle(!isHeimathalle);
   };
 
   const deleteHallenData = async () => {
@@ -124,7 +123,7 @@ const SpeicherKnopfsis = () => {
   return (
     <div className="halle-favorit-container top right">
       <button
-        className={`halle-favorit ${isHalleFavorit ? "active" : ""}`}
+        className={`halle-favorit ${isHeimathalle ? "active" : ""}`}
         title="Als Heimathalle markieren"
         aria-label="Als Heimathalle markieren"
         onClick={handleFavoriteClick}
