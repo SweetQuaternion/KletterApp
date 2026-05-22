@@ -279,6 +279,10 @@ export function createAvatarQueryOptions(userId: string) {
       if (!userId) {
         return null;
       }
+      const avatarBlob = (await getAvatar({ userId })) as Blob;
+      if (avatarBlob.size === 0) {
+        return null;
+      }
       return getAvatar({ userId }) as Promise<Blob>;
     },
     staleTime: ONE_DAY,

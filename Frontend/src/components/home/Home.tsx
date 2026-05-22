@@ -2,6 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import "../../styles/Home.css";
 import { getGetFlachwitzOfTheDayQueryOptions } from "../../api/flachwitz-controller/flachwitz-controller";
 import type { HalleResponseDTO } from "../../api/model";
+import AddNews from "./NeueNews";
+import { isAdmin } from "../../utils/keycloak";
+import AllgemeineNews from "./AllgemeineNews";
+import HalleNews from "./HalleNews";
 
 const Home = () => {
   const { data: witz } = useQuery(getGetFlachwitzOfTheDayQueryOptions());
@@ -12,27 +16,11 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="home">
-        <h2>Schön, dass du da bist!</h2>
+        <h2 className="home-title">Schön, dass du da bist!</h2>
         <div className="home-content">
-          <div className="white-box feed">
-            <h3>Allgemeine News</h3>
-            <p>Hier steht ein News Dingsi!</p>
-          </div>
+          <AllgemeineNews />
 
-          <div className="white-box feed">
-            {heimathalle ? (
-              <>
-                <h3>News: {heimathalle.name}</h3>
-                <p>Hier stehen neue Routen und sonstige News zu deiner Heimathalle.</p>
-                <p>Gerade gibt es keine News.</p>
-              </>
-            ) : (
-              <>
-                <h3>News zu deiner Heimathalle</h3>
-                <p>Du hast noch keine Heimathalle markiert.</p>
-              </>
-            )}
-          </div>
+          <HalleNews halle={heimathalle} />
 
           <div className="white-box feed">
             {heimathalle ? (
@@ -65,6 +53,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      {isAdmin() && <AddNews />}
     </div>
   );
 };

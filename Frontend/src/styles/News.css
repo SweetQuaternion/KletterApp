@@ -1,0 +1,78 @@
+.overlay.news-overlay {
+  display: flex;
+  justify-content: center;
+}
+
+.news-form {
+  margin-top: 1em;
+}
+
+.news-titel {
+  font-weight: bold;
+  margin-bottom: 0.2em;
+}
+
+.news-inhalt {
+  font-family:
+    DM Sans,
+    sans-serif;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-clamp: 5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+}
+
+.news-subline {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.news-autor {
+  margin-top: 0.4em;
+  font-size: 0.9em;
+  font-weight: bold;
+  color: var(--ozeanblau);
+  font-family:
+    DM Sans,
+    sans-serif;
+}
+
+.news-datum {
+  margin-top: 0.4em;
+  font-size: 0.9em;
+  color: var(--ozeanblau);
+  font-family:
+    DM Sans,
+    sans-serif;
+}
+
+.white-box.feed.news {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.news-container {
+  margin-top: 1em;
+}
+
+.news-item {
+  margin-bottom: 2em;
+}
+
+.news-headline {
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5em;
+}
+
+.news-info {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}

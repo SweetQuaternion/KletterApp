@@ -30,6 +30,9 @@ public class AvatarController {
     @GetMapping
     public ResponseEntity<byte[]> getAvatar(@RequestParam String userId) {
         AvatarData avatarData = avatarService.getAvatar(userId);
+        if (avatarData == null) {
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(avatarData.contentType()))
                 .body(avatarData.bytes());
