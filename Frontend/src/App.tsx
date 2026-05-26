@@ -42,6 +42,7 @@ function App() {
               element={<HalleEditor selectedHalle={selectedHalle} />}
             />
             <Route path="/user/:username" element={<Userpage />} />
+            <Route path="*" element={<Navigate to="/home" replace />} />
           </Routes>
         </main>
       </BrowserRouter>

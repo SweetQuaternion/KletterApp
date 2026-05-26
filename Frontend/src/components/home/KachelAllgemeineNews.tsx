@@ -4,7 +4,7 @@ import { getGetNewsQueryOptions } from "../../api/news-controller/news-controlle
 import { Link } from "react-router";
 import { useState } from "react";
 
-function AllgemeineNews() {
+function KachelAllgemeineNews() {
   const { data: allgemeineNews } = useQuery(getGetNewsQueryOptions());
   const [showAllNews, setShowAllNews] = useState(false);
 
@@ -13,7 +13,7 @@ function AllgemeineNews() {
       <div className="white-box feed news">
         <div className="top-section">
           <h3>Allgemeine News</h3>
-          {allgemeineNews?.length != 0 ? (
+          {allgemeineNews && allgemeineNews.length != 0 ? (
             <>
               <p className="news-titel">{allgemeineNews?.[0]?.titel}</p>
               <p className="news-inhalt">{allgemeineNews?.[0]?.inhalt}</p>
@@ -33,11 +33,15 @@ function AllgemeineNews() {
         <button className="text-button" onClick={() => setShowAllNews(true)}>
           mehr ...
         </button>
+        <img className="kachel-img" src="/images/news-kachel.webp" alt="Bild: News-Zettel"></img>
       </div>
 
       {showAllNews && (
         <div className="overlay news-overlay" onClick={() => setShowAllNews(false)}>
           <div className="white-box large news" onClick={(e) => e.stopPropagation()}>
+            <button className="close-button">
+              <button onClick={() => setShowAllNews(false)}>×</button>
+            </button>
             <h2>Alle allgemeinen News</h2>
 
             <div className="news-container">
@@ -65,4 +69,4 @@ function AllgemeineNews() {
   );
 }
 
-export default AllgemeineNews;
+export default KachelAllgemeineNews;

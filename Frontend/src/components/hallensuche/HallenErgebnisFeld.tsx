@@ -10,10 +10,12 @@ interface Props {
 
 function HallenErgebnisFeld({ ergebnis }: Props) {
   const { setSelectedHalle } = useContext(HalleContext);
+
   const handleHallenSelection = (ergebnis: HalleResponseDTO) => {
     sessionStorage.setItem("Halle", JSON.stringify(ergebnis));
     setSelectedHalle(ergebnis);
   };
+
   return (
     <Link
       to="/routenkarte"

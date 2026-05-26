@@ -6,16 +6,16 @@ import { useState } from "react";
 import type { HalleResponseDTO } from "../../api/model";
 
 interface Props {
-  halle: HalleResponseDTO | null;
+  heimathalle: HalleResponseDTO | null;
 }
 
-function HalleNews({ halle }: Props) {
+function KachelHalleNews({ heimathalle }: Props) {
   const { data: halleNews } = useQuery(
-    getGetNewsQueryOptions({ hallenId: halle?.id || undefined }),
+    getGetNewsQueryOptions({ hallenId: heimathalle?.id || undefined }),
   );
   const [showAllNews, setShowAllNews] = useState(false);
 
-  if (!halle) {
+  if (!heimathalle) {
     return (
       <div className="white-box feed news">
         <div>
@@ -30,9 +30,10 @@ function HalleNews({ halle }: Props) {
     return (
       <div className="white-box feed news">
         <div>
-          <h3>News: {halle.name}</h3>
+          <h3>News: {heimathalle.name}</h3>
           <p>Es gibt noch keine News.</p>
         </div>
+        <img className="kachel-img" src="/images/hallenews-kachel.webp" alt="Bild: Chalkbag"></img>
       </div>
     );
   }
@@ -41,7 +42,7 @@ function HalleNews({ halle }: Props) {
     <>
       <div className="white-box feed news">
         <div className="top-section">
-          <h3>News: {halle.name}</h3>
+          <h3>News: {heimathalle.name}</h3>
           <p className="news-titel">{halleNews?.[0]?.titel}</p>
           <p className="news-inhalt">{halleNews?.[0]?.inhalt}</p>
           <div className="news-subline">
@@ -56,12 +57,16 @@ function HalleNews({ halle }: Props) {
         <button className="text-button" onClick={() => setShowAllNews(true)}>
           mehr ...
         </button>
+        <img className="kachel-img" src="/images/hallenews-kachel.webp" alt="Bild: Chalkbag"></img>
       </div>
 
       {showAllNews && (
         <div className="overlay news-overlay" onClick={() => setShowAllNews(false)}>
           <div className="white-box large news" onClick={(e) => e.stopPropagation()}>
-            <h2>Alle News: {halle.name}</h2>
+            <button className="close-button">
+              <button onClick={() => setShowAllNews(false)}>×</button>
+            </button>
+            <h2>Alle News: {heimathalle.name}</h2>
 
             <div className="news-container">
               {halleNews?.map((news) => (
@@ -88,4 +93,4 @@ function HalleNews({ halle }: Props) {
   );
 }
 
-export default HalleNews;
+export default KachelHalleNews;

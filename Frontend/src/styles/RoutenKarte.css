@@ -237,6 +237,7 @@ circle {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
+  background: none;
 }
 
 .route-hinzufügen:hover {

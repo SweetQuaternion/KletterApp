@@ -67,6 +67,7 @@
 
 .news-headline {
   justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
   margin-bottom: 0.5em;
 }
@@ -74,5 +75,6 @@
 .news-info {
   display: flex;
   flex-direction: row;
-  gap: 1em;
+  column-gap: 1em;
+  flex-wrap: wrap;
 }
