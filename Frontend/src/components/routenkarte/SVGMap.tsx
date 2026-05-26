@@ -127,30 +127,37 @@ function SVGMap({
                     >
                       {wand.routen?.length || 0}
                     </text>
-
-                    {selectedWand && selectedWandBox && selectedWand.wandNr === wand.wandNr ? (
-                      <foreignObject
-                        x={selectedWandBox.boxX}
-                        y={selectedWandBox.boxY}
-                        width="370"
-                        height={
-                          (selectedWand.routen?.length || 0) * 40 + (isAdmin() ? 40 : 0) + 160
-                        }
-                      >
-                        <div className="embedded">
-                          <WandInfoBox
-                            selectedWand={selectedWand}
-                            routen={selectedWand.routen || []}
-                            setSelectedRoute={setSelectedRoute}
-                            setShowNeueRoute={setShowNeueRoute}
-                          />
-                        </div>
-                      </foreignObject>
-                    ) : null}
+                    {/* Hier war es */}
                   </g>
                 ) : null}
               </g>
             ))}
+            {selectedWand && selectedWandBox ? (
+              <g
+                onClick={(e) => e.stopPropagation()}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") e.stopPropagation();
+                }}
+              >
+                <foreignObject
+                  x={selectedWandBox.boxX}
+                  y={selectedWandBox.boxY}
+                  width="370"
+                  height={(selectedWand.routen?.length || 0) * 40 + (isAdmin() ? 40 : 0) + 160}
+                >
+                  <div className="embedded">
+                    <WandInfoBox
+                      selectedWand={selectedWand}
+                      routen={selectedWand.routen || []}
+                      setSelectedRoute={setSelectedRoute}
+                      setShowNeueRoute={setShowNeueRoute}
+                    />
+                  </div>
+                </foreignObject>
+              </g>
+            ) : null}
           </g>
         </svg>
       </div>

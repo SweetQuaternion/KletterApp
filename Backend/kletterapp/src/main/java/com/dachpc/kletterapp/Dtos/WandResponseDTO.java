@@ -11,6 +11,10 @@ public class WandResponseDTO {
 
     @NotNull
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+    private int id;
+
+    @NotNull
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private int hallenId;
     
     @NotNull

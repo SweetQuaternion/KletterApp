@@ -12,7 +12,6 @@ import com.dachpc.kletterapp.Dtos.WandCreateDTO;
 import com.dachpc.kletterapp.Dtos.WandResponseDTO;
 import com.dachpc.kletterapp.Entities.Halle;
 import com.dachpc.kletterapp.Entities.Wand;
-import com.dachpc.kletterapp.Entities.WandId;
 import com.dachpc.kletterapp.Repositories.HallenRepository;
 import com.dachpc.kletterapp.Repositories.WandRepository;
 import com.dachpc.kletterapp.Services.WandService;
@@ -43,34 +42,34 @@ public class WandRepositoryTest extends AbstractIntegrationTest {
         hallenId1 = halle1.getId();
         hallenId2 = halle2.getId();
 
-        wandService.addWand(new WandCreateDTO(hallenId1, "Wand in erster Halle",0,0,0,0,"indoor"));
-        wandService.addWand(new WandCreateDTO(hallenId1, "Wand in zweiter Halle",0,0,0,0,"outdoor"));
-        wandService.addWand(new WandCreateDTO(hallenId2, "Wand in zweiter Halle mit Toprope",0,0,0,0,"outdoor"));
+        wandService.addWand(new WandCreateDTO(hallenId1, 1, "Wand in erster Halle",0,0,0,0,"indoor"));
+        wandService.addWand(new WandCreateDTO(hallenId1, 2, "Wand in zweiter Halle",0,0,0,0,"outdoor"));
+        wandService.addWand(new WandCreateDTO(hallenId2, 3, "Wand in zweiter Halle mit Toprope",0,0,0,0,"outdoor"));
     }
 
     @Test
     public void testFindByHallenId() {
-        List<Wand> result = wandRepository.findByIdHallenId(hallenId1);
+        List<Wand> result = wandRepository.findByHallenId(hallenId1);
         assertThat(result).hasSize(2);
     }
 
     @Test
     public void testFindByHallenIdNichtGefunden() {
-        List<Wand> result = wandRepository.findByIdHallenId(999);
+        List<Wand> result = wandRepository.findByHallenId(999);
         assertThat(result).isEmpty();
     }
 
     @Test
     public void testSaveWand() {
-        WandResponseDTO savedWand = wandService.addWand(new WandCreateDTO(hallenId1, "Neue Wand in erster Halle",0,0,0,0,"indoor"));
+        WandResponseDTO savedWand = wandService.addWand(new WandCreateDTO(hallenId1, 4, "Neue Wand in erster Halle",0,0,0,0,"indoor"));
         assertThat(savedWand.getHallenId()).isEqualTo(hallenId1);
-        assertThat(savedWand.getWandNr()).isEqualTo(3);
+        assertThat(savedWand.getWandNr()).isEqualTo(4);
         assertThat(savedWand.getName()).isEqualTo("Neue Wand in erster Halle");
     }
 
     @Test
     void testDeleteById() {
-        wandRepository.deleteById(new WandId(hallenId1, 1));
-        assertThat(wandRepository.findById(new WandId(hallenId1, 1))).isEmpty();
+        wandRepository.deleteById(1);
+        assertThat(wandRepository.findById(1)).isEmpty();
     }
 }

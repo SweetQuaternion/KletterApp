@@ -47,15 +47,15 @@ public class WandController {
     @PatchMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public WandResponseDTO updateWand(@PathVariable int hallenId, @RequestParam int wandNr, @RequestBody WandCreateDTO dto) {
-        return wandService.updateWand(hallenId, wandNr, dto);
+    public WandResponseDTO updateWand(@PathVariable int hallenId, @RequestParam int id, @RequestBody WandCreateDTO dto) {
+        return wandService.updateWand(id, dto);
     }
 
     @DeleteMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteWand(@PathVariable int hallenId, @RequestParam int wandNr) {
-        wandService.deleteWand(hallenId, wandNr);
+    public void deleteWand(@PathVariable int hallenId, @RequestParam int id) {
+        wandService.deleteWand(id);
     }
     
 }

@@ -47,6 +47,7 @@ const WändeBox = ({
     const newWände = [...wände];
     newWände[index] = {
       hallenId: wand.hallenId,
+      wandNr: index,
       name: wand.name || undefined,
       startX: wand.endX,
       startY: wand.endY,
@@ -62,6 +63,7 @@ const WändeBox = ({
     const newWände = [...wände];
     newWände[index] = {
       hallenId: wand.hallenId,
+      wandNr: index,
       name: wand.name || undefined,
       startX: wand.startX,
       startY: wand.startY,

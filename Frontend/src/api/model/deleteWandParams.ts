@@ -6,5 +6,5 @@
  */
 
 export type DeleteWandParams = {
-wandNr: number;
+id: number;
 };

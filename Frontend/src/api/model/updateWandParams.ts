@@ -6,5 +6,5 @@
  */
 
 export type UpdateWandParams = {
-wandNr: number;
+id: number;
 };

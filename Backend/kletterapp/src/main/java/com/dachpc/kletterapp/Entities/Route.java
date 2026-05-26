@@ -25,10 +25,7 @@ public class Route {
 
     @ManyToOne
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @JoinColumns({
-        @JoinColumn(name = "hallen_id", referencedColumnName = "hallen_id"),
-        @JoinColumn(name = "wand_nr", referencedColumnName = "wand_nr")
-    })
+    @JoinColumn(name = "wand_id", referencedColumnName = "id", nullable = true)
     @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
     private Wand wand;
 

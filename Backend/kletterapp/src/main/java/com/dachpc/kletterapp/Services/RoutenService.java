@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.dachpc.kletterapp.Dtos.RouteCreateDTO;
 import com.dachpc.kletterapp.Dtos.RouteResponseDTO;
 import com.dachpc.kletterapp.Entities.Route;
-import com.dachpc.kletterapp.Entities.WandId;
 import com.dachpc.kletterapp.Mappers.RouteMapper;
 import com.dachpc.kletterapp.Repositories.RoutenRepository;
-import com.dachpc.kletterapp.Repositories.WandRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,21 +22,17 @@ public class RoutenService {
     private RouteMapper routeMapper;
 
     @Autowired
-    private WandRepository wandRepository;
-
-    @Autowired
     private RoutenRepository routenRepository;
     
     public RouteResponseDTO addRoute(RouteCreateDTO dto) {
         Route route = routeMapper.toEntity(dto);
-        route.setWand(wandRepository.getReferenceById(new WandId(dto.getHallenId(), dto.getWandNr())));
         route.setIsActive(true);
         Route added = routenRepository.save(route);
         return routeMapper.toResponseDTO(added);
     }
 
     public List<RouteResponseDTO> getRoutenByHallenId(int hallenId) {
-        List<Route> routen = routenRepository.findByWand_Id_HallenId(hallenId);
+        List<Route> routen = routenRepository.findByWand_HallenId(hallenId);
         return routen.stream().map(routeMapper::toResponseDTO).filter(dto -> dto.getIsActive()).toList();
     }
 

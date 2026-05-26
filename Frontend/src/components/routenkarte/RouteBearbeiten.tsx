@@ -132,11 +132,17 @@ const RouteBearbeiten = ({ selectedWand, selectedRoute, setEditingRoute }: Props
           ></textarea>
         </div>
         <div className="flex-row wrap button-container">
-          <button type="submit">Route speichern</button>
-          <button type="button" onClick={() => setEditingRoute(null)}>
+          <button className="red-button" type="submit">
+            Route speichern
+          </button>
+          <button className="red-button" type="button" onClick={() => setEditingRoute(null)}>
             Abbrechen
           </button>
-          <button type="button" onClick={() => setLöschenAttempted(!löschenAttempted)}>
+          <button
+            className="red-button"
+            type="button"
+            onClick={() => setLöschenAttempted(!löschenAttempted)}
+          >
             Route deaktivieren
           </button>
         </div>

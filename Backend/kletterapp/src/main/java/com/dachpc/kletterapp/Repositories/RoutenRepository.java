@@ -3,24 +3,11 @@ package com.dachpc.kletterapp.Repositories;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 
 import com.dachpc.kletterapp.Entities.Route;
-import com.dachpc.kletterapp.Entities.WandId;
-
-import jakarta.transaction.Transactional;
 
 public interface RoutenRepository extends JpaRepository<Route, Integer> {
-    List<Route> findByName(String name);
-    List<Route> findBySchwierigkeit(String schwierigkeit);
-    List<Route> findByWand_Id_HallenId(int hallenId);
-    List<Route> deleteByWandId(WandId wandId);
-
-    @Modifying
-    @Transactional
-    @Query(value = "DELETE FROM routen WHERE hallen_id = ?1", nativeQuery = true)
-    void deleteByHallenId(int hallenId);
+    List<Route> findByWand_HallenId(int hallenId);
 
     // @Query(
     //     value = """

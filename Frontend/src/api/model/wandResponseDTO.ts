@@ -7,6 +7,7 @@
 import type { RouteResponseDTO } from './routeResponseDTO';
 
 export interface WandResponseDTO {
+  id: number;
   hallenId: number;
   wandNr: number;
   name?: string;

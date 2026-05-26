@@ -15,8 +15,6 @@ public interface WandMapper {
     @Mapping(ignore = true, target = "routen")
     Wand toEntity(WandCreateDTO dto);
 
-    @Mapping(target = "hallenId", source = "id.hallenId")
-    @Mapping(target = "wandNr", source = "id.wandNr")
     WandResponseDTO toResponseDTO(Wand entity);
 
     @Mapping(ignore = true, target = "id")

@@ -15,6 +15,10 @@ public class WandCreateDTO {
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private int hallenId;
 
+    @NotNull
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+    private int wandNr;
+
     private String name;
     
     @NotNull

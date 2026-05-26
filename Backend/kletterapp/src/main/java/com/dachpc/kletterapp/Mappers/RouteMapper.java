@@ -16,8 +16,8 @@ public interface RouteMapper {
     @Mapping(ignore = true, target = "isActive")
     Route toEntity(RouteCreateDTO dto);
 
-    @Mapping(target = "hallenId", source = "wand.id.hallenId")
-    @Mapping(target = "wandNr", source = "wand.id.wandNr")
+    @Mapping(target = "hallenId", source = "wand.hallenId")
+    @Mapping(target = "wandNr", source = "wand.wandNr")
     RouteResponseDTO toResponseDTO(Route entity);
 
     @Mapping(ignore = true, target = "id")

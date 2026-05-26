@@ -39,8 +39,7 @@ const Canvas = ({
   const [wandStart, setWandStart] = useState({ x: 0, y: 0 });
   const shiftPressed = useRef(false);
   const selectedWandData = selectedWand !== null ? wände[selectedWand] : null;
-  const editingWand =
-    editing.current.index !== null ? wände[editing.current.index] : null;
+  const editingWand = editing.current.index !== null ? wände[editing.current.index] : null;
 
   useEffect(() => {
     svgRef.current?.focus();
@@ -54,9 +53,7 @@ const Canvas = ({
     var point = event.currentTarget.createSVGPoint();
     point.x = event.clientX;
     point.y = event.clientY;
-    point = point.matrixTransform(
-      event.currentTarget?.getScreenCTM()?.inverse(),
-    );
+    point = point.matrixTransform(event.currentTarget?.getScreenCTM()?.inverse());
     point.x = (point.x - 1000) / scale - offset.x;
     point.y = (point.y - 1000) / scale - offset.y;
 
@@ -117,6 +114,7 @@ const Canvas = ({
         ...wände,
         {
           hallenId: 0,
+          wandNr: wände.length + 1,
           // name: `Wand ${wände.length + 1}`,
           startX: Math.round(wandStart.x),
           startY: Math.round(wandStart.y),
@@ -205,9 +203,7 @@ const Canvas = ({
           style={{ display: "block" }}
           tabIndex={0}
         >
-          <g
-            transform={`translate(1000,1000) scale(${scale}) translate(${offset.x}, ${offset.y})`}
-          >
+          <g transform={`translate(1000,1000) scale(${scale}) translate(${offset.x}, ${offset.y})`}>
             <circle cx={mousePos.x} cy={mousePos.y} r="5" fill="var(--mokka)" />
             <text
               x={mousePos.x + 15}
@@ -220,9 +216,7 @@ const Canvas = ({
 
             <line className="axis" x1="-1000" y1="0" x2="1000" y2="0" />
             <line className="axis" x1="0" y1="-1000" x2="0" y2="1000" />
-            {[
-              -9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-            ].map((i) => (
+            {[-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
               <g key={`gitter-${i}`}>
                 <line
                   key={`horizontal-${i}`}
@@ -266,34 +260,18 @@ const Canvas = ({
                   x2={wand.endX}
                   y2={wand.endY}
                   strokeWidth={5}
-                  className={
-                    hoveredWand === index || selectedWand === index
-                      ? "selected"
-                      : ""
-                  }
+                  className={hoveredWand === index || selectedWand === index ? "selected" : ""}
                 />
                 <circle
-                  cx={
-                    (wand.startX + wand.endX) / 2 -
-                    (wand.endY - wand.startY) * 0.1
-                  }
-                  cy={
-                    (wand.startY + wand.endY) / 2 +
-                    (wand.endX - wand.startX) * 0.1
-                  }
+                  cx={(wand.startX + wand.endX) / 2 - (wand.endY - wand.startY) * 0.1}
+                  cy={(wand.startY + wand.endY) / 2 + (wand.endX - wand.startX) * 0.1}
                   r={20}
                   fill={"white"}
                   style={{ cursor: "pointer" }}
                 />
                 <text
-                  x={
-                    (wand.startX + wand.endX) / 2 -
-                    (wand.endY - wand.startY) * 0.1
-                  }
-                  y={
-                    (wand.startY + wand.endY) / 2 +
-                    (wand.endX - wand.startX) * 0.1
-                  }
+                  x={(wand.startX + wand.endX) / 2 - (wand.endY - wand.startY) * 0.1}
+                  y={(wand.startY + wand.endY) / 2 + (wand.endX - wand.startX) * 0.1}
                   fontSize={16}
                   fill="black"
                   textAnchor="middle"
@@ -414,22 +392,10 @@ const Canvas = ({
             {/* Editing */}
             {editing.current.isEditing && editingWand && (
               <line
-                x1={
-                  editing.current.part === "start"
-                    ? mousePos.x
-                    : editingWand.startX
-                }
-                y1={
-                  editing.current.part === "start"
-                    ? mousePos.y
-                    : editingWand.startY
-                }
-                x2={
-                  editing.current.part === "end" ? mousePos.x : editingWand.endX
-                }
-                y2={
-                  editing.current.part === "end" ? mousePos.y : editingWand.endY
-                }
+                x1={editing.current.part === "start" ? mousePos.x : editingWand.startX}
+                y1={editing.current.part === "start" ? mousePos.y : editingWand.startY}
+                x2={editing.current.part === "end" ? mousePos.x : editingWand.endX}
+                y2={editing.current.part === "end" ? mousePos.y : editingWand.endY}
                 strokeWidth={5}
                 className="selected"
                 pointerEvents="none"

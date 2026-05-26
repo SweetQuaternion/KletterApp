@@ -14,7 +14,6 @@ import com.dachpc.kletterapp.Entities.Halle;
 import com.dachpc.kletterapp.Entities.Route;
 import com.dachpc.kletterapp.Entities.UserRoutenStatus;
 import com.dachpc.kletterapp.Entities.Wand;
-import com.dachpc.kletterapp.Entities.WandId;
 import com.dachpc.kletterapp.Repositories.HallenRepository;
 import com.dachpc.kletterapp.Repositories.RoutenRepository;
 import com.dachpc.kletterapp.Repositories.UserRepository;
@@ -67,7 +66,6 @@ public class UserRoutenStatusRepositoryTest extends AbstractIntegrationTest {
         hallenId = halle1.getId();
 
         Wand wand1 = new Wand();
-        wand1.setId(new WandId(hallenId, 1));
         wand1 = wandRepository.save(wand1);
 
         routenRepository.deleteAll();

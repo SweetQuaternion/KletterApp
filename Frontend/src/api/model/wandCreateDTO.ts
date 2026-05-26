@@ -7,6 +7,7 @@
 
 export interface WandCreateDTO {
   hallenId: number;
+  wandNr: number;
   name?: string;
   startX: number;
   startY: number;

@@ -7,14 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.dachpc.kletterapp.Entities.Wand;
-import com.dachpc.kletterapp.Entities.WandId;
 
-public interface WandRepository extends JpaRepository<Wand, WandId> {
+public interface WandRepository extends JpaRepository<Wand, Integer> {
 
-    Wand getReferenceById(WandId id);
-    List<Wand> findByIdHallenId(int hallenId);
-    @Query("SELECT w FROM Wand w LEFT JOIN FETCH w.routen WHERE w.id.hallenId = :hallenId")
+    List<Wand> findByHallenId(int hallenId);
+    @Query("SELECT w FROM Wand w LEFT JOIN FETCH w.routen WHERE w.hallenId = :hallenId")
     List<Wand> findByHallenIdWithRouten(@Param("hallenId") int hallenId);
-    void deleteById(WandId id);
-    void deleteByIdHallenId(int hallenId);    
+    void deleteById(int id);
+    void deleteByHallenId(int hallenId);
 }

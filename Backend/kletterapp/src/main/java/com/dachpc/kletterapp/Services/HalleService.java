@@ -11,8 +11,6 @@ import com.dachpc.kletterapp.Dtos.HalleResponseDTO;
 import com.dachpc.kletterapp.Entities.Halle;
 import com.dachpc.kletterapp.Mappers.HalleMapper;
 import com.dachpc.kletterapp.Repositories.HallenRepository;
-import com.dachpc.kletterapp.Repositories.RoutenRepository;
-import com.dachpc.kletterapp.Repositories.WandRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -22,12 +20,6 @@ public class HalleService {
     
     @Autowired
     private HallenRepository hallenRepository;
-
-    @Autowired
-    private WandRepository wandRepository;
-
-    @Autowired
-    private RoutenRepository routenRepository;
 
     @Autowired
     private HalleMapper halleMapper;
@@ -55,8 +47,6 @@ public class HalleService {
     }
 
     public void deleteHalle(int id) {
-        routenRepository.deleteByHallenId(id);
-        wandRepository.deleteByIdHallenId(id);
         hallenRepository.deleteById(id);
     }
 

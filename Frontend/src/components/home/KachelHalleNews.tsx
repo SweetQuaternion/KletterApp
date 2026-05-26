@@ -64,7 +64,7 @@ function KachelHalleNews({ heimathalle }: Props) {
         <div className="overlay news-overlay" onClick={() => setShowAllNews(false)}>
           <div className="white-box large news" onClick={(e) => e.stopPropagation()}>
             <button className="close-button">
-              <button onClick={() => setShowAllNews(false)}>×</button>
+              <div onClick={() => setShowAllNews(false)}>×</div>
             </button>
             <h2>Alle News: {heimathalle.name}</h2>
 

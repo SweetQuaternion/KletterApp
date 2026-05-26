@@ -17,7 +17,6 @@ import com.dachpc.kletterapp.Entities.Route;
 import com.dachpc.kletterapp.Entities.User;
 import com.dachpc.kletterapp.Entities.Wand;
 import com.dachpc.kletterapp.Entities.Halle;
-import com.dachpc.kletterapp.Entities.WandId;
 import com.dachpc.kletterapp.Repositories.KommentarRepository;
 import com.dachpc.kletterapp.Repositories.RoutenRepository;
 import com.dachpc.kletterapp.Repositories.UserRepository;
@@ -69,7 +68,6 @@ public class KommentarTest extends AbstractIntegrationTest {
         hallenId = halle.getId();
         
         Wand wand = new Wand();
-        wand.setId(new WandId(hallenId, 1));
         wand = wandRepository.save(wand);
 
         Route route1 = routenRepository.save(new Route(wand, "Route 1", "Rot", 5.10f, true, false, "Schrauber 1", LocalDate.now(), true, "Beschreibung 1"));

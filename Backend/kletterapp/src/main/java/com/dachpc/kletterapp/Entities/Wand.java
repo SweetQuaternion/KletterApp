@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,16 @@ import lombok.Setter;
 @JsonPropertyOrder({"id", "hallenId", "wandNr", "sektor", "startX", "startY", "endX", "endY", "position", "routen"})
 public class Wand {
 
-    @EmbeddedId
-    private WandId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
+    private int id;
+
+    @Column(name = "hallen_id")
+    private int hallenId;
+
+    @Column(name = "wand_nr")
+    private int wandNr;
 
     @Column(name = "name")
     private String name;
@@ -39,14 +48,5 @@ public class Wand {
 
     @OneToMany(mappedBy = "wand") // fetch = FetchType.EAGER hat es irgendwie nicht getan
     private List<Route> routen;
-    
-
-    int getHallenId() {
-        return id.getHallenId();
-    }
-
-    int getWandNr() {
-        return id.getWandNr();
-    }
 
 }

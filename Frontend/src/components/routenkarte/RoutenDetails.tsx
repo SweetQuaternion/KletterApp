@@ -84,7 +84,7 @@ const RoutenDetails = ({ selectedRoute, setSelectedRoute, setEditingRoute }: Pro
   return (
     <section className="white-box top right bottom routen-details space-between">
       <button className="close-button">
-        <button onClick={() => setSelectedRoute(null)}>×</button>
+        <div onClick={() => setSelectedRoute(null)}>×</div>
       </button>
       <div className="top-section">
         <hgroup className="routen-details-header">

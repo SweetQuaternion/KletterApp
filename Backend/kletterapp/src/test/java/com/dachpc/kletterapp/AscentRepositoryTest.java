@@ -12,11 +12,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.dachpc.kletterapp.Dtos.AscentCreateDTO;
 import com.dachpc.kletterapp.Dtos.UserResponseDTO;
 import com.dachpc.kletterapp.Entities.Ascent;
-import com.dachpc.kletterapp.Entities.Halle;
+// import com.dachpc.kletterapp.Entities.Halle;
 import com.dachpc.kletterapp.Entities.Route;
 import com.dachpc.kletterapp.Entities.Style;
 import com.dachpc.kletterapp.Entities.Wand;
-import com.dachpc.kletterapp.Entities.WandId;
 import com.dachpc.kletterapp.Repositories.AscentRepository;
 import com.dachpc.kletterapp.Repositories.HallenRepository;
 import com.dachpc.kletterapp.Repositories.RoutenRepository;
@@ -50,7 +49,6 @@ public class AscentRepositoryTest extends AbstractIntegrationTest {
     @Autowired
     private HallenRepository hallenRepository;
 
-    private int hallenId;
     private UserResponseDTO user1;
     private UserResponseDTO user2;
     private String userId1;
@@ -66,11 +64,9 @@ public class AscentRepositoryTest extends AbstractIntegrationTest {
         wandRepository.deleteAll();
         userRepository.deleteAll();
 
-        Halle halle = hallenRepository.save(new Halle("DAV Darmstadt", "Lichtwiesenweg 15", "DAV"));
-        hallenId = halle.getId();
+        // Halle halle = hallenRepository.save(new Halle("DAV Darmstadt", "Lichtwiesenweg 15", "DAV"));
 
         Wand wand1 = new Wand();
-        wand1.setId(new WandId(hallenId, 1));
         wand1 = wandRepository.save(wand1);
 
         Route route1 = routenRepository.save(new Route(wand1, "Route 1", "rot", 5f, true, false, "Schrauber 1", LocalDate.now(), true, "Beschreibung 1"));
