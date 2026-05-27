@@ -30,7 +30,7 @@ const NeueRoute = ({ selectedWand }: Props) => {
       schraubdatum: formData.get("schraubdatum") as string,
       beschreibung: formData.get("beschreibung") as string,
     } as RouteCreateDTO;
-    mutate(data);
+    mutate({ hallenId: selectedHalle!.id, route: data });
     queryClient.invalidateQueries({ queryKey: ["waende", selectedHalle!.id] });
   };
 

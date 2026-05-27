@@ -29,8 +29,7 @@ const RouteBearbeiten = ({ selectedWand, selectedRoute, setEditingRoute }: Props
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {
-      hallenId: selectedHalle!.id,
-      wandNr: selectedWand.wandNr,
+      wandId: selectedWand.id,
       name: formData.get("name") as string,
       farbe: formData.get("farbe") as string,
       schwierigkeit: convertSchwierigkeitToNumber(formData.get("schwierigkeit") as string),
@@ -40,7 +39,7 @@ const RouteBearbeiten = ({ selectedWand, selectedRoute, setEditingRoute }: Props
       schraubdatum: formData.get("schraubdatum") as string,
       beschreibung: formData.get("beschreibung") as string,
     } as RouteCreateDTO;
-    update({ route: data, id: selectedRoute.id });
+    update({ hallenId: selectedHalle!.id, route: data, id: selectedRoute.id });
   };
 
   const handleLöschen = () => {
