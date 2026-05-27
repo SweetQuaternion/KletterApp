@@ -27,8 +27,8 @@ import {
 } from "../api/user-routen-status-controller/user-routen-status-controller";
 import { customFetch, keycloakFetch } from "./fetcher";
 import { getAvatar, getUploadAvatarUrl } from "../api/avatar-controller/avatar-controller";
-import { addHalle } from "../api/hallen-controller/hallen-controller";
-import { addWände, getWaendeByHallenId } from "../api/wand-controller/wand-controller";
+import { addHalle, updateHalle } from "../api/hallen-controller/hallen-controller";
+import { addWände, getWaendeByHallenId, updateWände } from "../api/wand-controller/wand-controller";
 import getDB from "./db";
 
 const ONE_DAY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
@@ -225,8 +225,8 @@ export function createAddKommentarMutationOptions() {
 
 export function createAddRouteMutationOptions() {
   return mutationOptions({
-    mutationFn: async (data: RouteCreateDTO) => {
-      const response = await addRoute(data.hallenId || 0, data);
+    mutationFn: async (data: { hallenId: number; route: RouteCreateDTO }) => {
+      const response = await addRoute(data.hallenId, data.route);
       if (!response) {
         throw new Error("Failed to add route");
       }
@@ -241,8 +241,8 @@ export function createAddRouteMutationOptions() {
 
 export function createUpdateRouteMutationOptions() {
   return mutationOptions({
-    mutationFn: async (data: { route: RouteCreateDTO; id: number }) => {
-      const response = await updateRoute(data.route.hallenId, data.route, {
+    mutationFn: async (data: { hallenId: number; id: number; route: RouteCreateDTO }) => {
+      const response = await updateRoute(data.hallenId, data.route, {
         id: data.id,
       });
       if (!response) {
@@ -324,6 +324,19 @@ export function createHalleMutationOptions() {
   });
 }
 
+export function updateHalleMutationOptions() {
+  return mutationOptions({
+    mutationFn: async (data: { id: number; halle: HalleCreateDTO }) => {
+      return updateHalle(data.halle, { id: data.id });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["hallen"],
+      });
+    },
+  });
+}
+
 // ============= Wand Queries and Mutations =============
 
 export function createWaendeByHallenIdQueryOptions(halleId: number) {
@@ -354,6 +367,19 @@ export function createWandMutationOptions() {
   return mutationOptions({
     mutationFn: async ({ hallenId, data }: { hallenId: number; data: WandCreateDTO[] }) => {
       addWände(hallenId, data);
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["hallen"],
+      });
+    },
+  });
+}
+
+export function updateWandMutationOptions() {
+  return mutationOptions({
+    mutationFn: async ({ hallenId, data }: { hallenId: number; data: WandResponseDTO[] }) => {
+      updateWände(hallenId, data);
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({

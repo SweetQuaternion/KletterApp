@@ -38,7 +38,6 @@ export * from './updateAscentParams';
 export * from './updateHalleParams';
 export * from './updateKommentarParams';
 export * from './updateRouteParams';
-export * from './updateWandParams';
 export * from './uploadAvatarBody';
 export * from './uploadAvatarParams';
 export * from './userCreateDTO';

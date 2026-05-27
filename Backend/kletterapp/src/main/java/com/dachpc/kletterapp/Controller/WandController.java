@@ -47,8 +47,8 @@ public class WandController {
     @PatchMapping(produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public WandResponseDTO updateWand(@PathVariable int hallenId, @RequestParam int id, @RequestBody WandCreateDTO dto) {
-        return wandService.updateWand(id, dto);
+    public List<WandResponseDTO> updateWände(@PathVariable int hallenId, @RequestBody List<WandResponseDTO> dtoList) {
+        return wandService.updateWände(hallenId, dtoList);
     }
 
     @DeleteMapping

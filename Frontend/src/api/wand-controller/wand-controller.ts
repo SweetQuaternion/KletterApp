@@ -25,7 +25,6 @@ import type {
 
 import type {
   DeleteWandParams,
-  UpdateWandParams,
   WandCreateDTO,
   WandResponseDTO
 } from '../model';
@@ -266,44 +265,35 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
       return useMutation(getDeleteWandMutationOptions(options), queryClient);
     }
-    export const getUpdateWandUrl = (hallenId: number,
-    params: UpdateWandParams,) => {
-  const normalizedParams = new URLSearchParams();
+    export const getUpdateWändeUrl = (hallenId: number,) => {
 
-  Object.entries(params || {}).forEach(([key, value]) => {
-    
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
-    }
-  });
 
-  const stringifiedParams = normalizedParams.toString();
+  
 
-  return stringifiedParams.length > 0 ? `/api/hallen/${hallenId}/waende?${stringifiedParams}` : `/api/hallen/${hallenId}/waende`
+  return `/api/hallen/${hallenId}/waende`
 }
 
-export const updateWand = async (hallenId: number,
-    wandCreateDTO: WandCreateDTO,
-    params: UpdateWandParams, options?: RequestInit): Promise<WandResponseDTO> => {
+export const updateWände = async (hallenId: number,
+    wandResponseDTO: WandResponseDTO[], options?: RequestInit): Promise<WandResponseDTO[]> => {
   
-  return customFetch<WandResponseDTO>(getUpdateWandUrl(hallenId,params),
+  return customFetch<WandResponseDTO[]>(getUpdateWändeUrl(hallenId),
   {      
     ...options,
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      wandCreateDTO,)
+      wandResponseDTO,)
   }
 );}
   
 
 
 
-export const getUpdateWandMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateWand>>, TError,{hallenId: number;data: WandCreateDTO;params: UpdateWandParams}, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof updateWand>>, TError,{hallenId: number;data: WandCreateDTO;params: UpdateWandParams}, TContext> => {
+export const getUpdateWändeMutationOptions = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateWände>>, TError,{hallenId: number;data: WandResponseDTO[]}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateWände>>, TError,{hallenId: number;data: WandResponseDTO[]}, TContext> => {
 
-const mutationKey = ['updateWand'];
+const mutationKey = ['updateWände'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -313,10 +303,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateWand>>, {hallenId: number;data: WandCreateDTO;params: UpdateWandParams}> = (props) => {
-          const {hallenId,data,params} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateWände>>, {hallenId: number;data: WandResponseDTO[]}> = (props) => {
+          const {hallenId,data} = props ?? {};
 
-          return  updateWand(hallenId,data,params,requestOptions)
+          return  updateWände(hallenId,data,requestOptions)
         }
 
 
@@ -326,18 +316,18 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type UpdateWandMutationResult = NonNullable<Awaited<ReturnType<typeof updateWand>>>
-    export type UpdateWandMutationBody = WandCreateDTO
-    export type UpdateWandMutationError = void
+    export type UpdateWändeMutationResult = NonNullable<Awaited<ReturnType<typeof updateWände>>>
+    export type UpdateWändeMutationBody = WandResponseDTO[]
+    export type UpdateWändeMutationError = void
 
-    export const useUpdateWand = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateWand>>, TError,{hallenId: number;data: WandCreateDTO;params: UpdateWandParams}, TContext>, request?: SecondParameter<typeof customFetch>}
+    export const useUpdateWände = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateWände>>, TError,{hallenId: number;data: WandResponseDTO[]}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof updateWand>>,
+        Awaited<ReturnType<typeof updateWände>>,
         TError,
-        {hallenId: number;data: WandCreateDTO;params: UpdateWandParams},
+        {hallenId: number;data: WandResponseDTO[]},
         TContext
       > => {
-      return useMutation(getUpdateWandMutationOptions(options), queryClient);
+      return useMutation(getUpdateWändeMutationOptions(options), queryClient);
     }
     

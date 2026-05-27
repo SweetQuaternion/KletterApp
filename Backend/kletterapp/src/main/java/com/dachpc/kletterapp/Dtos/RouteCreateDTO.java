@@ -13,11 +13,7 @@ public class RouteCreateDTO {
 
     @NotNull
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    private int hallenId;
-
-    @NotNull
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    private int wandNr;
+    private int wandId;
     
     private String name;
     private String farbe;

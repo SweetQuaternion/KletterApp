@@ -1,5 +1,6 @@
 package com.dachpc.kletterapp.Entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -47,6 +48,6 @@ public class Wand {
     private Position position;
 
     @OneToMany(mappedBy = "wand") // fetch = FetchType.EAGER hat es irgendwie nicht getan
-    private List<Route> routen;
+    private List<Route> routen = new ArrayList<>();
 
 }

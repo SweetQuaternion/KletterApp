@@ -13,7 +13,7 @@ const WandInfoBox = ({ selectedWand, routen, setSelectedRoute, setShowNeueRoute 
   return (
     <article className="wand-infobox">
       <div className="wand-infobox-header">
-        <h3>Wand {selectedWand?.wandNr}</h3>
+        <h3>{selectedWand.name || `Wand ${selectedWand.wandNr}`}</h3>
         <div
           className="position-tag"
           style={{

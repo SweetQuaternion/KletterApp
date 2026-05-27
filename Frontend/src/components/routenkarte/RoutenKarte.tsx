@@ -14,6 +14,8 @@ import RouteBearbeiten from "./RouteBearbeiten";
 import { HalleContext } from "../../utils/context";
 import SpeicherKnopfsis from "./SpeicherKnopfsis";
 import WandInfoBox from "./WandInfoBox";
+import { Link } from "react-router";
+import { isAdmin } from "../../utils/keycloak";
 
 const RoutenKarte = () => {
   const { selectedHalle } = useContext(HalleContext);
@@ -73,11 +75,11 @@ const RoutenKarte = () => {
           setEditingRoute={setEditingRoute}
         />
       )}
-      {/* {isAdmin() && (
+      {isAdmin() && (
         <Link to="/routenkarte/edit" className="red-button bottom right">
           Bearbeiten
         </Link>
-      )} */}
+      )}
     </>
   );
 };

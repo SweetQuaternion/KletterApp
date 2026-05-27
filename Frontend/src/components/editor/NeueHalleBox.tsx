@@ -3,7 +3,7 @@ import type { FocusEvent } from "react";
 import type { HalleResponseDTO } from "../../api/model";
 
 interface Props {
-  selectedHalle: HalleResponseDTO | null | undefined;
+  selectedHalle?: HalleResponseDTO | null;
   setHalleData: (data: { name: string; adresse: string; betreiber: string }) => void;
 }
 

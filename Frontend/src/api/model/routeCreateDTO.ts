@@ -6,8 +6,7 @@
  */
 
 export interface RouteCreateDTO {
-  hallenId: number;
-  wandNr: number;
+  wandId: number;
   name?: string;
   farbe?: string;
   schwierigkeit?: number;

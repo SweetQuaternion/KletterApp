@@ -53,5 +53,51 @@ public class WandService {
     public void deleteWand(int id) {
         wandRepository.deleteById(id);
     }
-    
+
+    public List<WandResponseDTO> updateWände(int hallenId, List<WandResponseDTO> dtoList) {
+        for (WandResponseDTO dto : dtoList) {
+            // Wand wurde angelegt und dann wieder gelöscht, hier passiert nix
+            if (dto.getId() == -1 && dto.getWandNr() == -1) {
+                continue;
+            }
+            // Wand hat noch keine ID, also anlegen
+            else if (dto.getId() == -1) {
+                addWand(wandMapper.toCreateDTO(dto));
+            }
+            // WandNr -1 bedeutet, dass die Wand gelöscht werden soll, also löschen
+            else if (dto.getWandNr() == -1) {
+                deleteWand(dto.getId());
+            }
+            // Wand hat eine ID und wird nicht gelöscht, also war sie vorher schon da, also updaten (egal ob sich was geändert hat oder nicht)
+            else {
+                System.out.println("Wand mit ID " + dto.getId() + " und WandNr " + dto.getWandNr() + ", updaten...");
+                updateWand(dto.getId(), wandMapper.toCreateDTO(dto));
+            }
+        }
+        return getWändeByHallenId(hallenId);
+    }
+
+    // public List<WandResponseDTO> updateWände(int hallenId, List<Integer> ids, List<WandCreateDTO> dtoList) {
+    //     if (ids.size() != dtoList.size()) {
+    //         throw new IllegalArgumentException("Die Anzahl der IDs muss mit der Anzahl der DTOs übereinstimmen.");
+    //     }
+    //     List<Wand> wände = wandRepository.findByHallenId(hallenId);
+    //     List<Integer> prevIds = wände.stream().map(Wand::getId).toList();
+    //     Set<Integer> totalIdsSet = Set.copyOf(ids);
+    //     totalIdsSet.addAll(prevIds);
+    //     List<Integer> totalIds = totalIdsSet.stream().toList();
+    //     for (int i = 0; i < totalIds.size(); i++) {
+    //         int id = totalIds.get(i);
+    //         if (prevIds.contains(id) && ids.contains(id)) {
+    //             updateWand(id, dtoList.get(ids.indexOf(id)));
+    //         }
+    //         else if (!prevIds.contains(id) && ids.contains(id)) {
+    //             addWand(dtoList.get(ids.indexOf(id)));
+    //         }
+    //         else if (prevIds.contains(id) && !ids.contains(id)) {
+    //             deleteWand(id);
+    //         }
+    //     }
+    //     return wandRepository.findByHallenId(hallenId).stream().map(wandMapper::toResponseDTO).toList();
+    // }
 }

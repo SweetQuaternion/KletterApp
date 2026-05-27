@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import Knopfsis from "../routenkarte/Knopfsis";
-import type { WandCreateDTO } from "../../api/model";
+import type { HalleResponseDTO, WandResponseDTO } from "../../api/model";
 import TouchTracker from "../touch/TouchTracker";
 
 interface Props {
-  wände: WandCreateDTO[];
-  setWände: (wände: WandCreateDTO[]) => void;
+  selectedHalle?: HalleResponseDTO | null;
+  wände: WandResponseDTO[];
+  setWände: (wände: WandResponseDTO[]) => void;
   selectedWand: number | null;
   setSelectedWand: (index: number | null) => void;
   hoveredWand: number | null;
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const Canvas = ({
+  selectedHalle,
   wände,
   setWände,
   selectedWand,
@@ -113,9 +115,9 @@ const Canvas = ({
       setWände([
         ...wände,
         {
-          hallenId: 0,
-          wandNr: wände.length + 1,
-          // name: `Wand ${wände.length + 1}`,
+          id: -1,
+          hallenId: selectedHalle ? selectedHalle.id : -1,
+          wandNr: Math.max(...wände.map((w) => w.wandNr), 0) + 1,
           startX: Math.round(wandStart.x),
           startY: Math.round(wandStart.y),
           endX: Math.round(pos.x),
@@ -253,32 +255,36 @@ const Canvas = ({
                       : "visible",
                 }}
               >
-                <line
-                  key={`wand-${index}`}
-                  x1={wand.startX}
-                  y1={wand.startY}
-                  x2={wand.endX}
-                  y2={wand.endY}
-                  strokeWidth={5}
-                  className={hoveredWand === index || selectedWand === index ? "selected" : ""}
-                />
-                <circle
-                  cx={(wand.startX + wand.endX) / 2 - (wand.endY - wand.startY) * 0.1}
-                  cy={(wand.startY + wand.endY) / 2 + (wand.endX - wand.startX) * 0.1}
-                  r={20}
-                  fill={"white"}
-                  style={{ cursor: "pointer" }}
-                />
-                <text
-                  x={(wand.startX + wand.endX) / 2 - (wand.endY - wand.startY) * 0.1}
-                  y={(wand.startY + wand.endY) / 2 + (wand.endX - wand.startX) * 0.1}
-                  fontSize={16}
-                  fill="black"
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                >
-                  {index + 1}
-                </text>
+                {wand.wandNr !== -1 && (
+                  <g>
+                    <line
+                      key={`wand-${index}`}
+                      x1={wand.startX}
+                      y1={wand.startY}
+                      x2={wand.endX}
+                      y2={wand.endY}
+                      strokeWidth={5}
+                      className={hoveredWand === index || selectedWand === index ? "selected" : ""}
+                    />
+                    <circle
+                      cx={(wand.startX + wand.endX) / 2 - (wand.endY - wand.startY) * 0.1}
+                      cy={(wand.startY + wand.endY) / 2 + (wand.endX - wand.startX) * 0.1}
+                      r={20}
+                      fill={"white"}
+                      style={{ cursor: "pointer" }}
+                    />
+                    <text
+                      x={(wand.startX + wand.endX) / 2 - (wand.endY - wand.startY) * 0.1}
+                      y={(wand.startY + wand.endY) / 2 + (wand.endX - wand.startX) * 0.1}
+                      fontSize={16}
+                      fill="black"
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                    >
+                      {wand.wandNr}
+                    </text>
+                  </g>
+                )}
               </g>
             ))}
 

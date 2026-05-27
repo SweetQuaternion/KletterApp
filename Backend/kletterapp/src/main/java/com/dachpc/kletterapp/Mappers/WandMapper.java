@@ -17,6 +17,8 @@ public interface WandMapper {
 
     WandResponseDTO toResponseDTO(Wand entity);
 
+    WandCreateDTO toCreateDTO(WandResponseDTO dto);
+
     @Mapping(ignore = true, target = "id")
     @Mapping(ignore = true, target = "routen")
     void updateEntity(WandCreateDTO dto, @MappingTarget Wand entity);

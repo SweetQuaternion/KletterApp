@@ -9,6 +9,8 @@ import com.dachpc.kletterapp.Dtos.RouteResponseDTO;
 import com.dachpc.kletterapp.Entities.Route;
 import com.dachpc.kletterapp.Mappers.RouteMapper;
 import com.dachpc.kletterapp.Repositories.RoutenRepository;
+import com.dachpc.kletterapp.Repositories.WandRepository;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +25,13 @@ public class RoutenService {
 
     @Autowired
     private RoutenRepository routenRepository;
+
+    @Autowired
+    private WandRepository wandRepository;
     
     public RouteResponseDTO addRoute(RouteCreateDTO dto) {
         Route route = routeMapper.toEntity(dto);
+        route.setWand(wandRepository.findById(dto.getWandId()).orElseThrow(() -> new EntityNotFoundException("Wand nicht gefunden")));
         route.setIsActive(true);
         Route added = routenRepository.save(route);
         return routeMapper.toResponseDTO(added);

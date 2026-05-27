@@ -1,15 +1,18 @@
-import type { HalleCreateDTO, HalleResponseDTO, WandCreateDTO } from "../../api/model";
+import type { HalleCreateDTO, HalleResponseDTO, WandResponseDTO } from "../../api/model";
 import NeueHalleBox from "./NeueHalleBox";
 import "../../styles/Editor.css";
 import Canvas from "./Canvas";
 import WändeBox from "./WändeBox";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createHalleMutationOptions } from "../../utils/queries";
+import {
+  createHalleMutationOptions,
+  updateHalleMutationOptions,
+  updateWandMutationOptions,
+} from "../../utils/queries";
 import { createWandMutationOptions } from "../../utils/queries";
 import { isAdmin } from "../../utils/keycloak";
 import { getGetWaendeByHallenIdQueryOptions } from "../../api/wand-controller/wand-controller";
-import { updateHalle } from "../../api/hallen-controller/hallen-controller";
 
 interface Props {
   selectedHalle?: HalleResponseDTO | null;
@@ -17,9 +20,9 @@ interface Props {
 
 const HalleEditor = ({ selectedHalle }: Props) => {
   const [halleData, setHalleData] = useState<HalleCreateDTO>({
-    name: "",
-    adresse: "",
-    betreiber: undefined,
+    name: selectedHalle?.name || "",
+    adresse: selectedHalle?.adresse || "",
+    betreiber: selectedHalle?.betreiber || undefined,
   });
 
   const { data } = useQuery({
@@ -27,7 +30,7 @@ const HalleEditor = ({ selectedHalle }: Props) => {
     enabled: !!selectedHalle,
   });
 
-  const [wändeHistory, setWändeHistory] = useState<WandCreateDTO[][]>([[]]);
+  const [wändeHistory, setWändeHistory] = useState<WandResponseDTO[][]>([[]]);
   const [historyIndex, setHistoryIndex] = useState(0);
   const wände = wändeHistory[historyIndex] || [];
   const [hoveredWand, setHoveredWand] = useState<number | null>(null);
@@ -39,7 +42,7 @@ const HalleEditor = ({ selectedHalle }: Props) => {
     setHistoryIndex(0);
   }, [data, selectedHalle]);
 
-  function setWände(nextWände: WandCreateDTO[]) {
+  function setWände(nextWände: WandResponseDTO[]) {
     setWändeHistory((currentHistory) => {
       const truncatedHistory = currentHistory.slice(0, historyIndex + 1);
       return [...truncatedHistory, nextWände];
@@ -69,12 +72,30 @@ const HalleEditor = ({ selectedHalle }: Props) => {
     isPending: isWändePending,
   } = useMutation(createWandMutationOptions());
 
+  const {
+    mutateAsync: updateHalle,
+    isSuccess: isHalleUpdateSuccess,
+    isError: isHalleUpdateError,
+    isPending: isHalleUpdatePending,
+  } = useMutation(updateHalleMutationOptions());
+
+  const {
+    mutateAsync: updateWände,
+    isSuccess: isWändeUpdateSuccess,
+    isError: isWändeUpdateError,
+    isPending: isWändeUpdatePending,
+  } = useMutation(updateWandMutationOptions());
+
   async function submit() {
+    if (halleData.name.trim() === "" || halleData.adresse.trim() === "") {
+      return;
+    }
     if (selectedHalle) {
-      await updateHalle(halleData, { id: selectedHalle.id });
-      // Hier noch die Wände updaten
-      // await saveWände({ hallenId: selectedHalle.id, data: wände });
+      // Updated bestehende Halle
+      await updateHalle({ id: selectedHalle.id, halle: halleData });
+      await updateWände({ hallenId: selectedHalle.id, data: wände });
     } else {
+      // erstellt neue Halle
       const halle: HalleResponseDTO = await saveHalle(halleData);
       if (halle.id) {
         selectedHalle = halle;
@@ -84,6 +105,8 @@ const HalleEditor = ({ selectedHalle }: Props) => {
         }));
         setWände(updatedWände);
         saveWände({ hallenId: halle.id, data: updatedWände });
+        setWändeHistory([wände]);
+        setHistoryIndex(0);
       }
     }
   }
@@ -93,6 +116,7 @@ const HalleEditor = ({ selectedHalle }: Props) => {
       {isAdmin() && (
         <>
           <Canvas
+            selectedHalle={selectedHalle}
             wände={wände}
             setWände={setWände}
             selectedWand={selectedWand}
@@ -124,13 +148,27 @@ const HalleEditor = ({ selectedHalle }: Props) => {
             {isHalleSaved && isWändeSaved && (
               <p className="small">Halle erfolgreich gespeichert!</p>
             )}
+            {isHalleUpdateSuccess && isWändeUpdateSuccess && (
+              <p className="small">Halle erfolgreich geupdated!</p>
+            )}
             {isHalleError && <p className="small">Fehler beim Speichern der Halle.</p>}
-            {isWändeError && (
+            {isHalleUpdateError && <p className="small">Fehler beim Updaten der Halle.</p>}
+            {(isWändeError || isWändeUpdateError) && (
               <p className="small">Halle erstellt. Fehler beim Speichern der Wände.</p>
             )}
+            {(halleData.name.trim() === "" || halleData.adresse.trim() === "") && (
+              <p className="small">Bitte fülle alle Pflichtfelder aus.</p>
+            )}
             <button
+              className="red-button"
               onClick={submit}
-              disabled={isHallePending || isWändePending || (isHalleSaved && isWändeError)}
+              disabled={
+                isHallePending ||
+                isWändePending ||
+                isHalleUpdatePending ||
+                isWändeUpdatePending ||
+                (isHalleSaved && isWändeError)
+              }
             >
               Halle speichern
             </button>

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import type { WandCreateDTO } from "../../api/model";
+import type { WandResponseDTO } from "../../api/model";
 
 interface Props {
-  wände: WandCreateDTO[];
-  setWände: (wände: WandCreateDTO[]) => void;
+  wände: WandResponseDTO[];
+  setWände: (wände: WandResponseDTO[]) => void;
   selectedWand: number | null;
   setSelectedWand: (index: number | null) => void;
   setHoveredWand: (index: number | null) => void;
@@ -33,19 +33,20 @@ const WändeBox = ({
     }
   }
 
-  function moveWand(fromIndex: number, toIndex: number) {
-    if (fromIndex === toIndex) return;
+  // function moveWand(fromIndex: number, toIndex: number) {
+  //   if (fromIndex === toIndex) return;
 
-    const newWände = [...wände];
-    const [wand] = newWände.splice(fromIndex, 1);
-    newWände.splice(toIndex, 0, wand);
-    setWände(newWände);
-  }
+  //   const newWände = [...wände];
+  //   const [wand] = newWände.splice(fromIndex, 1);
+  //   newWände.splice(toIndex, 0, wand);
+  //   setWände(newWände);
+  // }
 
   function flipWand(index: number) {
     const wand = wände[index];
     const newWände = [...wände];
     newWände[index] = {
+      id: wand.id,
       hallenId: wand.hallenId,
       wandNr: index,
       name: wand.name || undefined,
@@ -62,6 +63,7 @@ const WändeBox = ({
     const wand = wände[index];
     const newWände = [...wände];
     newWände[index] = {
+      id: wand.id,
       hallenId: wand.hallenId,
       wandNr: index,
       name: wand.name || undefined,
@@ -75,12 +77,25 @@ const WändeBox = ({
   }
 
   function deleteWand(index: number) {
+    const wand = wände[index];
     const newWände = [...wände];
-    newWände.splice(index, 1);
+    newWände[index] = {
+      id: wand.id,
+      hallenId: wand.hallenId,
+      wandNr: -1, // mark as deleted
+      name: wand.name || undefined,
+      startX: wand.startX,
+      startY: wand.startY,
+      endX: wand.endX,
+      endY: wand.endY,
+      position: wand.position,
+    };
     setWände(newWände);
+    setSelectedWand(null);
+    console.log(selectedWand);
   }
 
-  function WandItem({ wand, index }: { wand: WandCreateDTO; index: number }) {
+  function WandItem({ wand, index }: { wand: WandResponseDTO; index: number }) {
     function handleNameChange(e: React.FocusEvent<HTMLDivElement>) {
       const newName = e.currentTarget.textContent || "";
       const newWände = [...wände];
@@ -91,12 +106,27 @@ const WändeBox = ({
       setWände(newWände);
     }
 
+    function handleNrChange(e: React.FocusEvent<HTMLDivElement>) {
+      const newNr = e.currentTarget.textContent || "";
+      const newWände = [...wände];
+      newWände[index] = {
+        ...wand,
+        wandNr: parseInt(newNr) || 0,
+      };
+      setWände(newWände);
+    }
+
+    if (wand.wandNr === -1) {
+      return null;
+    }
+
     return (
       <div
         className={`wand-item ${index === selectedWand ? "selected" : ""}`}
         key={index}
         onClick={(e) => {
           e.stopPropagation();
+          console.log("Wand " + index + " ausgewählt");
           setSelectedWand(index);
         }}
         onMouseOver={() => setHoveredWand(index)}
@@ -114,21 +144,36 @@ const WändeBox = ({
             suppressContentEditableWarning={true}
             onBlur={handleNameChange}
           >
-            {wand.name || `Wand ${index + 1}`}
+            {wand.name || "Wand"}
+          </div>
+          <div
+            className="wand-name"
+            contentEditable={true}
+            suppressContentEditableWarning={true}
+            onBlur={handleNrChange}
+          >
+            {wand.wandNr}
           </div>
         </div>
         <div className="wand-right">
-          <div className="wand-coords">
+          {/* <div className="wand-coords">
             ({wand.startX}, {wand.startY}) → ({wand.endX}, {wand.endY})
-          </div>
+          </div> */}
 
           <button className="flip-button" onClick={() => flipWand(index)} title="flip">
             ⟲
           </button>
-          <button className="flip-button" onClick={() => deleteWand(index)} title="Wand löschen">
+          <button
+            className="flip-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              deleteWand(index);
+            }}
+            title="Wand löschen"
+          >
             ×
           </button>
-          <div>
+          {/* <div>
             <button
               className="flip-button"
               onClick={() => moveWand(index, index - 1)}
@@ -145,7 +190,7 @@ const WändeBox = ({
             >
               ↓
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     );

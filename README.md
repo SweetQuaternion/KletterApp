@@ -51,7 +51,5 @@ _Coming soon_
 
 ## 🗺️ Roadmap
 
-- [ ] Landing Page
-- [ ] News Feed mit Neuigkeiten über deine Heimat-Halle
 - [ ] Verbessertes Admin-Interface
 - [ ] Freundschaftsanfragen
