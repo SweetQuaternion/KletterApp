@@ -113,9 +113,11 @@ const Profil = () => {
 
   if (!user) {
     return (
-      <div className="white-box large">
-        <h2>Hey sorry.</h2>
-        <p>Du bist nicht angemeldet. Mach das mal!</p>
+      <div className="profil-container">
+        <div className="white-box large">
+          <h2>Hey sorry.</h2>
+          <p>Du bist nicht angemeldet. Mach das mal!</p>
+        </div>
       </div>
     );
   }

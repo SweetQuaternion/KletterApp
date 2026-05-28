@@ -20,7 +20,8 @@ interface Props {
 function Stats({ ascents }: Props) {
   const [timeFrame, setTimeFrame] = useState<"month" | "week">("week");
 
-  const data = timeFrame === "month" ? groupByMonth(ascents) : groupByWeek(ascents);
+  const ascentsFiltered = ascents.filter((ascent) => ascent.route && ascent.route.schwierigkeit);
+  const data = timeFrame === "month" ? groupByMonth(ascentsFiltered) : groupByWeek(ascentsFiltered);
   const title = timeFrame === "month" ? "Monatsverlauf" : "Wochenverlauf";
 
   const formatPeriodLabel = (period: string) => {
@@ -61,7 +62,7 @@ function Stats({ ascents }: Props) {
         <p className="stats-subtitle">Schwierigkeiten der gekletterten Routen</p>
       </div>
 
-      {ascents.length > 0 ? (
+      {ascentsFiltered.length > 0 ? (
         <div className="stats-chart-wrap">
           <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={320}>
             <LineChart data={data} margin={{ top: 8, right: 8, bottom: 8, left: 0 }}>
